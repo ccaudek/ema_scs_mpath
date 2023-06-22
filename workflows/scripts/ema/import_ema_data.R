@@ -8,9 +8,9 @@
 # 👉 input:  here("data", "raw", "piel2022")
 #    output: here("data", "prep", "ema", "ema_data_1.RDS")
 
-log <- file(snakemake@log[[1]], open="wt")
-sink(log)
-sink(log, type="message")
+# log <- file(snakemake@log[[1]], open="wt")
+# sink(log)
+# sink(log, type="message")
 
 suppressPackageStartupMessages({
   library(psych)
@@ -25,13 +25,17 @@ suppressPackageStartupMessages({
 
 source(here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R"))
 
-# Delete the first row of each xlsx file.
-delete_first_row_xlsx()
+FOLDER_NAME <- "files28"
 
+if (file.exists(here::here("data", "raw", FOLDER_NAME, "boop.txt"))) {
+  # Delete the first row of each xlsx file.
+  delete_first_row_xlsx()
+  file.remove(here::here("data", "raw", FOLDER_NAME, "boop.txt"))
+} 
 
 # All individual EMA files are stored in this directory.
 #dir <- here::here("data", "raw", "mpath2023")
-FOLDER_NAME <- "files28"
+
 dir <- here::here("data", "raw", FOLDER_NAME) ### test with only correct files!!!!
 
 file_names <- list.files(path = dir, full.names = TRUE)
@@ -47,11 +51,11 @@ for (index_file in 1:n_files) {
       here("data", "raw", FOLDER_NAME, file_names[index_file]),
       header = FALSE
     )
-
+  
   # get subject code
   d$subj_code <- 
     substr(file_names[index_file], 1, nchar(file_names[index_file]) - 5)
-
+  
   print(dim(d))
   d_list[[index_file]] <- d
 }
@@ -90,23 +94,30 @@ for (i in seq_along(d$datetime)) {
 
 # table(d$user_id, d$time_window)
 
-# foo <- d$day |> 
-#   as.numeric()
-# d$Day <- as.numeric(factor(foo))
+foo <- d$day |>
+  as.numeric()
+d$calendar_day <- as.numeric(factor(foo))
 
 d1 <- d %>%
   group_by(user_id) %>%
-  mutate(bysubj_day = dense_rank(Day))
+  mutate(bysubj_day = dense_rank(calendar_day)) |> 
+  ungroup()
 
-data.frame(
-  d1$user_id, d1$Day, d1$day, d1$bysubj_day
-)[1:200, ]
+# data.frame(
+#   d1$user_id, d1$calendar_day, d1$day, d1$bysubj_day
+# )[1:200, ]
 
-
-
+d2 <- d1 |> 
+  dplyr::select(
+    -c(date_time, datetime)
+  )
 
 # Save complete raw data
-# here::here("data", "prep", "ema", "ema_data_1.RDS")
-# saveRDS(mydat, snakemake@output[["rds"]])
+saveRDS(
+  d2, 
+  here::here("data", "prep", "ema", "ema_data_1.RDS")
+  #snakemake@output[["rds"]]
+)
 
 # eof ----
+
