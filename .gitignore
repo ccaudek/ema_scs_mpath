@@ -2,3 +2,12 @@
 .Rhistory
 .RData
 .Ruserdata
+**/.DS_Store
+logs/*
+.snakemake
+*.pdf
+*.log
+.Rprofile
+*.Rproj
+**/sandbox/*
+

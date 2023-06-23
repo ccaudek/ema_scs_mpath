@@ -12,7 +12,7 @@ bdi2_items <- rio::import(
   # snakemake@input[["dass21_cols"]]
 )
 
-# Source sias.R on GitHub, which includes the function scoring_tripm().
+# Source bdi2.R on GitHub, which includes the function scoring_bdi2().
 source_url(
   "https://raw.githubusercontent.com/ccaudek/r_functions/main/bdi2.R"
 )
