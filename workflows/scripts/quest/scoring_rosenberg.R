@@ -8,8 +8,8 @@ suppressPackageStartupMessages({
 })
 
 rosenberg_items <- rio::import(
-  here::here("data", "prep", "quest_scales", "rosenberg_items.csv")
-  # snakemake@input[["rosenberg_cols"]]
+  # here::here("data", "prep", "quest_scales", "rosenberg_items.csv")
+  snakemake@input[["rosenberg_cols"]]
 )
 
 # Source rosenberg.R on GitHub, which includes the function scoring_rosenberg().
@@ -21,8 +21,8 @@ rses <- scoring_rosenberg(rosenberg_items)
 
 rio::export(
   rses,
-  # snakemake@output[["rosenberg_scores"]]
-  here::here("data", "prep", "quest_scales", "rosenberg_scores.csv")
+  snakemake@output[["rosenberg_scores"]]
+  # here::here("data", "prep", "quest_scales", "rosenberg_scores.csv")
 )
 
 # eof ----

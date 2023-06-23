@@ -13,15 +13,13 @@
 # sink(log, type="message")
 
 suppressPackageStartupMessages({
-  library(psych)
-  library(ggplot2)
-  library(sjPlot)
-  library(dplyr)
-  library(rio)
-  library(here)
-  library(purrr)
-  library(lubridate)
-  library(tidyr)
+  library("psych")
+  library("ggplot2")
+  library("dplyr")
+  library("rio")
+  library("here")
+  library("lubridate")
+  library("tidyr")
 })
 
 source(here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R"))
@@ -29,9 +27,9 @@ source(here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R"
 
 # Read complete raw data
 d <- readRDS(
-  here::here("data", "prep", "ema", "ema_data_1.RDS")
-  # snakemake@input[["rds"]]
-) 
+  # here::here("data", "prep", "ema", "ema_data_1.RDS")
+  snakemake@input[["rds"]]
+)
 
 # Recode `context` -------------------------------------------------------------
 # Define the levels you want to convert to numeric values
@@ -44,8 +42,8 @@ levels_to_numeric <- c(
 )
 
 # Convert catch item to numeric values.
-d$context <- 
-  apply(data.frame(d$context), 2, function(x) levels_to_numeric[x]) |> 
+d$context <-
+  apply(data.frame(d$context), 2, function(x) levels_to_numeric[x]) |>
   as.numeric()
 
 # Recode `scs` -----------------------------------------------------------------
@@ -63,33 +61,33 @@ levels2_to_numeric <- c(
 # neg: dec_2, dec_4 (mancata capacità di decentramento)
 # pos: dec_1, dec_3
 
-temp <- d |> 
+temp <- d |>
   dplyr::select(dplyr::starts_with("scs_") | dplyr::starts_with("dec_"))
 
 
 # Convert catch item to numeric values.
-temp1 <- 
-  apply(temp, 2, function(x) levels2_to_numeric[x]) |> 
+temp1 <-
+  apply(temp, 2, function(x) levels2_to_numeric[x]) |>
   as.data.frame()
 
 # Remove `scs_` and `dec_` items.
-d1 <- d |> 
+d1 <- d |>
   dplyr::select(-starts_with("scs_"), -starts_with("dec_"))
 # Add numeric columns for `scs_` and `dec_`
 d2 <- cbind(d1, temp1)
 
 # Separate `present_emotion` into three columns.
 d3 <- separate(
-  d2, 
-  present_emotion, 
-  into = c("present_emo_1", "present_emo_2", "present_emo_3"), 
+  d2,
+  present_emotion,
+  into = c("present_emo_1", "present_emo_2", "present_emo_3"),
   sep = ",", fill = "right", extra = "drop"
 )
 
 d3 <- separate(
-  d3, 
-  after_exam_emotion, 
-  into = c("after_exam_emo_1", "after_exam_emo_2", "after_exam_emo_3"), 
+  d3,
+  after_exam_emotion,
+  into = c("after_exam_emo_1", "after_exam_emo_2", "after_exam_emo_3"),
   sep = ",", fill = "right", extra = "drop"
 )
 
@@ -98,9 +96,9 @@ d3$after_exam_emo_1 <- ifelse(
 )
 
 d3 <- separate(
-  d3, 
-  before_exam_emotion, 
-  into = c("before_exam_emo_1", "before_exam_emo_2", "before_exam_emo_3"), 
+  d3,
+  before_exam_emotion,
+  into = c("before_exam_emo_1", "before_exam_emo_2", "before_exam_emo_3"),
   sep = ",", fill = "right", extra = "drop"
 )
 d3$before_exam_emo_1 <- ifelse(
@@ -110,8 +108,8 @@ d3$before_exam_emo_1 <- ifelse(
 # Save RDS file.
 saveRDS(
   d3,
-  # snakemake@output[["rds"]]
-  here::here("data", "prep", "ema", "ema_data_2.RDS")
+  snakemake@output[["rds"]]
+  # here::here("data", "prep", "ema", "ema_data_2.RDS")
 )
 
 # eof ----

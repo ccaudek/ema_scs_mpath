@@ -11,8 +11,8 @@ source(here::here("workflows", "scripts", "quest", "funs", "funs_quest.R"))
 NITEMS <- 10
 
 d <- rio::import(
-  here::here("data", "prep", "quest_scales", "quest_ema_mpath.csv")
-  # snakemake@input[["quest_data1"]]
+  # here::here("data", "prep", "quest_scales", "quest_ema_mpath.csv")
+  snakemake@input[["quest_data"]]
 )
 
 # Add catch item to catch_items.csv file.
@@ -28,8 +28,8 @@ colnames(rosenberg_items) <- c("user_id", paste0("ros_", 1:NITEMS))
 # Save data
 rio::export(
   rosenberg_items,
-  here::here("data", "prep", "quest_scales", "rosenberg_items.csv")
-  # snakemake@output[["rosenberg_cols"]]
+  # here::here("data", "prep", "quest_scales", "rosenberg_items.csv")
+  snakemake@output[["rosenberg_cols"]]
 )
 
 # eof ----

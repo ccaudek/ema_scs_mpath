@@ -87,9 +87,9 @@ quest_dat$weight_now <-
   as.numeric(gsub(" kg", "", gsub("kg", "", quest_dat$Peso_attuale_1)))
 quest_dat$Peso_attuale_1 <- NULL
 
-quest_dat$Peso_alto_1 <- 
+quest_dat$Peso_alto_1 <-
   ifelse(quest_dat$Peso_alto_1 == "48,5", "48.5", quest_dat$Peso_alto_1)
-quest_dat$Peso_alto_1 <- 
+quest_dat$Peso_alto_1 <-
   ifelse(quest_dat$Peso_alto_1 == "Boh", "63.85", quest_dat$Peso_alto_1)
 quest_dat$weight_high <-
   as.numeric(gsub(" kg", "", gsub("kg", "", quest_dat$Peso_alto_1)))
@@ -103,10 +103,10 @@ quest_dat$weight_low <-
   as.numeric(gsub(" kg", "", gsub("kg", "", quest_dat$Peso_basso_1)))
 quest_dat$Peso_basso_1 <- NULL
 
-quest_dat$Peso_ideale_1 <- 
+quest_dat$Peso_ideale_1 <-
   ifelse(quest_dat$Peso_ideale_1 == "almeno 5 kg in meno", "63",
-  quest_dat$Peso_ideale_1
-)
+    quest_dat$Peso_ideale_1
+  )
 quest_dat$Peso_ideale_1 <- ifelse(quest_dat$Peso_ideale_1 == "Il mio", "53",
   quest_dat$Peso_ideale_1
 )
@@ -184,8 +184,8 @@ quest_dat <- quest_dat |>
 # Save csv file.
 rio::export(
   quest_dat,
-  here::here("data", "prep", "quest_scales", "quest_ema_mpath.csv")
-  # file = snakemake@output[["csv"]]
+  # here::here("data", "prep", "quest_scales", "quest_ema_mpath.csv")
+  snakemake@output[["quest_data"]]
 )
 
 # eof ----
