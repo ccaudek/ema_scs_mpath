@@ -20,8 +20,8 @@ source(here::here("workflows", "scripts", "quest", "funs", "funs_quest.R"))
 NITEMS <- 21
 
 d <- rio::import(
-  here::here("data", "prep", "quest_scales", "quest_ema_mpath.csv")
-  # snakemake@input[["quest_data1"]]
+  # here::here("data", "prep", "quest_scales", "quest_ema_mpath.csv")
+  snakemake@input[["quest_data"]]
 )
 
 # Add catch item to catch_items.csv file.
@@ -46,18 +46,18 @@ set1 <- c(
 )
 
 bdi2_items <- bdi2_items %>%
-  mutate(all_of(across(set1, ~ case_when(
+  mutate(across(set1, ~ case_when(
     . == 4 ~ 3,
     . == 3 ~ 2,
     . == 2 ~ 1,
     . == 1 ~ 0,
     TRUE ~ NA_integer_
-  ))))
+  )))
 
 set2 <- c("bdi2_16", "bdi2_18")
 
 bdi2_items <- bdi2_items %>%
-  mutate(all_of(across(set2, ~ case_when(
+  mutate(across(set2, ~ case_when(
     . == 7 ~ 3,
     . == 6 ~ 3,
     . == 5 ~ 2,
@@ -66,13 +66,13 @@ bdi2_items <- bdi2_items %>%
     . == 2 ~ 1,
     . == 1 ~ 0,
     TRUE ~ NA_integer_
-  ))))
+  )))
 
 # Save data
 rio::export(
   bdi2_items,
-  here::here("data", "prep", "quest_scales", "bdi2_items.csv")
-  # snakemake@output[["bdi2_cols"]]
+  # here::here("data", "prep", "quest_scales", "bdi2_items.csv")
+  snakemake@output[["bdi2_cols"]]
 )
 
 # eof ----

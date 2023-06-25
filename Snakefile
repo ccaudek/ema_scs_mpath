@@ -1,6 +1,4 @@
-# Important note:
-# All paths defined in this configuration file must be either
-# absolute or relative to the location of the Snakefile!
+""" EMA Self-compassion Mpath 2023 """
 
 import os
 from pathlib import Path
@@ -19,7 +17,9 @@ configfile: "config/config.yaml"
 # print(f"Home directory: {Path.home()}")
 
 
-# Run all analyses
+# %% All rule  ------------------------------------------------------
+
+
 rule all:
     input:
         # os.path.join(prepdir, "groundhog_raw.RDS"),
@@ -33,17 +33,22 @@ rule all:
         # "data/prep/quest_scales/ders_scores.csv",
         # "data/prep/quest_scales/neoffi60_neuro_scores.csv",
         "data/prep/quest_scales/rosenberg_scores.csv",
+        "data/prep/quest_scales/bdi2_scores.csv",
         # "data/prep/quest_scales/rscs_scores.csv",
         # "data/prep/quest_scales/scl90_scores.csv",
         # "data/prep/quest_scales/scs_scores.csv",
 
 
-# Read individual EMA data and save an RDS file ---------------------
+# %% Read individual EMA data and save an RDS file ------------------
+
+
 rule read_ema_data:
     output:
         rds=config["ema_data_raw"],
     log:
         "logs/read_ema_data.log",
+    message:
+        "Reading EMA data"
     script:
         "workflows/scripts/ema/mpath_import_ema_data.R"
 
@@ -60,7 +65,9 @@ rule wrangling_ema_data:
         "workflows/scripts/ema/mpath_data_wrangling.R"
 
 
-# Read questionnaire data and save two CSV files --------------------
+# %% Read questionnaire data and save two CSV files -----------------
+
+
 rule read_quest_data:
     output:
         quest_data=config["quest_data"],
@@ -95,9 +102,11 @@ rule read_quest_data:
 #
 #
 # include: "workflows/rules/closing_messages.smk"
-#
-#
-# Select columns of the DASS-21 questionnaire -----------------------
+
+
+# %% DASS-21 rules --------------------------------------------------
+
+
 rule select_cols_dass21:
     input:
         quest_data=config["quest_data"],
@@ -119,6 +128,32 @@ rule scoring_dass21:
         "logs/scoring_dass21.log",
     script:
         "workflows/scripts/quest/scoring_dass21.R"
+
+
+# %% BDI-II rules ---------------------------------------------------
+
+
+rule select_cols_bdi2:
+    input:
+        quest_data=config["quest_data"],
+    output:
+        bdi2_cols="data/prep/quest_scales/bdi2_items.csv",
+    log:
+        "logs/select_cols_bdi2.log",
+    script:
+        "workflows/scripts/quest/select_cols_bdi2.R"
+
+
+# Scoring of the DASS-21 questionnaire.
+rule scoring_bdi2:
+    input:
+        bdi2_cols="data/prep/quest_scales/bdi2_items.csv",
+    output:
+        bdi2_scores="data/prep/quest_scales/bdi2_scores.csv",
+    log:
+        "logs/scoring_bdi2.log",
+    script:
+        "workflows/scripts/quest/scoring_bdi2.R"
 
 
 # # Select columns of the DERS questionnaire --------------------------
@@ -168,8 +203,10 @@ rule scoring_dass21:
 #     script:
 #         "workflows/scripts/quest/scoring_neoffi60neuro.R"
 #
-#
-# Select columns of the Rosenberg questionnaire ---------------------
+
+# %% Rosenberg SES rules --------------------------------------------
+
+
 rule select_cols_rosenberg:
     input:
         quest_data=config["quest_data"],
@@ -263,4 +300,20 @@ rule scoring_rosenberg:
 #         "logs/scoring_scs.log",
 #     script:
 #         "workflows/scripts/quest/scoring_scs.R"
-#
+
+
+# %% logging information --------------------------------------------
+
+
+onstart:
+    shell('echo -e "running\t`date +%Y-%m-%d" "%H:%M`" > pipeline_status_ESM.txt')
+
+
+onsuccess:
+    shell('echo -e "success\t`date +%Y-%m-%d" "%H:%M`" > pipeline_status_ESM.txt')
+    print("Workflow finished, no error")
+
+
+onerror:
+    shell('echo -e "error\t`date +%Y-%m-%d" "%H:%M`" > pipeline_status_ESM.txt'),
+    print("An error occurred")

@@ -1,5 +1,9 @@
 # Project-wide variables that can be accessed from anywhere
 
+# Important note:
+# All paths defined in this configuration file must be either
+# absolute or relative to the location of the Snakefile!
+
 # Path to directory containing all individual EMA data.
 ema_data_dir: "data/raw/mpath2023"
 

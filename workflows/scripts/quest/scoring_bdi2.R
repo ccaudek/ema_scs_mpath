@@ -8,8 +8,8 @@ suppressPackageStartupMessages({
 })
 
 bdi2_items <- rio::import(
-  here::here("data", "prep", "quest_scales", "bdi2_items.csv")
-  # snakemake@input[["dass21_cols"]]
+  # here::here("data", "prep", "quest_scales", "bdi2_items.csv")
+  snakemake@input[["bdi2_cols"]]
 )
 
 # Source bdi2.R on GitHub, which includes the function scoring_bdi2().
@@ -21,8 +21,8 @@ bdi2_subscales <- scoring_bdi2(bdi2_items)
 
 rio::export(
   bdi2_subscales,
-  here::here("data", "prep", "quest_scales", "bdi2_scores.csv")
-  # snakemake@output[["bid2_scores"]]
+  # here::here("data", "prep", "quest_scales", "bdi2_scores.csv")
+  snakemake@output[["bdi2_scores"]]
 )
 
 # eof ----
