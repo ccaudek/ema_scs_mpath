@@ -31,6 +31,10 @@ d <- readRDS(
   snakemake@input[["rds"]]
 )
 
+# Change columns names
+d <- change_cols_names(d)
+
+
 # Recode `context` -------------------------------------------------------------
 # Define the levels you want to convert to numeric values
 levels_to_numeric <- c(
@@ -79,30 +83,31 @@ d2 <- cbind(d1, temp1)
 # Separate `present_emotion` into three columns.
 d3 <- separate(
   d2,
-  present_emotion,
-  into = c("present_emo_1", "present_emo_2", "present_emo_3"),
+  emotion_now,
+  into = c("emo_now_1", "emo_now_2", "emo_now_3"),
   sep = ",", fill = "right", extra = "drop"
 )
 
 d3 <- separate(
   d3,
-  after_exam_emotion,
-  into = c("after_exam_emo_1", "after_exam_emo_2", "after_exam_emo_3"),
+  emotion_after_exam,
+  into = c("emo_after_exam_1", "emo_after_exam_2", "emo_after_exam_3"),
   sep = ",", fill = "right", extra = "drop"
 )
 
-d3$after_exam_emo_1 <- ifelse(
-  d3$after_exam_emo_1 == "-1", NA, d3$after_exam_emo_1
+d3$emo_after_exam_1 <- ifelse(
+  d3$emo_after_exam_1 == "-1", NA, d3$emo_after_exam_1
 )
 
 d3 <- separate(
   d3,
-  before_exam_emotion,
-  into = c("before_exam_emo_1", "before_exam_emo_2", "before_exam_emo_3"),
+  emotion_before_exam,
+  into = c("emo_before_exam_1", "emo_before_exam_2", "emo_before_exam_3"),
   sep = ",", fill = "right", extra = "drop"
 )
-d3$before_exam_emo_1 <- ifelse(
-  d3$before_exam_emo_1 == "-1", NA, d3$before_exam_emo_1
+
+d3$emo_before_exam_1 <- ifelse(
+  d3$emo_before_exam_1 == "-1", NA, d3$emo_before_exam_1
 )
 
 # Save RDS file.
