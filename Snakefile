@@ -36,7 +36,7 @@ rule all:
         "data/prep/quest_scales/bdi2_scores.csv",
         # "data/prep/quest_scales/rscs_scores.csv",
         # "data/prep/quest_scales/scl90_scores.csv",
-        # "data/prep/quest_scales/scs_scores.csv",
+        "data/prep/quest_scales/scs_scores.csv",
 
 
 # %% Read individual EMA data and save an RDS file ------------------
@@ -277,29 +277,31 @@ rule scoring_rosenberg:
 #     script:
 #         "workflows/scripts/quest/scoring_scl90.R"
 #
-#
-# # Select columns of the SCS questionnaire ---------------------------
-# rule select_cols_scs:
-#     input:
-#         quest_data1=config["quest_data1_clean"],
-#     output:
-#         scs_cols="data/prep/quest_scales/scs_items.csv",
-#     log:
-#         "logs/select_cols_scs.log",
-#     script:
-#         "workflows/scripts/quest/select_cols_scs.R"
-#
-#
-# # Scoring of the SCS questionnaire.
-# rule scoring_scs:
-#     input:
-#         scs_cols="data/prep/quest_scales/scs_items.csv",
-#     output:
-#         scs_scores="data/prep/quest_scales/scs_scores.csv",
-#     log:
-#         "logs/scoring_scs.log",
-#     script:
-#         "workflows/scripts/quest/scoring_scs.R"
+
+# Select columns of the SCS questionnaire ---------------------------
+
+
+rule select_cols_scs:
+    input:
+        quest_data=config["quest_data"],
+    output:
+        scs_cols="data/prep/quest_scales/scs_items.csv",
+    log:
+        "logs/select_cols_scs.log",
+    script:
+        "workflows/scripts/quest/select_cols_scs.R"
+
+
+# Scoring of the SCS questionnaire.
+rule scoring_scs:
+    input:
+        scs_cols="data/prep/quest_scales/scs_items.csv",
+    output:
+        scs_scores="data/prep/quest_scales/scs_scores.csv",
+    log:
+        "logs/scoring_scs.log",
+    script:
+        "workflows/scripts/quest/scoring_scs.R"
 
 
 # %% logging information --------------------------------------------

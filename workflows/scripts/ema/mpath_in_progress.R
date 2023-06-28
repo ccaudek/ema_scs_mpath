@@ -12,6 +12,16 @@ suppressPackageStartupMessages({
   library("extraoperators") # %!in%
   library("sjPlot") # plot_model()
   library("performance")
+  library(jtools)
+  library("sjPlot")
+  library(effects)
+  library(readxl)
+  library(mousetrap)
+  library(misty)
+  library(lmerTest) 
+  library(report)
+  library(jtools)
+  library(interactions)
 })
 
 # 2023/04/17 Prova in itinere (1)
@@ -25,6 +35,13 @@ suppressPackageStartupMessages({
 # [19] "2023-04-30" "2023-05-01" "2023-05-06" "2023-05-13" "2023-05-20" "2023-05-21"
 # [25] "2023-05-22" "2023-05-23" "2023-05-24" "2023-05-25" "2023-05-26" "2023-05-27"
 # [31] "2023-06-02" "2023-06-03"
+
+
+source(
+  here::here(
+    "workflows", "scripts", "ema", "functions", "funs_ema_mpath.R"
+  )
+)
 
 
 d <- readRDS(here::here("data", "prep", "ema", "ema_data_2.RDS"))
@@ -45,6 +62,185 @@ d |>
 
 d$bysubj_day_f <- factor(d$bysubj_day)
 d$time_window_f <- factor(d$time_window)
+
+bad_ids <- c(
+  418, 419, 423, 426, 431, 435, 487, 948, 957,
+  2120, 2354, 3098, 3116, 3122, 3133, 3134, 3351, 3432, 3517, 4211, 5072,
+  5953, 5975, 5976
+)
+
+piel_clean_df <- d[-bad_ids, ]
+
+piel_clean_df |> 
+  group_by(bysubj_day) |> 
+  summarize(
+    n = n_distinct(user_id)
+  ) |> 
+  as.data.frame()
+
+
+piel_clean_df$exam_day <- case_when(
+  piel_clean_df$day == "2023-04-16" ~ "pre",
+  piel_clean_df$day == "2023-04-17" ~ "post",
+  piel_clean_df$day == "2023-05-21" ~ "pre",
+  piel_clean_df$day == "2023-05-22" ~ "post",
+  piel_clean_df$day == "2023-05-23" ~ "post",
+  piel_clean_df$day == "2023-05-24" ~ "post",
+  piel_clean_df$day == "2023-05-25" ~ "post",
+  piel_clean_df$day == "2023-05-26" ~ "post",
+  .default = "no_exam"
+)
+
+temp <- piel_clean_df |> 
+  dplyr::filter(exam_day == "no_exam")
+
+no_exam_df <-  center3L(temp, neg_aff, user_id, bysubj_day)
+
+strict_control <- lmerControl(optCtrl = list(
+  algorithm = "NLOPT_LN_NELDERMEAD",
+  xtol_abs = 1e-12,
+  ftol_abs = 1e-12
+))
+
+no_exam_df$na_moment <- 
+  (no_exam_df$neg_aff_Moment - mean(no_exam_df$neg_aff_Moment, na.rm= T)) /
+  sd(no_exam_df$neg_aff_Moment, na.rm= T)
+
+no_exam_df$na_day <- 
+  (no_exam_df$neg_aff_Day - mean(no_exam_df$neg_aff_Day, na.rm= T)) /
+  sd(no_exam_df$neg_aff_Day, na.rm= T)
+
+no_exam_df$na_person <- 
+  (no_exam_df$neg_aff_Person - mean(no_exam_df$neg_aff_Person, na.rm= T)) /
+  sd(no_exam_df$neg_aff_Person, na.rm= T)
+
+no_exam_df$znsc <- 
+  (no_exam_df$nsc - mean(no_exam_df$nsc, na.rm= T)) /
+  sd(no_exam_df$nsc, na.rm= T)
+
+no_exam_df$zpsc <- 
+  (no_exam_df$psc - mean(no_exam_df$psc, na.rm= T)) /
+  sd(no_exam_df$psc, na.rm= T)
+
+mod_piel_nsc <- lmer(
+  znsc ~ na_moment * na_day + na_person +
+    (1 + na_moment * na_day | user_id),
+  data = no_exam_df,
+  REML = T,
+  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
+)
+summary(mod_piel_nsc)
+
+no_exam_df <- no_exam_df[!is.na(no_exam_df$psc), ]
+
+# mod_piel_psc <- rlmer(
+#   zpsc ~ na_moment * na_day + na_person +
+#     (1 + na_moment * na_day | user_id),
+#   data = no_exam_df,
+#   REML = T,
+#   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
+# )
+summary(mod_piel_nsc)
+
+reportMLM(mod_piel_nsc)
+
+reportMLM(mod_piel_psc)
+
+lattice::qqmath(mod_piel_psc)
+
+mod_piel_psc <- glmmTMB(
+  zpsc ~ na_moment * na_day + na_person +
+    (1 + na_moment * na_day | user_id),
+  data = no_exam_df, 
+  family = tweedie()
+  )
+summary(mod_piel_psc)
+
+reportMLM(mod_piel_psc)
+
+lattice::qqmath(mod_piel_psc)
+
+res <- no_exam_df$zpsc - fitted(mod_piel_psc)
+lattice::qqmath(res)
+
+
+library(MASS)
+
+no_exam_df$spsc <- no_exam_df$psc + 12.1
+bc <- boxcox(spsc ~ na_moment * na_day + na_person, data=no_exam_df)
+(lambda <- bc$x[which.max(bc$y)])
+
+lambda <- 1.232323
+no_exam_df$y <- (no_exam_df$spsc^lambda-1)/lambda
+
+no_exam_df$znsc <- (no_exam_df$y - mean(no_exam_df$y)) / sd(no_exam_df$y) 
+
+no_exam_df$zcntx <- (no_exam_df$context - mean(no_exam_df$context)) / 
+  sd(no_exam_df$context) 
+
+no_exam_df$zdec <- (no_exam_df$dec - mean(no_exam_df$dec)) / 
+  sd(no_exam_df$dec) 
+
+mod_piel_nsc <- lmer(
+  znsc ~ zdec + zcntx + (na_moment + na_day) + na_person +
+    (1 + zdec + zcntx + (na_moment + na_day) | user_id),
+  data = no_exam_df,
+  REML = T,
+  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
+)
+summary(mod_piel_nsc)
+
+reportMLM(mod_piel_nsc)
+
+interact_plot(model = mod_piel_nsc, pred = na_moment, modx = zcntx)
+
+
+
+
+res <- residuals(mod_piel_nsc)
+
+
+
+plot_model(mod_piel_nsc, "eff", "zcntx") 
+plot_model(mod_piel_nsc, "eff", "na_moment") 
+plot_model(mod_piel_nsc, "eff", "na_day") 
+plot_model(mod_piel_nsc, "eff", "na_person") 
+
+MuMIn::r.squaredGLMM(mod_piel_nsc)
+
+
+res <- residuals(mod_piel_nsc)
+lattice::qqmath(res)
+#Check for linearity
+plot(jitter(residuals(mod_piel_nsc)), jitter(no_exam_df$znsc))
+
+# Check normality
+lattice::qqmath(res)
+plot_model(mod_piel_nsc, type='diag')
+
+
+
+
+
+
+
+#######################
+#######################
+
+
+
+
+mod1 <- brm(
+  zpsc ~ na_moment * na_day + na_person +
+    (1 + na_moment * na_day | user_id),
+  data = no_exam_df,
+  family = skew_normal(),
+  algorithm = "meanfield"
+  # backend = "cmdstanr"
+)
+pp_check(mod1)
+summary(mod1)
+bayes_R2(mod1)
 
 #' The ICC is a measure of the proportion of variance that is between people
 #' versus the total variance (i.e., variance between people and variance
