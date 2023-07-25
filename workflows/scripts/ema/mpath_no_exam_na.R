@@ -1,6 +1,9 @@
 
 
-temp <- d |> 
+
+
+
+exam_df <- d |> 
   dplyr::filter(exam_day != "no_exam")
 
 
@@ -17,9 +20,9 @@ temp <- d |>
 
 
 mod_nsc <- lmer(
-  nsc ~ exam_day*neg_aff +
-    (1 + exam_day*neg_aff | user_id),
-  data = temp1,
+  nsc ~ exam_day * neg_aff +
+    (1 + exam_day * neg_aff | user_id),
+  data = temp,
   REML = T,
   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
 )
@@ -27,12 +30,14 @@ mod_nsc <- lmer(
 reportMLM(mod_nsc)
 
 mod_psc <- lmer(
-  psc ~ exam_day*neg_aff +
-    (1 + exam_day*neg_aff | user_id),
-  data = temp1,
+  psc ~ exam_day * neg_aff +
+    (1 + exam_day * neg_aff | user_id),
+  data = temp,
   REML = T,
   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
 )
+
+summary(mod_psc)
 
 reportMLM(mod_psc)
 
@@ -43,6 +48,18 @@ temp1 |>
   )
 
 MuMIn::r.squaredGLMM(mod_psc)
+
+
+### recode data in terms of pre/post
+
+pre_df <- temp |> 
+  dplyr::filter(exam_day == "pre")
+
+post_df <- temp |> 
+  dplyr::filter(exam_day == "post")
+
+dat_wide <- temp %>%
+  pivot_wider(names_from = exam_day, values_from = seen)
 
 
 
