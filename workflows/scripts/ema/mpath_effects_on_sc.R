@@ -39,16 +39,15 @@ suppressPackageStartupMessages({
   library("tidyverse")
   library("here")
   library("rio")
+  library("brms")
   # library("multilevelTools")
   library("lmerTest")
   # library("JWileymisc") # testDistribution()
   # library("extraoperators") # %!in%
   library("sjPlot") # plot_model()
   library("performance")
+  library("mice")
   # library(jtools)
-  library("glmmTMB")
-  library("mlim")
-  library("MuMIn")
   # library("sjPlot")
   # library(effects)
   # library(readxl)
@@ -112,8 +111,6 @@ unique(temp2$day)
 # [1] "2023-03-25" "2023-04-01" "2023-04-08" "2023-04-15" "2023-04-22" "2023-04-29"
 # [7] "2023-05-06" "2023-05-13" "2023-05-20" "2023-05-27" "2023-06-03" "2023-03-18"
 
-length(unique(temp2$user_id))
-
 # temp2 |> 
 #   group_by(day) |> 
 #   summarize(
@@ -150,11 +147,11 @@ bad_obs <- c(
 
 temp5 <- temp4[-bad_obs, ]
 
-no_exam_df_1 <-  center3L(temp5, neg_aff, user_id, bysubj_day)
-no_exam_df_2 <-  center3L(no_exam_df_1, context, user_id, bysubj_day)
-no_exam_df <-  center3L(no_exam_df_2, dec, user_id, bysubj_day)
+temp6 <- center3L(temp5, neg_aff, user_id, bysubj_day)
 
-rm(temp, temp1, temp2, temp3, temp4, temp5)
+no_exam_df <- center3L(temp6, context, user_id, bysubj_day)
+
+rm(temp, temp1, temp2, temp3, temp4, temp5, temp6)
 
 # Check compliance
 
@@ -174,131 +171,281 @@ mean(temp$nid) / length(unique(no_exam_df$user_id))
 mean((temp$n / (temp$nid*5)))
 # [1] 0.7335109
 
-# recode negative affect
-no_exam_df$na_moment <- 
-  (no_exam_df$neg_aff_Moment - mean(no_exam_df$neg_aff_Moment, na.rm= T)) /
-  sd(no_exam_df$neg_aff_Moment, na.rm= T)
+# Add SCS scores
 
-no_exam_df$na_day <- 
-  (no_exam_df$neg_aff_Day - mean(no_exam_df$neg_aff_Day, na.rm= T)) /
-  sd(no_exam_df$neg_aff_Day, na.rm= T)
-
-no_exam_df$na_person <- 
-  (no_exam_df$neg_aff_Person - mean(no_exam_df$neg_aff_Person, na.rm= T)) /
-  sd(no_exam_df$neg_aff_Person, na.rm= T)
-
-# recode decentering abilities
-no_exam_df$dec_moment <- 
-  (no_exam_df$dec_Moment - mean(no_exam_df$dec_Moment, na.rm= T)) /
-  sd(no_exam_df$dec_Moment, na.rm= T)
-
-no_exam_df$dec_day <- 
-  (no_exam_df$dec_Day - mean(no_exam_df$dec_Day, na.rm= T)) /
-  sd(no_exam_df$dec_Day, na.rm= T)
-
-no_exam_df$dec_person <- 
-  (no_exam_df$dec_Person - mean(no_exam_df$dec_Person, na.rm= T)) /
-  sd(no_exam_df$dec_Person, na.rm= T)
-
-# recode event pleasantness
-no_exam_df$cntx_moment <- 
-  (no_exam_df$context_Moment - mean(no_exam_df$context_Moment, na.rm= T)) /
-  sd(no_exam_df$context_Moment, na.rm= T)
-
-no_exam_df$cntx_day <- 
-  (no_exam_df$context_Day - mean(no_exam_df$context_Day, na.rm= T)) /
-  sd(no_exam_df$context_Day, na.rm= T)
-
-no_exam_df$cntx_person <- 
-  (no_exam_df$context_Person - mean(no_exam_df$context_Person, na.rm= T)) /
-  sd(no_exam_df$context_Person, na.rm= T)
-
-# state self-compassion
-no_exam_df$spsc <- no_exam_df$psc + 12.1
-bc <- MASS::boxcox(spsc ~ na_moment * na_day + na_person, data=no_exam_df)
-(lambda <- bc$x[which.max(bc$y)])
-lambda <- 1.232323
-no_exam_df$yp <- (no_exam_df$spsc^lambda-1)/lambda
-
-plot(density(no_exam_df$yp))
-cor(no_exam_df$yp, no_exam_df$psc)
-
-no_exam_df$zpsc <- 
-  (no_exam_df$yp - mean(no_exam_df$yp, na.rm= T)) /
-  sd(no_exam_df$yp, na.rm= T)
-
-cor(no_exam_df$zpsc, no_exam_df$psc)
-# [1] 0.9984466
-plot(density(no_exam_df$zpsc))
-
-no_exam_df$znsc <- 
-  (no_exam_df$nsc - mean(no_exam_df$nsc, na.rm= T)) /
-  sd(no_exam_df$nsc, na.rm= T)
-
-no_exam_df$zdec <- 
-  (no_exam_df$dec - mean(no_exam_df$dec, na.rm= T)) /
-  sd(no_exam_df$dec, na.rm= T)
-
-no_exam_df$zcntx <- 
-  (no_exam_df$context - mean(no_exam_df$context, na.rm= T)) /
-  sd(no_exam_df$context, na.rm= T)
-
-# Negative State Self-Compassion and Negative Affect ------------------------------------
-
-# mod_nsc <- lmer(
-#   znsc ~ zdec + zcntx + na_moment + na_day + na_person +
-#     (1 + zdec + zcntx + na_moment + na_day | user_id),
-#   data = no_exam_df,
-#   REML = T,
-#   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-# )
-
-mod_nsc <- lmer(
-  znsc ~ na_moment + na_day + na_person +
-    (1 + na_moment + na_day | user_id),
-  data = no_exam_df,
-  REML = T,
-  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
+scs_trait_tot_df <- rio::import(
+  here::here(
+    "data", "prep", "quest_scales", "scs_scores.csv"
+  )
 )
 
-reportMLM(mod_nsc)
+scs_trait_df <- scs_trait_tot_df |> 
+  dplyr::select(user_id, scs_total_score)
 
-MuMIn::r.squaredGLMM(mod_nsc)
-#      R2m       R2c
-#   0.3322188 0.7290525
+scs_trait_df$user_id <- gsub("_", "-", scs_trait_df$user_id)
 
-summary(mod_nsc)
+scs_trait_df$user_id <- gsub("(\\d{2})(\\d{2})", "\\2", scs_trait_df$user_id)
 
-# Check assumptions.
+# Remove duplicate rows based on user_id, keeping the first occurrence
+scs_trait_df <- scs_trait_df[!duplicated(scs_trait_df$user_id), ]
 
-# Check for normality
-res <- residuals(mod_nsc)
-lattice::qqmath(res)
+no_exam2_df <- left_join(no_exam_df, scs_trait_df, by = "user_id")
 
-# Check for linearity
-plot(residuals(mod_nsc), no_exam_df$znsc) 
+selected_cols <- c(
+  "scs_total_score", "neg_aff_Moment", "neg_aff_Day", "neg_aff_Person", 
+  "context_Moment", "context_Day", "context_Person", "bysubj_day", "dec"
+)
 
-# Check for homoscedasticity
-# Check normality RE
-sjPlot::plot_model(mod_nsc, type='diag')
+imputed_data <- mice(
+  no_exam2_df %>% dplyr::select(all_of(selected_cols)), 
+    m = 1, 
+    maxit = 50, 
+    method = "pmm", 
+    seed = 123
+  )
 
-sjPlot::tab_model(mod_nsc, title = "Negative State Self-Compassion")
+temp <- complete(imputed_data, 1)
 
-# Positive State Self-Compassion and Negative Affect ------------------------------------
+no_exam2_df$scs_total_score <- temp$scs_total_score
+
+no_exam2_df$zscs_trait <- as.vector(scale(no_exam2_df$scs_total_score))
+
+no_exam_df <- no_exam2_df
+
+no_exam_df$zdec <- as.vector(scale(no_exam_df$dec))
+
+no_exam_df$na_moment <- as.vector(scale(no_exam_df$neg_aff_Moment))
+no_exam_df$na_day <- as.vector(scale(no_exam_df$neg_aff_Day))
+no_exam_df$na_person <- scale(no_exam_df$neg_aff_Person)
+
+no_exam_df$context_moment <- as.vector(scale(no_exam_df$context_Moment))
+no_exam_df$context_day <- as.vector(scale(no_exam_df$context_Day))
+no_exam_df$context_person <- as.vector(scale(no_exam_df$context_Person))
+
+no_exam_df$znsc <- as.vector(scale(no_exam_df$nsc))
+no_exam_df$zpsc <- as.vector(scale(no_exam_df$psc))
+
+
+# Negative State Self-Compassion -----------------------------------------------
+
+get_prior(
+  znsc ~ zdec + context_moment + context_day + context_person +
+    na_moment + na_day + na_person +
+    (1 + zdec + context_moment + context_day + na_moment + na_day | user_id),
+  data = no_exam_df
+)
+
+bmod1_nsc <- brm(
+  znsc ~ 1,
+  data = no_exam_df,
+  iter = 2000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+loo_bmod1_nsc <- loo(bmod1_nsc)
+
+bmod2_nsc <- brm(
+  znsc ~ 1 + (1 | user_id),
+  data = no_exam_df,
+  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  iter = 5000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+loo_bmod2_nsc <- loo(bmod2_nsc)
+
+bmod3_nsc <- brm(
+  znsc ~ 1 + (1 | user_id) + (1 | bysubj_day),
+  data = no_exam_df,
+  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  iter = 5000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+loo_bmod3_nsc <- loo(bmod3_nsc)
+
+priors1 <- c(
+  set_prior("normal(0, 2)", class = "b")
+)
+
+bmod4_nsc <- brm(
+  znsc ~ na_moment + na_day + na_person +
+    (1 | user_id) + (1 | bysubj_day),
+  data = no_exam_df,
+  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  prior = priors1,
+  iter = 5000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+loo_bmod4_nsc <- loo(bmod4_nsc)
+
+bmod5_nsc <- brm(
+  znsc ~ na_moment + na_day + na_person +
+    (1 + na_moment + na_day | user_id) + (1 | bysubj_day),
+  data = no_exam_df,
+  prior = priors1,
+  iter = 15000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+loo_bmod5_nsc <- loo(bmod5_nsc)
+
+bmod6_nsc <- brm(
+  znsc ~ na_moment + na_day + na_person +
+    context_moment + context_day + context_person + 
+    (1 + na_moment + na_day | user_id) + (1 | bysubj_day),
+  data = no_exam_df,
+  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  prior = priors1,
+  iter = 15000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+loo_bmod6_nsc <- loo(bmod6_nsc)
+
+bmod7_nsc <- brm(
+  znsc ~ na_moment + na_day + na_person +
+    context_moment + context_day + context_person + 
+    (1 + na_moment + na_day + context_moment + context_day | user_id) + 
+    (1 | bysubj_day),
+  data = no_exam_df,
+  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  prior = priors1,
+  iter = 15000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+loo_bmod7_nsc <- loo(bmod7_nsc)
+
+bmod8_nsc <- brm(
+  znsc ~ zdec + na_moment + na_day + na_person +
+    context_moment + context_day + context_person + 
+    (1 + na_moment + na_day + context_moment + context_day | user_id) + 
+    (1 | bysubj_day),
+  data = no_exam_df,
+  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  prior = priors1,
+  iter = 15000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+loo_bmod8_nsc <- loo(bmod8_nsc)
+
+bmod9_nsc <- brm(
+  znsc ~ zscs_trait + zdec + na_moment + na_day + na_person +
+    context_moment + context_day + context_person + 
+    (1 + na_moment + na_day + context_moment + context_day | user_id) + 
+    (1 | bysubj_day),
+  data = no_exam_df,
+  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  prior = priors1,
+  iter = 15000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+loo_bmod9_nsc <- loo(bmod9_nsc)
+
+loo_compare(loo_bmod8_nsc, loo_bmod9_nsc)
+
+loo_compare(
+  loo_bmod1_nsc, loo_bmod2_nsc, loo_bmod3_nsc, loo_bmod4_nsc, loo_bmod5_nsc, 
+  loo_bmod6_nsc, loo_bmod7_nsc, loo_bmod8_nsc
+)
+#           elpd_diff se_diff
+# bmod8_nsc     0.0       0.0
+# bmod7_nsc  -343.5      32.8
+# bmod6_nsc  -433.7      35.8
+# bmod5_nsc  -437.6      36.0
+# bmod4_nsc  -780.3      44.1
+# bmod3_nsc -1762.9      65.5
+# bmod2_nsc -1768.9      65.6
+# bmod1_nsc -4046.4      75.0
+
+###### fatto fino a qui!  ------------------------------Wed Nov 15 19:23:21 2023
+
+
+
+bmod_nsc <- brm(
+  znsc ~ zdec + context_moment + context_day + context_person + 
+    na_moment + na_day + na_person +
+    (1 + zdec + context_moment + context_day + na_moment + na_day | user_id),
+  data = no_exam_df,
+  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  prior = priors1,
+  iter = 15000,
+  backend = "cmdstanr",
+  cores = 8,
+  chains = 2,
+  threads = threading(4),
+  silent = 2
+)
+
+pp_check(bmod_nsc)
+summary(bmod_nsc)
+(loo_bmod_nsc <- loo(bmod_nsc))
+performance::r2_bayes(bmod_nsc)
+parameters::standardize_parameters(bmod_nsc)
+
+marginal_effects(bmod_nsc, "na_person")
+
+
+bmod_0_nsc <- brm(
+  znsc ~ zdec + zcntx + (1 + zdec + zcntx | user_id),
+  data = no_exam_df,
+  # control = list(adapt_delta = 0.9, max_treedepth = 20),
+  backend = "cmdstanr",
+  threads = threading(2),
+  silent = 2
+)
+
+(loo_bmod_0_nsc <- loo(bmod_0_nsc))
+
+loo_compare(loo_bmod_nsc, loo_bmod_0_nsc)
+
+
+# Positive State Self-Compassion ------------------------------------
 
 mod_psc <- lmer(
-  zpsc ~ na_moment + na_day + na_person +
-    (1 + na_moment + na_day | user_id),
+  zpsc ~ zdec + context_moment + context_day + context_person + 
+    na_moment + na_day + na_person +
+    (1 + zdec + context_moment + context_day + context_person + 
+       na_moment + na_day | user_id),
   data = no_exam_df,
-  REML = T,
+  REML = TRUE,
   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
 )
 
 reportMLM(mod_psc)
 
 MuMIn::r.squaredGLMM(mod_psc)
-#    R2m      R2c
-# 0.3008028 0.692333
 
 summary(mod_psc)
 
@@ -318,149 +465,6 @@ plot(residuals(mod_psc), no_exam_df$zpsc)
 # Check normality RE
 sjPlot::plot_model(mod_psc, type='diag')
 
-sjPlot::tab_model(mod_psc, title = "Positive State Self-Compassion")
-
-
-# Negative State Self-Compassion and Decentering abilities ----------------
-
-mod_dec_nsc <- lmer(
-  znsc ~ dec_moment + dec_day + dec_person +
-    (1 + dec_moment + dec_day | user_id),
-  data = no_exam_df,
-  REML = T,
-  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-)
-
-reportMLM(mod_dec_nsc)
-
-MuMIn::r.squaredGLMM(mod_dec_nsc)
-#      R2m       R2c
-#   0.3322188 0.7290525
-
-summary(mod_dec_nsc)
-
-# Check assumptions.
-
-# Check for normality
-res <- residuals(mod_dec_nsc)
-lattice::qqmath(res)
-
-# Check for linearity
-plot(residuals(mod_dec_nsc), no_exam_df$znsc) 
-
-# Check for homoscedasticity
-# Check normality RE
-sjPlot::plot_model(mod_dec_nsc, type='diag')
-
-sjPlot::tab_model(mod_dec_nsc)
-
-# Positive State Self-Compassion and Decentering abilities ------------------------------------
-
-mod_dec_psc <- lmer(
-  zpsc ~ dec_moment + dec_day + dec_person +
-    (1 + dec_moment + dec_day | user_id),
-  data = no_exam_df,
-  REML = T,
-  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-)
-
-reportMLM(mod_dec_psc)
-
-MuMIn::r.squaredGLMM(mod_dec_psc)
-#    R2m      R2c
-# 0.3008028 0.692333
-
-summary(mod_dec_psc)
-
-# Check assumptions.
-
-# Check for VIF
-car::vif(mod_dec_psc)
-
-# Check for normality
-res <- residuals(mod_dec_psc)
-lattice::qqmath(res)
-
-# Check for linearity
-plot(residuals(mod_dec_psc), no_exam_df$zpsc) 
-
-# Check for homoscedasticity
-# Check normality RE
-sjPlot::plot_model(mod_dec_psc, type='diag')
-
-sjPlot::tab_model(mod_dec_psc, title = "Positive State Self-Compassion")
-
-# Negative State Self-Compassion and Event Pleasantness ------------------------------------
-
-mod_cntx_nsc <- lmer(
-  znsc ~ cntx_moment + cntx_day + cntx_person +
-    (1 + cntx_moment + cntx_day | user_id),
-  data = no_exam_df,
-  REML = T,
-  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-)
-
-reportMLM(mod_cntx_nsc)
-
-MuMIn::r.squaredGLMM(mod_cntx_nsc)
-#     R2m       R2c
-# 0.1082713 0.6449944
-
-summary(mod_cntx_nsc)
-
-# Check assumptions.
-
-# Check for VIF
-car::vif(mod_cntx_nsc)
-
-# Check for normality
-res <- residuals(mod_cntx_nsc)
-lattice::qqmath(res)
-
-# Check for linearity
-plot(residuals(mod_cntx_nsc), no_exam_df$zpsc) 
-
-# Check for homoscedasticity
-# Check normality RE
-sjPlot::plot_model(mod_cntx_nsc, type='diag')
-
-sjPlot::tab_model(mod_cntx_nsc, title = "Negative State Self-Compassion")
-
-# Positive State Self-Compassion and Event Pleasantness ------------------------------------
-
-mod_cntx_psc <- lmer(
-  zpsc ~ cntx_moment + cntx_day + cntx_person +
-    (1 + cntx_moment + cntx_day | user_id),
-  data = no_exam_df,
-  REML = T,
-  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-)
-
-reportMLM(mod_cntx_psc)
-
-MuMIn::r.squaredGLMM(mod_cntx_psc)
-#    R2m       R2c
-# 0.126428 0.6139421
-
-summary(mod_cntx_psc)
-
-# Check assumptions.
-
-# Check for VIF
-car::vif(mod_cntx_psc)
-
-# Check for normality
-res <- residuals(mod_cntx_psc)
-lattice::qqmath(res)
-
-# Check for linearity
-plot(residuals(mod_cntx_psc), no_exam_df$zpsc) 
-
-# Check for homoscedasticity
-# Check normality RE
-sjPlot::plot_model(mod_cntx_psc, type='diag')
-
-sjPlot::tab_model(mod_cntx_psc, title = "Positive State Self-Compassion")
 
 # Add SCS data ------------------------------------------------------
 
@@ -533,13 +537,6 @@ mod3_psc <- lmer(
   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
 )
 
-reportMLM(mod3_psc)
-MuMIn::r.squaredGLMM(mod3_psc)
-
-car::vif(mod3_psc)
-summary(mod3_psc)
-sjPlot::tab_model(mod3_psc, title = "")
-
 mod3_nsc <- lmer(
   znsc ~ scs_total_score * (na_moment + na_day + na_person) +
     (1 + na_moment + na_day | user_id),
@@ -548,180 +545,31 @@ mod3_nsc <- lmer(
   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
 )
 
+reportMLM(mod3_psc)
+MuMIn::r.squaredGLMM(mod3_psc)
+car::vif(mod3_psc)
+
 reportMLM(mod3_nsc)
 MuMIn::r.squaredGLMM(mod3_nsc)
-
 car::vif(mod3_nsc)
-summary(mod3_nsc)
-sjPlot::tab_model(mod3_nsc, title = "")
 
-# negative scs and decentering abilities
+cor.test(dat$scs_total_score, dat$zpsc)
 
-mod4_dec_psc <- lmer(
-  zpsc ~ scs_total_score * (dec_moment + dec_day + dec_person) +
-    (1 + dec_moment + dec_day | user_id),
-  data = dat,
-  REML = T,
-  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
+
+bysubj_psc <- dat |> 
+  group_by(user_id) |> 
+  summarize(
+    zpsc = mean(zpsc),
+    scs_total_score = mean(scs_total_score)
+  )
+
+fm <- lm(
+  zpsc ~ scale(scs_total_score),
+  data = bysubj_psc
 )
-
-reportMLM(mod4_dec_psc)
-MuMIn::r.squaredGLMM(mod4_dec_psc)
-
-car::vif(mod4_dec_psc)
-summary(mod4_dec_psc)
-sjPlot::tab_model(mod4_dec_psc, title = "")
-
-# negative scs and decentering abilities 
-
-mod4_dec_nsc <- lmer(
-  znsc ~ scs_total_score * (dec_moment + dec_day + dec_person) +
-    (1 + dec_moment + dec_day | user_id),
-  data = dat,
-  REML = T,
-  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-)
-
-reportMLM(mod4_dec_nsc)
-MuMIn::r.squaredGLMM(mod4_dec_nsc)
-
-car::vif(mod4_dec_nsc)
-summary(mod4_dec_nsc)
-sjPlot::tab_model(mod4_dec_nsc, title = "")
-
-# positive scs and event pleasantness
-
-mod5_cntx_psc <- lmer(
-  zpsc ~ scs_total_score * (cntx_moment + cntx_day + cntx_person) +
-    (1 + cntx_moment + cntx_day | user_id),
-  data = dat,
-  REML = T,
-  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-)
-
-reportMLM(mod5_cntx_psc)
-MuMIn::r.squaredGLMM(mod5_cntx_psc)
-
-car::vif(mod5_cntx_psc)
-summary(mod5_cntx_psc)
-sjPlot::tab_model(mod5_cntx_psc, title = "")
-
-# negative scs and event pleasantness
-
-mod5_cntx_nsc <- lmer(
-  znsc ~ scs_total_score * (cntx_moment + cntx_day + cntx_person) +
-    (1 + cntx_moment + cntx_day | user_id),
-  data = dat,
-  REML = T,
-  control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-)
-
-reportMLM(mod5_cntx_nsc)
-MuMIn::r.squaredGLMM(mod5_cntx_nsc)
-
-car::vif(mod5_cntx_nsc)
-summary(mod5_cntx_nsc)
-sjPlot::tab_model(mod5_cntx_nsc, title = "")
+summary(fm)
 
 
-# bysubj_psc <- dat |> 
-#   group_by(user_id) |> 
-#   summarize(
-#     zpsc = mean(zpsc),
-#     scs_total_score = mean(scs_total_score)
-#   )
-# 
-# fm <- lm(
-#   zpsc ~ scale(scs_total_score),
-#   data = bysubj_psc
-# )
-# summary(fm)
-# 
 
 # eof ----
 
-# 
-# with(no_exam_df,
-#   cbind(zdec, zcntx, nervous, upset, happy, satisfied)
-# ) |> cor()
-# 
-# 
-# 
-# 
-# m1 <- lmer(
-#   zpsc ~ znsc * (zdec + zcntx + na_moment + na_day + na_person) +
-#     (1 + znsc + (zdec + zcntx + na_moment + na_day + na_person) | user_id),
-#   data = no_exam_df,
-#   REML = T,
-#   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-# )
-# 
-# m2 <- lmer(
-#   znsc ~ zpsc * (zdec + zcntx + na_moment + na_day + na_person) +
-#     (1 + zpsc + (zdec + zcntx + na_moment + na_day + na_person) | user_id),
-#   data = no_exam_df,
-#   REML = T,
-#   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-# )
-# 
-# no_exam_df <-  center3L(no_exam_df, zcntx, user_id, bysubj_day)
-# 
-# 
-# m1 <- lmer(
-#   zpsc ~ zcntx_Moment + zcntx_Day + zcntx_Person + 
-#     (1 + zcntx_Moment + zcntx_Day + zcntx_Person | user_id),
-#   data = no_exam_df,
-#   REML = T,
-#   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-# )
-# 
-# m2 <- lmer(
-#   znsc ~ zcntx_Moment + zcntx_Day + zcntx_Person + 
-#     (1 + zcntx_Moment + zcntx_Day + zcntx_Person | user_id),
-#   data = no_exam_df,
-#   REML = T,
-#   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-# )
-# 
-# 
-# no_exam_df <-  center3L(no_exam_df, zdec, user_id, bysubj_day)
-# 
-# 
-# mod1 <- lmer(
-#   zpsc ~ zdec_Moment + zdec_Day + zdec_Person + 
-#     (1 + zdec_Moment + zdec_Day + zdec_Person | user_id),
-#   data = no_exam_df,
-#   REML = T,
-#   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-# )
-# 
-# mod2 <- lmer(
-#   znsc ~ zdec_Moment + zdec_Day + zdec_Person + 
-#     (1 + zdec_Moment + zdec_Day + zdec_Person | user_id),
-#   data = no_exam_df,
-#   REML = T,
-#   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-# )
-# 
-# 
-# 
-# 
-# ################
-# 
-# 
-# 
-# no_exam_df$sc_comb <- no_exam_df$psc + no_exam_df$nsc
-# hist(no_exam_df$sc_comb)
-# 
-# 
-# m1 <- lmer(
-#   sc_comb ~ na_moment + na_day + na_person + 
-#     (1 + na_moment + na_day + na_person | user_id),
-#   data = no_exam_df,
-#   REML = T,
-#   control=lmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5))
-# )
-# summary(m1)
-# 
-# reportMLM(m1)
-# 
