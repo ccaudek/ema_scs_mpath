@@ -1,0 +1,107 @@
+---
+title-block-banner: true
+title: "EMA State Self Compassion Project"
+description: "Test of the bipolar continuum hypothesis"
+author: "Corrado Caudek (corrado.caudek@unifi.it)"
+bibliography: bibliography.bib
+csl: apa.csl
+format: 
+  html:
+    code-line-numbers: true
+    anchor-sections: true
+    smooth-scroll: true
+    grid:
+      margin-width: 600px
+editor: source
+toc: True
+date: last-modified
+date-format: iso
+---
+
+# Introduction
+
+```{r}
+#| include = FALSE
+#| 
+suppressPackageStartupMessages({
+  library("here")
+  library("targets")
+  library("tidyverse")
+  library("mice")
+  library("lme4")
+  library("brms")
+  library("bayesplot")
+  library("effectsize")
+  library("scales")
+  library("sjstats")
+  library("sjPlot")
+  library("sjmisc")
+  library("emmeans")
+})
+```
+
+## State Self-Compassion
+
+
+## Method
+
+### Task Design
+
+
+
+## Multilevel Reilabilities
+
+```{r}
+tar_load(reliabilities_sem)
+```
+
+### Positive State Self-Compassion
+
+```{r}
+reliabilities_sem[[1]]
+```
+
+### Negative State Self-Compassion
+
+```{r}
+reliabilities_sem[[2]]
+```
+
+### Interpretation
+
+
+In our multilevel analysis of State Self-Compassion, we observed significant 
+reliability indices for both the positive and negative components. Focusing 
+first on the positive aspect, the within-subject reliability 
+($\tilde{\omega}^w$) was recorded at 0.626. This figure indicates a 
+moderate level of consistency in individual responses across various 
+measurement instances. In contrast, the between-subject reliability 
+($\tilde{\omega}^b$), crucial for differentiating between individuals, was 
+found to be 0.820. This higher value underscores the measure's effectiveness 
+in capturing stable individual differences in self-compassion.
+Moreover, the composite reliability of the overall positive score 
+($\omega^{2L}$), which integrates both within and between subject 
+variabilities, was calculated to be 0.79. This aligns with the framework 
+proposed by Lai (2021) and confirms the measure's reliability in a 
+comprehensive manner.
+Turning to the negative component of State Self-Compassion, the 
+within-subject reliability ($\tilde{\omega}^w$) was slightly higher at 
+0.68, while the between-subject reliability ($\tilde{\omega}^b$) further 
+increased to 0.88. The composite reliability for the overall negative 
+component score ($\omega^{2L}$) was determined to be 0.83. These values, 
+particularly the between-subject reliabilities exceeding the anticipated 
+benchmark of approximately 0.8, emphasize the robustness of the measure.
+The lower within-subject reliabilities for both components, while perhaps 
+initially surprising, are understandable upon closer examination. These 
+values reflect not only measurement error but also the inherent variability 
+of State Self-Compassion as a dynamic construct, influenced by changing 
+circumstances and internal states. Therefore, the lower within-subject 
+reliabilities underscore the measure's sensitivity to these temporal changes 
+within individuals.
+In summary, the multilevel reliabilities of the State Self-Compassion measure, 
+with robust between-subject reliability and lower, yet insightful, 
+within-subject reliability, demonstrate its overall soundness and 
+applicability in the present study. The composite reliability figures further 
+confirm the measure's effectiveness in comprehensively capturing the 
+construct of State Self-Compassion across different levels of analysis.
+
