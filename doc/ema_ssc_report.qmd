@@ -83,6 +83,42 @@ reliabilities_sem[[1]]
 reliabilities_sem[[2]]
 ```
 
+
+## Negative Affect Variation Before and After the Exam
+
+First exam.
+
+```{r}
+tar_load(list_params_first_exam_neg_aff_difference)
+list_params_first_exam_neg_aff_difference
+```
+
+Second exam.
+
+```{r}
+tar_load(list_params_second_exam_neg_aff_difference)
+list_params_second_exam_neg_aff_difference
+```
+
+## Comparison Negative Affect Pre-exam / Post-exam and the Other Days
+
+Comparison between the negative affect either pre-exam and post-exam and the average negative affect in the other days.
+
+Comparison other days and pre-exam.
+
+```{r}
+tar_load(list_params_no_exam_pre_neg_aff_difference)
+list_params_no_exam_pre_neg_aff_difference
+```
+
+Comparison other days and post-exam.
+
+```{r}
+tar_load(list_params_no_exam_post_neg_aff_difference)
+list_params_no_exam_post_neg_aff_difference
+```
+
+
 ### Interpretation
 
 

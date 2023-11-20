@@ -521,41 +521,14 @@ process_exam_data <- function(exam_type) {
   library(here)
   
   # Read raw data
-  data <- readRDS(here::here("data", "prep", "ema", "ema_data_2.RDS"))
-  
-  data <- data |>
-    mutate(
-      neg_aff = upset + nervous - satisfied - happy,
-      psc = scs_pos_1 + scs_pos_3 + scs_pos_6 + scs_pos_7,
-      nsc = scs_neg_2 + scs_neg_4 + scs_neg_5 + scs_neg_8,
-      dec = dec_1 + dec_3 - dec_2 - dec_4
-    ) 
-  
-  # Define exam days
-  data$exam_day <- case_when(
-    data$day %in% c("2023-04-16", "2023-05-21") ~ "pre",
-    data$day %in% c("2023-04-17", "2023-05-22", "2023-05-23", "2023-05-24", "2023-05-25", "2023-05-26") ~ "post",
-    TRUE ~ "no_exam"
-  )
-  
-  # Define wrong days
-  wrong_days <- c(
-    "2023-03-16", "2023-03-19", "2023-03-20", "2023-03-26",
-    "2023-03-27", "2023-04-02", "2023-04-18", "2023-04-19",
-    "2023-04-20", "2023-04-30", "2023-05-01", "2023-06-02",
-    "2023-05-26"
-  )
-  
-  # Filter data
-  filtered_data <- data[!(data$day %in% wrong_days), ]
+  data <- readRDS(here::here("data", "prep", "ema", "ema_data_3.RDS"))
   
   # Process for EMA days before and after the exam
-  exam_data <- filtered_data |> 
+  exam_data <- data |> 
     filter(exam_day != "no_exam") |>
     group_by(user_id) |> 
     mutate(bysubj_day = dense_rank(day)) |> 
     ungroup() |> 
-    filter(!(day %in% c("2023-05-23", "2023-05-24", "2023-05-25"))) |>
     select(user_id, day, exam_day, neg_aff) |>
     mutate(exam_day = factor(exam_day, levels = c("pre", "post")))
   
@@ -712,3 +685,165 @@ calculate_compliance <- function(filepath) {
   
   return(output_list)
 }
+
+#' calculate_min_max_neg_aff() -------------------------------------------------
+#' 
+calculate_min_max_neg_aff <- function(df) {
+  df %>%
+    filter(time_window == 5) %>%
+    group_by(user_id) %>%
+    summarize(
+      min_neg_aff = min(neg_aff, na.rm = TRUE),
+      max_neg_aff = max(neg_aff, na.rm = TRUE)
+    ) %>%
+    ungroup()
+}
+
+
+calculate_bysubj_mean_neg_aff_w5 <- function(df) {
+  df %>%
+    filter(time_window == 5) %>%
+    group_by(user_id) %>%
+    summarize(
+      avg_neg_aff = mean(neg_aff, na.rm = TRUE)
+    ) %>%
+    ungroup()
+}
+
+
+#' compute_no_exam_effects_on_neg_aff() ----------------------------------------
+#' @description
+#' Compute the estimate of the negative affect difference between the average
+#' negative affect in the no-exam days and the average negative affect either
+#' in the pre-exam day or in the post-exam day.
+#' 
+#' @param data The data frame returned by the function 
+#' gen_data_comparison_avg_pre_post_neg_aff
+#' @param comparison_type Either "pre" or "post"
+#' @return A list:
+#' (1) the regression coefficient for the difference between the no-exam and the
+#' (pre- o post-) exam negative affect.
+#' (2) the standard error
+#' (3) the 95% credibility interval of beta
+#' (4) the effect size
+#' (5) the 95% credibility interval of the effect size
+compute_no_exam_effects_on_neg_aff <- function(data, comparison_type) {
+  # Check if the data is empty
+  if (nrow(data) == 0) {
+    stop("No data provided for the exam.")
+  }
+  
+  # Select model based on exam type
+  if (comparison_type == "pre") {
+    coef_name <- "exam_daypre_neg_aff"
+  } else if (comparison_type == "post") {
+    coef_name <- "exam_daypost_neg_aff"
+  } else {
+    stop("Invalid exam type specified.")
+  }
+  
+  # Internal function to compute effects
+  compute_effects_internal <- function(model) {
+    summary_model <- summary(model)
+    pop_effects <- summary_model$fixed
+    
+    exam_daypost_estimate <- pop_effects[coef_name, "Estimate"]
+    exam_daypost_error <- pop_effects[coef_name, "Est.Error"]
+    exam_daypost_lower_ci <- pop_effects[coef_name, "l-95% CI"]
+    exam_daypost_upper_ci <- pop_effects[coef_name, "u-95% CI"]
+    
+    effect_size_exam <- compute_effect_size(model, coef_name)
+    ci_effect_size_exam <- compute_effect_size_ci(model, coef_name)
+    
+    return(list(
+      estimate = exam_daypost_estimate,
+      error = exam_daypost_error,
+      ci = c(exam_daypost_lower_ci, exam_daypost_upper_ci),
+      effect_size = effect_size_exam,
+      effect_size_ci = ci_effect_size_exam
+    ))
+  }
+  
+  model_formula <- neg_aff ~ 1 + exam_day + (1 | user_id)
+  
+  # Fit the Bayesian model
+  model <- brm(
+    formula = model_formula,
+    data = data,
+    family = student(),
+    prior = c(
+      set_prior("normal(0, 50)", class = "b"),
+      set_prior("normal(0, 150)", class = "sigma")
+      # set_prior("normal(0, 0.2)", class = "quantile")
+    ),
+    backend = "cmdstanr",
+    chains = 3,
+    cores = 6,
+    threads = threading(2),
+    silent = 2
+  )
+  
+  return(compute_effects_internal(model))
+}
+
+#' gen_data_comparison_avg_pre_post_neg_aff() ----------------------------------
+#' 
+gen_data_comparison_avg_pre_post_neg_aff <- function(comparison_type) {
+  
+  # Read raw data.
+  d <- readRDS(here::here("data", "prep", "ema", "ema_data_3.RDS"))
+  
+  no_exam_df <- d |> 
+    dplyr::filter(exam_day == "no_exam")
+  
+  bysubj_avg_neg_aff_df <- calculate_bysubj_mean_neg_aff_w5(no_exam_df)
+  
+  exam_df <- d |> 
+    dplyr::filter(exam_day != "no_exam") |> 
+    dplyr::select(user_id, exam_day, neg_aff)
+  
+  exam_neg_aff_pre_df <- exam_df |> 
+    dplyr::filter(exam_day == "pre") |> 
+    group_by(user_id) |> 
+    summarize(
+      pre_neg_aff = mean(neg_aff)
+    )
+  
+  exam_neg_aff_post_df <- exam_df |> 
+    dplyr::filter(exam_day == "post") |> 
+    group_by(user_id) |> 
+    summarize(
+      post_neg_aff = mean(neg_aff)
+    )
+  
+  temp <- full_join(bysubj_avg_neg_aff_df, exam_neg_aff_pre_df, by = "user_id")
+  
+  bysubj_exam_neg_aff_df <- full_join(temp, exam_neg_aff_post_df, by = "user_id")
+  
+  # Select data based on comparison type
+  if (comparison_type == "pre") {
+    comp_avg_pre_df <- bysubj_exam_neg_aff_df |> 
+      dplyr::select(-post_neg_aff) |> 
+      pivot_longer(!user_id, names_to = "exam_day", values_to = "neg_aff")
+    comp_avg_pre_df <- comp_avg_pre_df[complete.cases(comp_avg_pre_df), ]
+    
+    result <- comp_avg_pre_df
+    
+  } else if (comparison_type == "post") {
+    comp_avg_post_df <- bysubj_exam_neg_aff_df |> 
+      dplyr::select(-pre_neg_aff) |> 
+      pivot_longer(!user_id, names_to = "exam_day", values_to = "neg_aff")
+    comp_avg_post_df <- comp_avg_post_df[complete.cases(comp_avg_post_df), ]
+    
+    result <- comp_avg_post_df
+  } else {
+    stop("Invalid comparison type specified.")
+  }
+  
+  return(result)
+  
+}
+
+
+
+

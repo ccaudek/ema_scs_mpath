@@ -158,6 +158,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#positive-state-self-compassion" id="toc-positive-state-self-compassion" class="nav-link" data-scroll-target="#positive-state-self-compassion">Positive State Self-Compassion</a></li>
   <li><a href="#negative-state-self-compassion" id="toc-negative-state-self-compassion" class="nav-link" data-scroll-target="#negative-state-self-compassion">Negative State Self-Compassion</a></li>
+  </ul></li>
+  <li><a href="#negative-affect-variation-before-and-after-the-exam" id="toc-negative-affect-variation-before-and-after-the-exam" class="nav-link" data-scroll-target="#negative-affect-variation-before-and-after-the-exam">Negative Affect Variation Before and After the Exam</a></li>
+  <li><a href="#comparison-negative-affect-pre-exam-post-exam-and-the-other-days" id="toc-comparison-negative-affect-pre-exam-post-exam-and-the-other-days" class="nav-link" data-scroll-target="#comparison-negative-affect-pre-exam-post-exam-and-the-other-days">Comparison Negative Affect Pre-exam / Post-exam and the Other Days</a>
+  <ul class="collapse">
   <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
   </ul></li>
   </ul></li>
@@ -240,6 +244,101 @@ $shared$f1
 </div>
 </div>
 </section>
+</section>
+<section id="negative-affect-variation-before-and-after-the-exam" class="level2">
+<h2 class="anchored" data-anchor-id="negative-affect-variation-before-and-after-the-exam">Negative Affect Variation Before and After the Exam</h2>
+<p>First exam.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">tar_load</span>(list_params_first_exam_neg_aff_difference)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>list_params_first_exam_neg_aff_difference</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$estimate
+[1] -100.6327
+
+$error
+[1] 10.55209
+
+$ci
+[1] -121.34702  -79.99447
+
+$effect_size
+[1] -0.9872623
+
+$effect_size_ci
+      2.5%      97.5% 
+-1.2852782 -0.7550253 </code></pre>
+</div>
+</div>
+<p>Second exam.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">tar_load</span>(list_params_second_exam_neg_aff_difference)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>list_params_second_exam_neg_aff_difference</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$estimate
+[1] -38.28652
+
+$error
+[1] 7.89331
+
+$ci
+[1] -54.11377 -23.17573
+
+$effect_size
+[1] -0.5354282
+
+$effect_size_ci
+      2.5%      97.5% 
+-0.8113645 -0.3133602 </code></pre>
+</div>
+</div>
+</section>
+<section id="comparison-negative-affect-pre-exam-post-exam-and-the-other-days" class="level2">
+<h2 class="anchored" data-anchor-id="comparison-negative-affect-pre-exam-post-exam-and-the-other-days">Comparison Negative Affect Pre-exam / Post-exam and the Other Days</h2>
+<p>Comparison between the negative affect either pre-exam and post-exam and the average negative affect in the other days.</p>
+<p>Comparison other days and pre-exam.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">tar_load</span>(list_params_no_exam_pre_neg_aff_difference)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>list_params_no_exam_pre_neg_aff_difference</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$estimate
+[1] 53.56111
+
+$error
+[1] 7.019074
+
+$ci
+[1] 40.21283 67.67168
+
+$effect_size
+[1] 0.6760132
+
+$effect_size_ci
+     2.5%     97.5% 
+0.5057202 0.8746829 </code></pre>
+</div>
+</div>
+<p>Comparison other days and post-exam.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">tar_load</span>(list_params_no_exam_post_neg_aff_difference)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>list_params_no_exam_post_neg_aff_difference</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$estimate
+[1] -15.65795
+
+$error
+[1] 6.418115
+
+$ci
+[1] -27.897545  -2.948063
+
+$effect_size
+[1] -0.2058575
+
+$effect_size_ci
+       2.5%       97.5% 
+-0.38599920 -0.03647415 </code></pre>
+</div>
+</div>
 <section id="interpretation" class="level3">
 <h3 class="anchored" data-anchor-id="interpretation">Interpretation</h3>
 <p>In our multilevel analysis of State Self-Compassion, we observed significant reliability indices for both the positive and negative components. Focusing first on the positive aspect, the within-subject reliability (<span class="math inline">\(\tilde{\omega}^w\)</span>) was recorded at 0.626. This figure indicates a moderate level of consistency in individual responses across various measurement instances. In contrast, the between-subject reliability (<span class="math inline">\(\tilde{\omega}^b\)</span>), crucial for differentiating between individuals, was found to be 0.820. This higher value underscores the measure’s effectiveness in capturing stable individual differences in self-compassion. Moreover, the composite reliability of the overall positive score (<span class="math inline">\(\omega^{2L}\)</span>), which integrates both within and between subject variabilities, was calculated to be 0.79. This aligns with the framework proposed by Lai (2021) and confirms the measure’s reliability in a comprehensive manner. Turning to the negative component of State Self-Compassion, the within-subject reliability (<span class="math inline">\(\tilde{\omega}^w\)</span>) was slightly higher at 0.68, while the between-subject reliability (<span class="math inline">\(\tilde{\omega}^b\)</span>) further increased to 0.88. The composite reliability for the overall negative component score (<span class="math inline">\(\omega^{2L}\)</span>) was determined to be 0.83. These values, particularly the between-subject reliabilities exceeding the anticipated benchmark of approximately 0.8, emphasize the robustness of the measure. The lower within-subject reliabilities for both components, while perhaps initially surprising, are understandable upon closer examination. These values reflect not only measurement error but also the inherent variability of State Self-Compassion as a dynamic construct, influenced by changing circumstances and internal states. Therefore, the lower within-subject reliabilities underscore the measure’s sensitivity to these temporal changes within individuals. In summary, the multilevel reliabilities of the State Self-Compassion measure, with robust between-subject reliability and lower, yet insightful, within-subject reliability, demonstrate its overall soundness and applicability in the present study. The composite reliability figures further confirm the measure’s effectiveness in comprehensively capturing the construct of State Self-Compassion across different levels of analysis.</p>
