@@ -107,14 +107,23 @@ wrong_days <- c(
 alldata <- temp[!(temp$day %in% wrong_days), ]
 
 unique(alldata$day)
-# [1] "2023-03-25" "2023-04-01" "2023-04-08" "2023-04-15" "2023-04-22" "2023-04-29"
-# [7] "2023-05-06" "2023-05-13" "2023-05-20" "2023-05-27" "2023-06-03" "2023-03-18"
+# [1] "2023-03-25" "2023-04-01" "2023-04-08" "2023-04-15" "2023-04-16" "2023-04-17" "2023-04-22"
+# [8] "2023-04-29" "2023-05-06" "2023-05-13" "2023-05-20" "2023-05-21" "2023-05-22" "2023-05-23"
+# [15] "2023-05-24" "2023-05-25" "2023-05-27" "2023-06-03" "2023-03-18"
 
-# temp1 |> 
-#   group_by(day) |> 
-#   summarize(
-#     n = n_distinct(user_id)
-#   )
+n_per_day <- alldata |>
+  group_by(day) |>
+  summarize(
+    n = n_distinct(user_id)
+  )
+n_per_day
+
+# Compliance of participants per day
+mean(n_per_day$n) / max(n_per_day$n)
+
+
+
+
 
 # Only EMA dats before and after the day of the exam
 temp2 <-  alldata|> 
@@ -135,6 +144,24 @@ table(temp3$day, temp3$exam_day)
 # 2023-05-24  120   0
 # 2023-05-25  128   0
 
+# follow_up_days <- c("2023-05-22", "2023-05-23", "2023-05-24", "2023-05-25")
+# followup_df <- temp3[temp3$day %in% follow_up_days, ]
+# 
+# followup_df |> 
+#   group_by(day) |> 
+#   summarize(
+#     avg_neg_aff = mean(neg_aff, na.rm = TRUE)
+#   )
+# day        avg_neg_aff
+# <date>           <dbl>
+# 1 2023-05-22       -54.9
+# 2 2023-05-23       -58.3
+# 3 2023-05-24       -42.4
+# 4 2023-05-25       -66.3
+# There is not an obvious decrease in the days in negative affect in the days
+# after the second exam. In the following two days there is a third exam, with
+# varying dates for different groups of students.
+
 # Check compliance
 nrow(temp3) / (7 * 166) 
 # [1] 0.8123924
@@ -151,31 +178,18 @@ bad_obs <- c(38, 791, 887)
 
 temp5 <- temp3[-bad_obs, ]
 
+
+
+
+
+
 # Centering
-exam_df_1 <-  center3L(temp5, neg_aff, user_id, bysubj_day)
+exam_df_1 <-  center3L(alldata, neg_aff, user_id, bysubj_day)
 exam_df_2 <-  center3L(exam_df_1, context, user_id, bysubj_day)
 exam_df <-  center3L(exam_df_2, dec, user_id, bysubj_day)
 
 rm(temp, temp1, temp2, temp3, temp4, temp5)
 
-
-temp <- exam_df |> 
-  group_by(bysubj_day) |> 
-  summarize(
-    nid = n_distinct(user_id), 
-    n = n()
-  ) 
-temp
-# bysubj_day   nid     n
-# 1          1   165   169
-# 2          2   160   163
-# 3          3   147   155
-# 4          4   139   142
-# 5          5   123   128
-# 6          6   102   104
-# 7          7    78    80
-
-# Consider removing last day.
 
 
 # recode negative affect

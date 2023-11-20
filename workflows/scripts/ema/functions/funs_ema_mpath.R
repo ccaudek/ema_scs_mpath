@@ -211,8 +211,149 @@ process_ema_data <- function(input_rds_path, output_rds_path) {
     separate(emotion_before_exam, into = c("emo_before_exam_1", "emo_before_exam_2", "emo_before_exam_3"), sep = ",\\s*", fill = "right", extra = "merge") %>%
     mutate(across(starts_with("emo_"), ~ifelse(.x == "-1", NA, .x)))
   
+  # Remove sessions with a very small number of participants
+  d <- d %>%
+    group_by(user_id) %>%
+    mutate(date_order = dense_rank(day)) %>%
+    ungroup()
+  
+  d <- d |> 
+    dplyr::filter(date_order < 20)
+  
+  d <- d |> 
+    dplyr::select(-date_order)
+  
   saveRDS(d, output_rds_path)
 }
+
+
+#' remove_wrong_days() ---------------------------------------------------------
+#' 
+#' @description
+#' Remove the data corresponding to days in which participants were not meant
+#' to use the app.
+#' @param filepath The data frame after data wrangling
+#' @return A data frame.
+#' 
+remove_wrong_days <- function(filepath_input, filepath_output) {
+  library(dplyr)
+  library(here)
+  
+  # Read raw data
+  data <- readRDS(here::here(filepath_input))
+  
+  # Define project days
+  project_days <- c(
+    "2023-03-18", "2023-03-25", "2023-04-01", "2023-04-08", "2023-04-15",
+    "2023-04-16", "2023-04-17", "2023-04-22", "2023-04-29", "2023-05-06",
+    "2023-05-13", "2023-05-20", "2023-05-21", "2023-05-22", "2023-05-27", 
+    "2023-06-03"
+  )
+  
+  # Filter data for project days and compute new variables
+  filtered_data <- data %>%
+    filter(day %in% project_days) %>%
+    mutate(
+      neg_aff = upset + nervous - satisfied - happy,
+      psc = scs_pos_1 + scs_pos_3 + scs_pos_6 + scs_pos_7,
+      nsc = scs_neg_2 + scs_neg_4 + scs_neg_5 + scs_neg_8,
+      dec = dec_1 + dec_3 - dec_2 - dec_4,
+      exam_day = case_when(
+        day == "2023-04-16" ~ "pre",
+        day == "2023-04-17" ~ "post",
+        day == "2023-05-21" ~ "pre",
+        day == "2023-05-22" ~ "post",
+        TRUE ~ "no_exam"
+      )
+    ) %>%
+    filter(!is.na(psc) & !is.na(nsc) & !is.na(neg_aff)) %>%
+    group_by(user_id) %>%
+    mutate(bysubj_day = dense_rank(day)) %>%
+    ungroup()
+  
+  saveRDS(filtered_data, filepath_output)
+}
+
+
+# calculate_average_compliance <- function(data) {
+#   library(dplyr)
+#   library(purrr)
+#   
+#   # Calculate compliance per user, per day
+#   user_day_compliance <- data %>%
+#     group_by(bysubj_day, user_id) %>%
+#     summarize(
+#       total_responses = n_distinct(time_window),
+#       .groups = "drop"
+#     )
+#   
+#   # Calculate average compliance and number of distinct participants for each bysubj_day
+#   day_compliance <- user_day_compliance %>%
+#     group_by(bysubj_day) %>%
+#     summarize(
+#       average_compliance = mean(total_responses / 5),  # Assuming 5 time windows per day
+#       distinct_participants = n_distinct(user_id),
+#       .groups = "drop"
+#     )
+#   
+#   return(day_compliance)
+# }
+
+
+#' compute_effect_size() -------------------------------------------------------
+#' @description
+#' Compute effect size for a coefficient of a mixed-effect model computed with
+#' brm()
+#' @param brms_model
+#' @param effect_name
+#' @example: effect_size <- compute_effect_size(m1, "exam_daypost")
+
+compute_effect_size <- function(brms_model, effect_name) {
+  library(brms)
+  library(posterior)
+  
+  # Estrai i campioni posteriori usando as_draws_df
+  posterior_samples <- as_draws_df(brms_model)
+  
+  # Estrai le deviazioni standard degli effetti random e la deviazione standard dei residui
+  sd_components <- posterior_samples %>%
+    select(contains("sd_"), contains("sigma")) %>%
+    summarise(across(everything(), ~sqrt(mean(.x^2))))
+  
+  # Calcola la deviazione standard totale come radice quadrata della somma dei quadrati delle SD
+  total_sd <- sqrt(sum(sd_components^2, na.rm = TRUE))
+  
+  # Calcola l'effetto (ad esempio, il coefficiente per una variabile specifica)
+  effect_mean <- mean(posterior_samples[[paste0("b_", effect_name)]])
+  
+  # Calcola la dimensione dell'effetto standardizzata
+  effect_size <- effect_mean / total_sd
+  
+  return(effect_size)
+}
+
+
+#' compute_effect_size_ci() ----------------------------------------------------
+#' @description
+#' Compute credibility interval for the effect size.
+#' @example effect_size_ci <- compute_effect_size_ci(m1, "exam_daypost")
+#' 
+compute_effect_size_ci <- function(brms_model, effect_name, probs = c(0.025, 0.975)) {
+  # Estrai i campioni posteriori usando as_draws_df
+  posterior_samples <- as_draws_df(brms_model)
+  
+  # Calcola la deviazione standard totale per ogni campione
+  total_sd_samples <- apply(posterior_samples[, grep("sd_|sigma", colnames(posterior_samples))], 1, function(x) sqrt(sum(x^2)))
+  
+  # Calcola la dimensione dell'effetto per ogni campione
+  effect_samples <- posterior_samples[[paste0("b_", effect_name)]] / total_sd_samples
+  
+  # Calcola l'intervallo di credibilità
+  ci <- quantile(effect_samples, probs = probs)
+  
+  return(ci)
+}
+
 
 # get_state_self_comp_piel_mpath() ---------------------------------------------
 
@@ -236,7 +377,7 @@ get_state_self_comp_piel_mpath <- function() {
   # Paths to data files
   piel_path <- 
     "~/_repositories/ema_scs_piel/data/prep/ema/ema_data_2.RDS"
-  mpath_path <- here("data", "prep", "ema", "ema_data_2bis.RDS")
+  mpath_path <- here("data", "prep", "ema", "ema_data_3.RDS")
   
   # Process data for each dataset
   scs_items_piel <- process_data(piel_path)
@@ -320,8 +461,6 @@ calculate_ssc_reliabilities <- function(both_df) {
 }
 
 
-
-
 #' center3L() ------------------------------------------------------------------
 #' 
 center3L <- function(dataname, varname, idname, dayname) {
@@ -366,4 +505,210 @@ center3L <- function(dataname, varname, idname, dayname) {
 }
 
 
+#' process_exam_data() ---------------------------------------------------------
+#' 
+#' @description
+#' This function pre-process the data for computing the difference in negative
+#' affect before and after the exam.
+#' @param exam_type It can be "first_exam" or "second_exam"
+#' @return A data frame.
+#' @example completed_data_first_exam <- process_exam_data("first_exam")
+#' @example completed_data_second_exam <- process_exam_data("second_exam")
 
+process_exam_data <- function(exam_type) {
+  library(dplyr)
+  library(mice)
+  library(here)
+  
+  # Read raw data
+  data <- readRDS(here::here("data", "prep", "ema", "ema_data_2.RDS"))
+  
+  data <- data |>
+    mutate(
+      neg_aff = upset + nervous - satisfied - happy,
+      psc = scs_pos_1 + scs_pos_3 + scs_pos_6 + scs_pos_7,
+      nsc = scs_neg_2 + scs_neg_4 + scs_neg_5 + scs_neg_8,
+      dec = dec_1 + dec_3 - dec_2 - dec_4
+    ) 
+  
+  # Define exam days
+  data$exam_day <- case_when(
+    data$day %in% c("2023-04-16", "2023-05-21") ~ "pre",
+    data$day %in% c("2023-04-17", "2023-05-22", "2023-05-23", "2023-05-24", "2023-05-25", "2023-05-26") ~ "post",
+    TRUE ~ "no_exam"
+  )
+  
+  # Define wrong days
+  wrong_days <- c(
+    "2023-03-16", "2023-03-19", "2023-03-20", "2023-03-26",
+    "2023-03-27", "2023-04-02", "2023-04-18", "2023-04-19",
+    "2023-04-20", "2023-04-30", "2023-05-01", "2023-06-02",
+    "2023-05-26"
+  )
+  
+  # Filter data
+  filtered_data <- data[!(data$day %in% wrong_days), ]
+  
+  # Process for EMA days before and after the exam
+  exam_data <- filtered_data |> 
+    filter(exam_day != "no_exam") |>
+    group_by(user_id) |> 
+    mutate(bysubj_day = dense_rank(day)) |> 
+    ungroup() |> 
+    filter(!(day %in% c("2023-05-23", "2023-05-24", "2023-05-25"))) |>
+    select(user_id, day, exam_day, neg_aff) |>
+    mutate(exam_day = factor(exam_day, levels = c("pre", "post")))
+  
+  # Separate the data based on exam type
+  if (exam_type == "first_exam") {
+    exam_specific_data <- exam_data[exam_data$day %in% c("2023-04-16", "2023-04-17"), ]
+  } else if (exam_type == "second_exam") {
+    exam_specific_data <- exam_data[exam_data$day %in% c("2023-05-21", "2023-05-22"), ]
+  } else {
+    stop("Invalid exam type specified.")
+  }
+  
+  # Unique data for each user and exam day
+  unique_exam_data <- exam_specific_data %>%
+    group_by(user_id, exam_day) %>%
+    slice(1) %>%
+    ungroup()
+  
+  # Perform multiple imputation
+  imputed_model <- mice(unique_exam_data, m = 1, method = 'pmm', seed = 123)
+  completed_data <- complete(imputed_model)
+  
+  return(completed_data)
+}
+
+
+#' compute_exam_effects_on_neg_aff() -------------------------------------------
+#' @description
+#' Compute the estimate of the negative affect difference before and after 
+#' the exam.
+#' 
+#' @param data The data frame returned by the function process_exam_data()
+#' @param exam_type Either "first_exam" or "secon_exam"
+#' @return A list:
+#' (1) the regression coefficient for the difference between the pre and the
+#' post negative affect (negative numbers indicate that negative affect has
+#' decreased).
+#' (2) the standard error
+#' (3) the 95% credibility interval of beta
+#' (4) the effect size
+#' (5) the 95% credibility interval of the effect size
+compute_exam_effects_on_neg_aff <- function(exam_data, exam_type) {
+  # Check if the data is empty
+  if (nrow(exam_data) == 0) {
+    stop("No data provided for the exam.")
+  }
+  
+  # Internal function to compute effects
+  compute_effects_internal <- function(model) {
+    summary_model <- summary(model)
+    pop_effects <- summary_model$fixed
+    
+    exam_daypost_estimate <- pop_effects["exam_daypost", "Estimate"]
+    exam_daypost_error <- pop_effects["exam_daypost", "Est.Error"]
+    exam_daypost_lower_ci <- pop_effects["exam_daypost", "l-95% CI"]
+    exam_daypost_upper_ci <- pop_effects["exam_daypost", "u-95% CI"]
+    
+    effect_size_exam <- compute_effect_size(model, "exam_daypost")
+    ci_effect_size_exam <- compute_effect_size_ci(model, "exam_daypost")
+    
+    return(list(
+      estimate = exam_daypost_estimate,
+      error = exam_daypost_error,
+      ci = c(exam_daypost_lower_ci, exam_daypost_upper_ci),
+      effect_size = effect_size_exam,
+      effect_size_ci = ci_effect_size_exam
+    ))
+  }
+  
+  # Select model based on exam type
+  if (exam_type == "first_exam") {
+    model_formula <- neg_aff ~ 1 + exam_day + (1 + exam_day | user_id)
+  } else if (exam_type == "second_exam") {
+    model_formula <- neg_aff ~ 1 + exam_day + (1 | user_id)
+  } else {
+    stop("Invalid exam type specified.")
+  }
+  
+  # Fit the Bayesian model
+  model <- brm(
+    formula = model_formula,
+    data = exam_data,
+    family = asym_laplace(),
+    prior = c(
+      set_prior("normal(0, 200)", class = "b"),
+      set_prior("normal(0, 100)", class = "sigma"),
+      set_prior("normal(0, 0.2)", class = "quantile")
+    ),
+    iter = 10000,
+    backend = "cmdstanr",
+    chains = 3,
+    cores = 6,
+    threads = threading(2),
+    silent = 2
+  )
+  
+  return(compute_effects_internal(model))
+}
+
+
+#' get_estimates_neg_aff_difference_exam() -------------------------------------
+#' 
+#' @description
+#' Returns the estimates of the negative affect difference pre-exam - post-exam
+#' @param EXAM_TYPE Either "first_exam" or "second_exam"
+#' @return A list
+#' 
+get_estimates_neg_aff_difference_exam <- function(EXAM_TYPE) {
+  data = process_exam_data(EXAM_TYPE)
+  compute_exam_effects_on_neg_aff(data, EXAM_TYPE)
+}
+
+#' calculate_compliance() ------------------------------------------------------
+#' @description
+#' Get the compliance in terms of the proportion of subjects (out of the total), 
+#' who responded each notification day (compliance_rate), and the average
+#' frequency of responses in each day (compliance_notification_frequeny_per_day)
+#' @param filepath The path to the data to be analyzed (ema_data_3.RDS)
+#' @return A list.
+#' 
+calculate_compliance <- function(filepath) {
+  library(dplyr)
+  library(here)
+  
+  # Read data
+  alldata <- readRDS(here::here(filepath))
+  
+  # Calculate compliance rate
+  n_per_day <- alldata %>%
+    group_by(bysubj_day) %>%
+    summarize(n = n_distinct(user_id)) %>%
+    mutate(compliance_day = n / max(n)) %>%
+    ungroup()
+  
+  compliance_rate <- mean(n_per_day$compliance_day)
+  
+  # Calculate compliance of notification frequency within each day
+  days_exams <- c("2023-04-16", "2023-04-17", "2023-05-21", "2023-05-22")
+  
+  compliance_notification_frequeny_per_day <- alldata %>%
+    filter(!day %in% days_exams) %>%
+    group_by(user_id, bysubj_day) %>%
+    summarize(n_responses = n_distinct(time_window)) %>%
+    mutate(compliance_notification = n_responses / 5) %>%
+    ungroup() %>%
+    summarize(average_compliance = mean(compliance_notification)) %>%
+    pull(average_compliance)
+  
+  # Return compliance rates
+  output_list <- list(
+    compliance_rate = compliance_rate,
+    compliance_notification_frequeny_per_day = compliance_notification_frequeny_per_day
+  )
+  
+  return(output_list)
+}

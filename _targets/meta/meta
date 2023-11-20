@@ -1,14 +1,26 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-.Random.seed|object|e1fb9bf5ac54f347|||||||||||||||
+.Random.seed|object|5fe83af7ee4044ae|||||||||||||||
+calculate_average_compliance|function|adff6181a08e79ec|||||||||||||||
+calculate_compliance|function|20d6fecd8cba8742|||||||||||||||
 calculate_ssc_reliabilities|function|acde6313221a258e|||||||||||||||
 center3L|function|480744973b33658f|||||||||||||||
-clean_mpath_ema_data|stem|da7e5646cbdfced7|d3ca54933d7be5eb|760f6512a6f89ffb|-587928903||t0s|f4066a65ff755f48|0|file|local|vector|||0.627||
+clean_mpath_ema_data|stem|da7e5646cbdfced7|03c6c0006a161b44|52a96072ad6d523c|-587928903||t0s|f4066a65ff755f48|0|file|local|vector|||0.393||
+compliance_results|stem|1ef71e75c1efc00a|70925b7a700e3b86|aa983f636ace1313|1550561917||t19681.4776889945s|4956b68a23f9e1fc|122|qs|local|vector|||0.17||
+compute_effect_size|function|e70136f3d8022a51|||||||||||||||
+compute_effect_size_ci|function|2ee273be782de734|||||||||||||||
+compute_exam_effects_on_neg_aff|function|43d85e1b8da131a4|||||||||||||||
 delete_first_row_xlsx|function|9d14bd35928cdb65|||||||||||||||
-get_state_self_comp_piel_mpath|function|694c0280935a2a51|||||||||||||||
+get_estimates_neg_aff_difference_exam|function|0fde1e3cf149e0d3|||||||||||||||
+get_state_self_comp_piel_mpath|function|d63cdc6214d71400|||||||||||||||
 import_ema_data|function|18b095a3a5f37274|||||||||||||||
-mpath_ema_data_raw|stem|da7e5646cbdfced7|53b0be0a232ed536|2af4a00f0a5201e0|496426626||t0s|f4066a65ff755f48|0|file|local|vector|||5.658||
-process_ema_data|function|aeddaa14c13011a5|||||||||||||||
-reliabilities_sem|stem|95f15abb9f1c80e4|19e18bc90852b0f7|d176c177877c082a|-2075012037||t19679.4797718662s|d3c04794784e4c77|239|rds|local|vector|||3.302||
-report|stem|2c054b895ec639df|7fdf6e1c4b1ad937|a7917b215f1f351f|1464725162|doc/ema_ssc_report.html*doc/ema_ssc_report.qmd|t19679.5882428698s|e729c7264ce66d7f|20481|file|local|vector|||4.945||
+list_params_first_exam_neg_aff_difference|stem|b1c68dc47ec72b2f|ad6d695c28c3ee27|991260fb6c538b2d|-396268842||t19681.3925919787s|bbe0e43529942e5e|163|qs|local|vector|||177.382|Number of logged events 2. Dropping draws_df class as required metadata was removed.. Dropping draws_df class as required metadata was removed.|
+list_params_second_exam_neg_aff_difference|stem|65979c65a4f026a2|8319f85732b44a7a|991260fb6c538b2d|-388266454||t19681.3933854208s|bbe0e43529942e5e|163|qs|local|vector|||68.535|Number of logged events 2. Dropping draws_df class as required metadata was removed.. Dropping draws_df class as required metadata was removed.|
+mpath_ema_data_raw|stem|da7e5646cbdfced7|078259b90f0c3e10|2af4a00f0a5201e0|496426626||t0s|f4066a65ff755f48|0|file|local|vector|||5.99||
+process_ema_data|function|995a3a27aee2efd1|||||||||||||||
+process_exam_data|function|cc799a4cfb1bb216|||||||||||||||
+reliabilities_sem|stem|9da8ccbbcee4c0b0|19e18bc90852b0f7|1d010fba621b267d|-2075012037||t19681.46647779s|9c4bb1876e1721ca|190|qs|local|vector|||3.563||
+remove_wrong_days|function|0426d269f33d3429|||||||||||||||
+removed_wrong_days_data|stem|da7e5646cbdfced7|824191280571cdca|71ec1430cb21b7e4|2147017707||t0s|f4066a65ff755f48|0|file|local|vector|||0.12||
+report|stem|6db09f13be461e16|c76a25ae4598aa18|9c713650c448a539|1464725162|doc/ema_ssc_report.html*doc/ema_ssc_report.qmd|t19681.4787282827s|3b50e258f6ab6e19|27637|file|local|vector|||5.214||
 SEED|object|ac973a9ac4a150e7|||||||||||||||
-state_self_comp_piel_mpath_data|stem|e9a1a4c96bdb0479|fc95d0d344bbdf33|e655b2f60abbd6ff|969708579||t19679.4599214484s|392c591bc3280a7f|150380|rds|local|vector|||0.152||
+state_self_comp_piel_mpath_data|stem|76be541e41074f6d|fc95d0d344bbdf33|23c659ff28710551|969708579||t19681.4664350317s|42f53374634f3d4f|95118|qs|local|vector|||0.153||

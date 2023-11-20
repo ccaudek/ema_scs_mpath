@@ -51,7 +51,7 @@ tar_option_set(
     "sjstats", "sjPlot", "sjmisc", "viridis", "lubridate", "readxl",
     "janitor", "semTools"
   ),
-  format = "rds", # default storage format
+  format = "qs", # faster than rds
   seed = SEED
   # Set other options as needed.
 )
@@ -80,33 +80,65 @@ list(
     mpath_ema_data_raw,
     import_ema_data(
       input_folder = "m_path_data_2023", 
-      output_rds_path = here("data", "prep", "ema", "ema_data_1bis.RDS")
+      output_rds_path = here("data", "prep", "ema", "ema_data_1.RDS")
     ),
     format = "file"
   ),
-  
-  # Data wrangling 
+
+  # Data wrangling
   tar_target(
     clean_mpath_ema_data,
     process_ema_data(
-      input_rds_path = here("data", "prep", "ema", "ema_data_1bis.RDS"),
-      output_rds_path = here("data", "prep", "ema", "ema_data_2bis.RDS")
+      input_rds_path = here("data", "prep", "ema", "ema_data_1.RDS"),
+      output_rds_path = here("data", "prep", "ema", "ema_data_2.RDS")
     ),
     format = "file"
   ),
   
+  # Remove data deriving from responses in days not included in the project
+  tar_target(
+    removed_wrong_days_data,
+    remove_wrong_days(
+      filepath_input = here("data", "prep", "ema", "ema_data_2.RDS"),
+      filepath_output = here("data", "prep", "ema", "ema_data_3.RDS")
+    ),
+    format = "file"
+  ),
+  
+  # Get compliance
+  tar_target(
+    compliance_results,
+    calculate_compliance(
+      filepath = here("data", "prep", "ema", "ema_data_3.RDS")
+    )
+  ),
+
   # Get State Self Compassion data for both piel and mpath samples
   tar_target(
     state_self_comp_piel_mpath_data,
     get_state_self_comp_piel_mpath()
   ),
-  
+
   # Compute multilevel reliabilities
   tar_target(
     reliabilities_sem,
     calculate_ssc_reliabilities(state_self_comp_piel_mpath_data)
   ),
   
+  # Get estimate and effect size of negative affect pre-exam - post-exam
+  # First exam
+  tar_target(
+    list_params_first_exam_neg_aff_difference,
+    get_estimates_neg_aff_difference_exam("first_exam")
+  ),
+  
+  # Get estimate and effect size of negative affect pre-exam - post-exam
+  # Second exam
+  tar_target(
+    list_params_second_exam_neg_aff_difference,
+    get_estimates_neg_aff_difference_exam("second_exam")
+  ),
+
   # Create report.
   tar_quarto(
     name = report,
@@ -118,65 +150,6 @@ list(
 
 
 
-# 
-#   # Clean mpath EMA data. raw_df is the input to get_data() and prl_df is the output.
-#   # prl_df has 63930 rows.
-#   tar_target(prl_df, get_data(raw_df)),
-# 
-#   # Estimate the parameters of the momentary happiness model.
-#   tar_target(
-#     params_happiness_df,
-#     get_params_happiness_model(prl_df, unique(prl_df$user_id))
-#   ),
-# 
-#   # Clean parameters of the momentary happiness model.
-#   tar_target(
-#     params_happiness_clean_df,
-#     clean_params_happiness_model(params_happiness_df)
-#   )
-
-  # brms model for alpha and volatility
-  # the distribution of alpha is bimodal. No congergence!
-  # tar_target(
-  #   brms_fitted_mod_alpha,
-  #   brms_mod_alpha(params_happiness_clean_df)
-  # )
-
-  # brms model for mood_dif
-  # tar_target(
-  #   brms_fitted_mod_mood_1,
-  #   brms_mod_mood_1(params_happiness_clean_df)
-  # ),
-  
-  # brms model for mood_dif with also happiness parameters
-  # tar_target(
-  #   brms_fitted_mod_mood_2, 
-  #   brms_mod_mood_2(params_happiness_clean_df)
-  # ),
-  
-  # Fit the brms model with mood_dif as a function of time x environment.
-  # mood_pre is used as a covariate, and time is coded in terms of the linear, 
-  # quadratic, and cubic components of ema_number.
-  # tar_target(
-  #   brms_fitted_mod_mood_3,
-  #   brms_mod_mood_3(params_happiness_clean_df)
-  # ),
-  
-  # Compute predicted values of model brms_fitted_mod_mood_3 and 
-  # generate figure.
-  # tar_target(
-  #   plot_mood_dif_ema_number,
-  #   get_plot_mood_dif_ema_number(
-  #     params_happiness_clean_df, brms_fitted_mod_mood_3
-  #   )
-  # ),
-  # 
-  # Create report.
-  # tar_quarto(
-  #   name = report,
-  #   path = here::here("doc", "groundhog_day_report.qmd")
-  # )
-  
 
 
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Corrado Caudek (corrado.caudek@unifi.it)">
-<meta name="dcterms.date" content="2023-11-18">
+<meta name="dcterms.date" content="2023-11-20">
 <meta name="description" content="Test of the bipolar continuum hypothesis">
 
 <title>EMA State Self Compassion Project</title>
@@ -132,7 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">2023-11-18</p>
+        <p class="date">2023-11-20</p>
       </div>
     </div>
     
@@ -152,6 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#method" id="toc-method" class="nav-link" data-scroll-target="#method">Method</a>
   <ul class="collapse">
   <li><a href="#task-design" id="toc-task-design" class="nav-link" data-scroll-target="#task-design">Task Design</a></li>
+  <li><a href="#compliance" id="toc-compliance" class="nav-link" data-scroll-target="#compliance">Compliance</a></li>
   </ul></li>
   <li><a href="#multilevel-reilabilities" id="toc-multilevel-reilabilities" class="nav-link" data-scroll-target="#multilevel-reilabilities">Multilevel Reilabilities</a>
   <ul class="collapse">
@@ -170,6 +171,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
+<p>The construct of self-compassion, a central concept in contemporary psychology, has been the subject of much scholarly debate. Traditionally, researchers have grappled with whether self-compassion is best understood as a unitary construct, represented by a bipolar continuum ranging from uncompassionate self-responding (UCS) to compassionate self-responding (CS), or as a configuration of two partly independent components. This debate is vital as it shapes our understanding of self-compassion and its role in psychological well-being.</p>
+<p>Building on this discussion, recent advancements in psychological research have emphasized the dynamic nature of psychological constructs, suggesting that they are not static or solely trait-based, but rather can be influenced by situational factors. This perspective is critical in the study of state self-compassion, an evolution of the original construct of self-compassion, which encompasses moment-to-moment variations in self-compassionate feelings and attitudes. The development of scales to measure state self-compassion (e.g., Raes et al., 2011) provides a tool to explore this dynamism.</p>
+<p>In our study, we aim to contribute to the ongoing discourse by examining how situational factors, such as negative affect, influence the UCS and CS components of state self-compassion. This approach is inspired by the shift in emotion regulation research, where the focus has moved from the frequency of using strategies to the context-dependent effectiveness of these strategies (Gross, 1998; Aldao et al., 2015). By investigating how different situational factors impact UCS and CS, we seek to provide empirical evidence to the theoretical debate on the nature of the self-compassion construct.</p>
+<p>Our hypothesis is twofold: If situational factors affect UCS and CS in parallel but opposing ways (i.e., an increase in UCS corresponds with a decrease in CS), this would lend support to the bipolar continuum model of self-compassion, as proposed by Neff (2003). This model posits that self-compassion is a singular, unified construct with varying degrees of expression. Alternatively, if situational factors differentially influence UCS and CS (for instance, if a factor impacts CS but leaves UCS unaffected, or vice versa), this would suggest that self-compassion comprises two distinct components, aligning with the perspectives of researchers like Muris et al.&nbsp;(2016), who argue for the duality of the construct.</p>
+<p>This exploration is crucial for a deeper understanding of self-compassion, as it not only contributes to theoretical knowledge but also has practical implications. Understanding the situational dynamics of self-compassion can enhance psychological interventions and promote well-being by identifying specific contexts in which self-compassionate or uncompassionate responses are more likely to be elicited. Such insights could be pivotal in developing more nuanced and effective therapeutic strategies that cater to individual differences and situational variables, ultimately fostering a more compassionate self-relationship in diverse life situations.</p>
 <section id="state-self-compassion" class="level2">
 <h2 class="anchored" data-anchor-id="state-self-compassion">State Self-Compassion</h2>
 </section>
@@ -178,45 +184,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="task-design" class="level3">
 <h3 class="anchored" data-anchor-id="task-design">Task Design</h3>
 </section>
+<section id="compliance" class="level3">
+<h3 class="anchored" data-anchor-id="compliance">Compliance</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">tar_load</span>(compliance_results)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>compliance_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$compliance_rate
+[1] 0.8224852
+
+$compliance_notification_frequeny_per_day
+[1] 0.7236905</code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="multilevel-reilabilities" class="level2">
 <h2 class="anchored" data-anchor-id="multilevel-reilabilities">Multilevel Reilabilities</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">tar_load</span>(reliabilities_sem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">tar_load</span>(reliabilities_sem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="positive-state-self-compassion" class="level3">
 <h3 class="anchored" data-anchor-id="positive-state-self-compassion">Positive State Self-Compassion</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>reliabilities_sem[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>reliabilities_sem[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$config
 $config$f1
   omega_W  omega_2L 
-0.6217906 0.9124309 
+0.6219931 0.9127693 
 
 
 $shared
 $shared$f1
   omega_B       IRR 
-0.9349236 0.9974193 </code></pre>
+0.9351232 0.9973464 </code></pre>
 </div>
 </div>
 </section>
 <section id="negative-state-self-compassion" class="level3">
 <h3 class="anchored" data-anchor-id="negative-state-self-compassion">Negative State Self-Compassion</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>reliabilities_sem[[<span class="dv">2</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>reliabilities_sem[[<span class="dv">2</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$config
 $config$f1
   omega_W  omega_2L 
-0.6864617 0.8979745 
+0.6839831 0.8968537 
 
 
 $shared
 $shared$f1
   omega_B       IRR 
-0.9345011 0.9940234 </code></pre>
+0.9333586 0.9938527 </code></pre>
 </div>
 </div>
 </section>

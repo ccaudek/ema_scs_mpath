@@ -3,23 +3,13 @@
 #' Script purpose: lmer analyses
 #' @author: Corrado Caudek <corrado.caudek@unifi.it>
 #' Date Created: Wed Jun 28 06:00:22 2023
-#' Last Modified Date: Wed Jun 28 06:00:22 2023
+#' Last Modified Date: Sun Nov 19 04:14:08 2023
 #'
-#' 👉 
 #' PURPOSE: Contextual factors were assessed with three methods:
 #' 1. Current mood.
 #' 2. Pleasantness/unpleasantness of the most salient previously occurred event.
 #' 3. Level of attachment/detachment to the current situation.
-#'
-#' Statistical analyses
 #' 
-#' - For exam-independent days:
-#' 1. Within-person (within single day, across weeks) and between-person 
-#' effects of the three contextual factors on the PSC and NSC components.
-#' 2. Interactions effects with SCS.
-#' 
-#' For pre-post exam days:
-#' 1. ?
 
 # EMA notification dates.
 #
@@ -66,6 +56,18 @@ source(
 
 # Read raw data.
 d <- readRDS(here::here("data", "prep", "ema", "ema_data_2.RDS"))
+
+d <- d %>%
+  group_by(user_id) %>%
+  mutate(date_order = dense_rank(day)) %>%
+  ungroup()
+
+table(d$date_order)
+#   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21 
+# 649 621 588 510 407 297 369 537 518 508 442 342 169 169 170 209 241 292 172  12  10 
+
+d <- d |> 
+  dplyr::filter(date_order < 12)
 
 d <- d |>
   mutate(
