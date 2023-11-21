@@ -1,4 +1,5 @@
 **/.DS_Store
+**/brms_fits/*
 .Rproj.user
 .Rhistory
 .RData
