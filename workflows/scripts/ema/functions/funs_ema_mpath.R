@@ -1,3 +1,4 @@
+
 #' delete_first_row_xlsx() -----------------------------------------------------
 #' 
 delete_first_row_xlsx <- function(FOLDER_NAME) {
@@ -26,6 +27,9 @@ delete_first_row_xlsx <- function(FOLDER_NAME) {
 
 
 #' import_ema_data() -----------------------------------------------------------
+#' 
+#' @description
+#' This code imports and cleans data prior to modeling and analysis.
 #' 
 import_ema_data <- function(input_folder, output_rds_path) {
   
@@ -222,6 +226,9 @@ process_ema_data <- function(input_rds_path, output_rds_path) {
   
   d <- d |> 
     dplyr::select(-date_order)
+  
+  d$user_id <- 
+    gsub("/Users/corrado/_repositories/ema_scs_mpath/data/raw/m_path_data_2023/", "", d$user_id)
   
   saveRDS(d, output_rds_path)
 }

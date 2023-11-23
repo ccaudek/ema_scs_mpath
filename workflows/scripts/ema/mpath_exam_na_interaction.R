@@ -1,101 +1,110 @@
 
-# Read raw data.
-d <- readRDS(here::here("data", "prep", "ema", "ema_data_2.RDS"))
 
-d <- d |>
-  mutate(
-    neg_aff = upset + nervous - satisfied - happy,
-    psc = scs_pos_1 + scs_pos_3 + scs_pos_6 + scs_pos_7,
-    nsc = scs_neg_2 + scs_neg_4 + scs_neg_5 + scs_neg_8,
-    dec = dec_1 + dec_3 - dec_2 - dec_4
-  ) 
-
-# d |>
-#   dplyr::select(psc, nsc, dec) |>
-#   na.omit() |>
-#   cor() |>
-#   round(2)
-
-d$exam_day <- case_when(
-  d$day == "2023-04-16" ~ "pre",
-  d$day == "2023-04-17" ~ "post",
-  d$day == "2023-05-21" ~ "pre",
-  d$day == "2023-05-22" ~ "post",
-  # d$day == "2023-05-23" ~ "post",
-  # d$day == "2023-05-24" ~ "post",
-  # d$day == "2023-05-25" ~ "post",
-  # d$day == "2023-05-26" ~ "post",
-  .default = "no_exam"
-)
-
-# Remove NAs on SC.
-temp <- d[!(is.na(d$psc) | is.na(d$nsc) | is.na(d$neg_aff)), ]
-
-wrong_days <- c(
-  "2023-03-16", "2023-03-19", "2023-03-20", "2023-03-26",
-  "2023-03-27", "2023-04-02", "2023-04-18", "2023-04-19",
-  "2023-04-20", "2023-04-30", "2023-05-01", "2023-06-02",
-  "2023-05-26"
-)
-
-alldata <- temp[!(temp$day %in% wrong_days), ]
-
-unique(alldata$day)
-# [1] "2023-03-25" "2023-04-01" "2023-04-08" "2023-04-15" "2023-04-16" "2023-04-17" "2023-04-22"
-# [8] "2023-04-29" "2023-05-06" "2023-05-13" "2023-05-20" "2023-05-21" "2023-05-22" "2023-05-23"
-# [15] "2023-05-24" "2023-05-25" "2023-05-27" "2023-06-03" "2023-03-18"
-
-n_per_day <- alldata |>
-  group_by(day) |>
-  summarize(
-    n = n_distinct(user_id)
-  )
-n_per_day
-
-# Compliance of participants per day
-mean(n_per_day$n) / max(n_per_day$n)
+# eof ----------
 
 
-# Only EMA days before and after the day of the exam
-temp2 <-  alldata|> 
-  dplyr::filter(exam_day != "no_exam")
+# d1 <- d |> 
+#   dplyr::select(
+#     psc, nsc, 
+#     na_moment, na_day, na_person,
+#     dec_moment, dec_day, dec_person,
+#     time_window, bysubj_day, user_id
+#   ) |> 
+#   mutate(
+#     nsc_rev = nsc * -1
+#   ) |> 
+#   dplyr::select(-nsc) |> 
+#   dplyr::rename(
+#     "ucs" = "nsc_rev",
+#     "sc" = "psc"
+#   )
+# 
+# 
+# long_df <- pivot_longer(
+#   d1, -c("na_moment", "na_day", "na_person",
+#         "dec_moment", "dec_day", "dec_person",
+#         "time_window", "bysubj_day", "user_id"), 
+#   names_to = "dimension", values_to = "ssc"
+# )
+# 
+# foo <- long_df |> 
+#   dplyr::select(-c(time_window, user_id, bysubj_day))
+# 
+# performance::check_outliers(foo)
+# 
+# bad_obs <- c(
+#   177, 178, 371, 372, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578, 579, 580, 581,
+#   583, 584, 585, 586, 587, 588, 589, 590, 593, 594, 972, 981, 982, 1013, 1014, 1017, 1018, 2047, 2048, 2050, 2434,
+#   2941, 2942, 2951, 2952, 2953, 2954, 2955, 2956, 2959, 2960, 2963, 2964, 2966, 2969, 2970, 2971, 2972, 2979, 2980,
+#   2981, 2982, 2983, 2984, 2985, 2986, 2987, 2988, 2995, 3005, 3007, 3008, 3199, 3200, 3257, 3258, 3269, 3270, 3398,
+#   3463, 3464, 3987, 3988, 3989, 3990, 4057, 4063, 4210, 4465, 4483, 4484, 5063, 5585, 5647, 5648, 5741, 5742, 5841,
+#   5842, 6237, 6238, 6319, 6320, 6321, 6322, 6323, 6324, 6325, 6326, 6339, 6341, 6350, 6356, 6381, 6382, 6383, 6384,
+#   6387, 6388, 6949, 7175, 7477, 7478, 7533, 7534, 7717, 7718, 7865, 7866, 9073, 9728, 9759, 9760, 10859, 10860,
+#   10960, 11503, 11504, 11869, 11999, 12003, 12125, 12126, 12571, 12572, 12756, 12765, 12766, 12770, 12788, 13217,
+#   13218, 13229, 13230, 13305
+# )
+# 
+# 
+# # Specify the columns for which you want to set the values to NA
+# columns_to_na <- c("na_moment", "na_day", "na_person", "dec_moment", "dec_day", "dec_person", "ssc")
+# 
+# # Set the values to NA for the specified rows and columns
+# long_df[bad_obs, columns_to_na] <- NA
+# 
+# # Imputing missing data
+# imputed_data <- mice(long_df %>% dplyr::select(all_of(columns_to_na)),
+#                      m = 1, maxit = 50, method = "pmm", seed = 123
+# ) %>%
+#   complete(1)
+# 
+# imputed_data$user_id <- long_df$user_id
+# imputed_data$bysubj_day <- long_df$bysubj_day
+# imputed_data$time_window <- long_df$time_window
+# imputed_data$dimension <- long_df$dimension
+# 
+# imputed_data$zna_moment <- as.vector(scale(imputed_data$na_moment))
+# imputed_data$zna_day <- as.vector(scale(imputed_data$na_day))
+# imputed_data$zna_person <- as.vector(scale(imputed_data$na_person))
+# imputed_data$zdec_moment <- as.vector(scale(imputed_data$dec_moment))
+# imputed_data$zdec_day <- as.vector(scale(imputed_data$dec_day))
+# imputed_data$zdec_person <- as.vector(scale(imputed_data$dec_person))
+# imputed_data$zssc <- as.vector(scale(imputed_data$ssc))
 
-temp3 <- temp2 %>%
-  group_by(user_id) |> 
-  mutate(bysubj_day = dense_rank(day)) |> 
-  ungroup()
+# priors1 <- c(
+#   set_prior("normal(0, 2)", class = "b")
+# )
 
-table(temp3$day, temp3$exam_day)
-#            post pre
-# 2023-04-16    0 146
-# 2023-04-17  142   0
-# 2023-05-21    0 128
-# 2023-05-22  142   0
-
-
-# Check compliance
-nrow(temp3) / (4 * length(unique(temp3$user_id))) 
-# [1] 0.8123924
-
-# Remove outliers
-foo <- temp3 |>
-  dplyr::select(
-    psc, nsc, context, neg_aff, dec
-  )
-
-performance::check_outliers(foo)
-
-bad_obs <- c(38, 791, 887)
-
-exam_df <- temp3[-bad_obs, ]
+# mod <- brm(
+#   zssc ~ dimension * 
+#     (zdec_moment + zdec_day + zdec_person + zna_moment + zna_day + zna_person) +
+#     (dimension * (zdec_moment + zdec_day + zdec_person + zna_moment + zna_day + zna_person) | user_id) + 
+#     (1 | bysubj_day) + (1 | time_window),
+#   data = imputed_data,
+#   prior = priors1,
+#   family = student(),
+#   # control = list(adapt_delta = 0.99, max_treedepth = 20),
+#   backend = "cmdstanr",
+#   iter = 100,
+#   cores = 6,
+#   chains = 2,
+#   threads = threading(3),
+#   silent = 2,
+#   # file = here::here("workflows", "scripts", "ema", "brms_fits", "file.rds")
+# )
 
 
-exam_df$exam_day <- factor(exam_df$exam_day)
-exam_df$exam_day <- relevel(exam_df$exam_day, ref = "pre")
 
 
-followup_days <- c("2023-05-23", "2023-05-24", "2023-05-25")
-pre_post_df <- exam_df[!exam_df$day %in% followup_days, ]
+
+
+ 
+
+
+
+
+
+
+
 
 pre_post_df <- pre_post_df |> 
   dplyr::select(user_id, day, exam_day, neg_aff)

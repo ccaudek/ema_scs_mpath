@@ -121,7 +121,6 @@ list_params_no_exam_post_neg_aff_difference
 
 ### Interpretation
 
-
 In our multilevel analysis of State Self-Compassion, we observed significant 
 reliability indices for both the positive and negative components. Focusing 
 first on the positive aspect, the within-subject reliability 
@@ -156,4 +155,93 @@ within-subject reliability, demonstrate its overall soundness and
 applicability in the present study. The composite reliability figures further 
 confirm the measure's effectiveness in comprehensively capturing the 
 construct of State Self-Compassion across different levels of analysis.
+
+
+## Models' Comparisons
+
+### Negative Component of State Self-Compassion
+
+The final model for predicting the negative component of State Self-Compassion is as follows:
+
+$$
+\begin{equation}
+\begin{aligned}
+znsc &\sim \text{Student-t}(\mu, \sigma, \nu) \\
+\mu &= \beta_{0} + \beta_{\text{dec\_moment}} \times \text{dec\_moment} + \beta_{\text{dec\_day}} \times \text{dec\_day} + \beta_{\text{dec\_person}} \times \text{dec\_person} + \\
+&\quad \beta_{\text{na\_moment}} \times \text{na\_moment} + \beta_{\text{na\_day}} \times \text{na\_day} + \beta_{\text{na\_person}} \times \text{na\_person} + \\
+&\quad \beta_{\text{context\_moment}} \times \text{context\_moment} + \beta_{\text{context\_day}} \times \text{context\_day} + \beta_{\text{context\_person}} \times \text{context\_person} + \\
+&\quad b_{\text{user\_id}}[j] + b_{\text{bysubj\_day}}[k] \\
+b_{\text{user\_id}}[j] &\sim \mathcal{N}(0, \Sigma_{\text{user\_id}}) \\
+b_{\text{bysubj\_day}}[k] &\sim \mathcal{N}(0, \sigma^2_{\text{bysubj\_day}}) \\
+\beta &\sim \text{priors1} \\
+\sigma &\sim \text{Half-Cauchy}(0, \text{scale}) \\
+\nu &\sim \text{Exponential}(\text{rate}) \\
+\\
+\text{Where:} & \\
+\Sigma_{\text{user\_id}} &= \text{Full covariance matrix for random effects within user\_id} \\
+\sigma^2_{\text{bysubj\_day}} &= \text{Var}(b_{\text{bysubj\_day}}[k])
+\end{aligned}
+\end{equation}
+$$
+
+### Results
+
+We employed a Bayesian multilevel model to predict the negative component of the State Self-Compassion scale, which was measured multiple times for each participant across various occasions. The model included momentary negative affect (na), the evaluation of momentary context valence (context), and momentary decentering (dec) as predictors. Each of these predictors was decomposed into three components: within-person, between-day, and between-person.
+
+#### Model Summary
+
+The model was estimated using a Student's t-distribution with identity links for the mean (mu), scale (sigma), and degrees of freedom (nu). The analysis was based on 6741 observations, with the posterior distribution derived from 2000 post-warmup draws across two chains.
+
+#### Group-Level Effects
+
+- **By-Subject-Day Variability**: The standard deviation of the random intercepts for different days (`bysubj_day`) was estimated to be 0.02, suggesting minimal variability in the negative component of State Self-Compassion across days within subjects.
+- **By-User Variability**: The model revealed substantial between-person variability in the intercept (0.50), indicating differences in baseline levels of the negative component of State Self-Compassion among participants. The variability in the within-person components of negative affect (`na_moment`: 0.06, `na_day`: 0.15), context (`context_moment`: 0.02, `context_day`: 0.09), and decentering (`dec_moment`: 0.08, `dec_day`: 0.14) suggests individual differences in how these factors relate to self-compassion on a moment-to-moment and day-to-day basis.
+
+#### Population-Level Effects
+
+- **Decentering**: Momentary (β = -0.12), daily (β = -0.18), and person-level (β = -0.37) decentering showed negative associations with the negative component of State Self-Compassion, indicating that higher levels of decentering are associated with lower levels of self-criticism or negative self-judgment.
+- **Negative Affect**: Momentary (β = 0.13) and day-level (β = 0.17) negative affect were positively associated with the negative component, while person-level negative affect (β = 0.34) showed a stronger positive relationship. This suggests that both transient and enduring negative emotions contribute to increased self-criticism.
+- **Context Valence**: Momentary context valence showed a weak negative association (β = -0.02), while daily (β = 0.01) and person-level context valence (β = 0.04) had minimal or slightly positive associations, indicating that the immediate context's perceived negativity might slightly increase self-critical thoughts.
+
+#### Family Specific Parameters
+
+- The estimated scale parameter (σ = 0.35) and degrees of freedom (ν = 4.20) of the Student's t-distribution reflect the variability and the heaviness of the tails in the model residuals, respectively.
+
+#### Model Diagnostics
+
+The model diagnostics indicate satisfactory convergence with Rhat values close to 1 for all parameters. The Bulk_ESS and Tail_ESS values suggest adequate effective sample sizes for reliable estimation and inference.
+
+#### Output of brm()
+
+`b_dec_moment`
+
+```{r}
+tar_load(stats_coef_dec_moment)
+stats_coef_dec_moment
+```
+
+`b_dec_day`
+
+```{r}
+tar_load(stats_coef_dec_moment)
+stats_coef_dec_day
+```
+
+`b_dec_person`
+
+```{r}
+tar_load(stats_coef_dec_moment)
+stats_coef_dec_person
+```
+
+
+### Random effects
+
+cor(dec_moment,dec_day) = 0.46: This is the correlation between the random effects for decentering at the moment level and the day level within the same individual. A positive correlation of 0.46 suggests that there is a moderate relationship between the variability in decentering across different days and within a single day for the same participant. In simpler terms, if a participant shows considerable variation in their decentering scores from day to day, they are also likely to show noticeable variation in decentering at different moments within the same day.
+
+cor(na_moment,na_day) = 0.52: This coefficient represents the correlation between the random effects for negative affect at the moment level and the day level within the same individual. Similarly to the previous coefficient, a positive correlation of 0.52 indicates a moderate to strong relationship. It means that participants who tend to vary a lot in their negative affect scores between days are also likely to exhibit significant variation within a single day.
+
+These correlations are important in understanding the dynamics of the psychological constructs you are studying (decentering and negative affect) in relation to time (both across days and within a single day). It suggests that there is a consistency in the way individuals vary in these constructs over time, both on a daily and momentary basis. 
+
+
 

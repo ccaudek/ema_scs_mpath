@@ -33,9 +33,9 @@ suppressPackageStartupMessages({
   library("readxl")
   library("janitor")
   library("semTools")
+  library("bayestestR")
 })
 
-options(pillar.neg=FALSE)
 theme_set(bayesplot::theme_default(base_family = "sans"))
 
 # Set random seed for reproducibility:
@@ -49,7 +49,7 @@ tar_option_set(
     "cmdstanr", "brms", "posterior", "loo", "mice", "parallel", "emmeans",
     "quarto", "bayesplot", "gridExtra", "ggdist", "effectsize", "rio",
     "sjstats", "sjPlot", "sjmisc", "viridis", "lubridate", "readxl",
-    "janitor", "semTools"
+    "janitor", "semTools", "bayestestR"
   ),
   format = "qs", # faster than rds
   seed = SEED
@@ -71,109 +71,12 @@ list.files(
   walk(source)
 
 
-# Replace the target list below with your own:
-# Targets:
-list(
-  
-  # Import EMA data
-  tar_target(
-    mpath_ema_data_raw,
-    import_ema_data(
-      input_folder = "m_path_data_2023", 
-      output_rds_path = here("data", "prep", "ema", "ema_data_1.RDS")
-    ),
-    format = "file"
-  ),
-
-  # Data wrangling
-  tar_target(
-    clean_mpath_ema_data,
-    process_ema_data(
-      input_rds_path = here("data", "prep", "ema", "ema_data_1.RDS"),
-      output_rds_path = here("data", "prep", "ema", "ema_data_2.RDS")
-    ),
-    format = "file"
-  ),
-  
-  # Remove data deriving from responses in days not included in the project
-  tar_target(
-    removed_wrong_days_data,
-    remove_wrong_days(
-      filepath_input = here("data", "prep", "ema", "ema_data_2.RDS"),
-      filepath_output = here("data", "prep", "ema", "ema_data_3.RDS")
-    ),
-    format = "file"
-  ),
-  
-  # Get compliance
-  tar_target(
-    compliance_results,
-    calculate_compliance(
-      filepath = here("data", "prep", "ema", "ema_data_3.RDS")
-    )
-  ),
-
-  # Get State Self Compassion data for both piel and mpath samples
-  tar_target(
-    state_self_comp_piel_mpath_data,
-    get_state_self_comp_piel_mpath()
-  ),
-
-  # Compute multilevel reliabilities
-  tar_target(
-    reliabilities_sem,
-    calculate_ssc_reliabilities(state_self_comp_piel_mpath_data)
-  ),
-  
-  # Get estimate and effect size of negative affect pre-exam - post-exam
-  # First exam
-  tar_target(
-    list_params_first_exam_neg_aff_difference,
-    get_estimates_neg_aff_difference_exam("first_exam")
-  ),
-  
-  # Get estimate and effect size of negative affect pre-exam - post-exam
-  # Second exam
-  tar_target(
-    list_params_second_exam_neg_aff_difference,
-    get_estimates_neg_aff_difference_exam("second_exam")
-  ),
-  
-  # Comparison of the average negative affect in the days not coinciding with
-  # the exam day (pre, post) and either pre (the day before the exam) or post
-  # (the evening after the exam). Here is the comparison between the average
-  # negative affect in the no-exam days and the day before the exam.
-  # Positive values of the beta coefficient mean that the tested condition
-  # pre or post has a larger value than the comparison condition (always the
-  # average negative affect in the no-exam days). Positive values of beta, in 
-  # the pre condition mean that the day before the exam the negative affect was 
-  # more intense than in the previous (or following) days.
-  tar_target(
-    list_params_no_exam_pre_neg_aff_difference,
-    compute_no_exam_effects_on_neg_aff(
-      gen_data_comparison_avg_pre_post_neg_aff("pre"), "pre")
-  ),
-  
-  # Here is the comparison between the average negative affect in the no-exam 
-  # days and the evening after the exam.
-  tar_target(
-    list_params_no_exam_post_neg_aff_difference,
-    compute_no_exam_effects_on_neg_aff(
-      gen_data_comparison_avg_pre_post_neg_aff("post"), "post")
-  ),
-
-  # Create report.
-  tar_quarto(
-    name = report,
-    path = here::here("doc", "ema_ssc_report.qmd")
-  )
-
-  # close list  
-)
-
-
-
-
+source("targets_lists/_targets_preprocessing.R")
+source("targets_lists/_targets_exam_pre_post.R")
+# source("targets_lists/_targets_stats_coefs.R")
+# source("targets_lists/_targets_models_comparison.R")
+# source("targets_lists/_targets_figures_coefs.R") 
+# source("targets_lists/_targets_report.R")
 
 
 
