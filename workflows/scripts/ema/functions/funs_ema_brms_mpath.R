@@ -278,9 +278,9 @@ fit_and_compare_neg_ssc_models <- function(data) {
     state_ucs ~ dec_moment + dec_day + dec_person +
       na_moment + na_day + na_person +
       con_moment + con_day + con_person +
-      (1 + na_moment + na_day + con_moment + con_day + dec_moment + dec_day | user_id) + 
+      (1 + na_moment + na_day + dec_moment + dec_day | user_id) + 
       (1 + moment | user_id:day), 
-    data = data,
+    data = dat,
     prior = priors1,
     family = student(),
     control = list(adapt_delta = 0.99), # max_treedepth = 20
@@ -451,11 +451,11 @@ fit_and_compare_pos_ssc_models <- function(data) {
   (loo_bmod8_psc <- loo(bmod8_psc)) # reloo = TRUE
   
   bmod9_psc <- brm(
-    zpsc ~ dec_moment + dec_day + dec_person +
+    state_ucs ~ dec_moment + dec_day + dec_person +
       na_moment + na_day + na_person +
-      context_moment + context_day + context_person + 
-      (1 + na_moment + na_day + context_moment + context_day + dec_moment + dec_day | user_id) + 
-      (1 | bysubj_day),
+      con_moment + con_day + con_person + 
+      (1 + na_moment + na_day + dec_moment + dec_day | user_id) + 
+      (1 | day),
     data = tot_df,
     prior = priors1,
     family = student(),
