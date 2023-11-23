@@ -1,5 +1,8 @@
 name|type|parent|branches|progress
-list_params_no_exam_post_neg_aff_difference|stem|list_params_no_exam_post_neg_aff_difference|0|started
-list_params_no_exam_post_neg_aff_difference|stem|list_params_no_exam_post_neg_aff_difference|0|built
-list_params_first_exam_neg_aff_difference|stem|list_params_first_exam_neg_aff_difference|0|started
-list_params_first_exam_neg_aff_difference|stem|list_params_first_exam_neg_aff_difference|0|built
+state_self_comp_piel_mpath_data|stem|state_self_comp_piel_mpath_data|0|skipped
+mpath_ema_data_raw|stem|mpath_ema_data_raw|0|skipped
+reliabilities_sem|stem|reliabilities_sem|0|skipped
+clean_mpath_ema_data|stem|clean_mpath_ema_data|0|skipped
+ema_data|stem|ema_data|0|started
+ema_data|stem|ema_data|0|built
+compliance_results|stem|compliance_results|0|skipped

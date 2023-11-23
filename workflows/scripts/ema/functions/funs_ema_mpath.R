@@ -31,7 +31,7 @@ delete_first_row_xlsx <- function(FOLDER_NAME) {
 #' @description
 #' This code imports and cleans data prior to modeling and analysis.
 #' 
-import_ema_data <- function(input_folder, output_rds_path) {
+import_ema_data <- function(input_folder) {
   
   suppressPackageStartupMessages({
     library(psych)
@@ -130,13 +130,15 @@ import_ema_data <- function(input_folder, output_rds_path) {
   
   combined_df <- bind_rows(d_list)
   
-  saveRDS(combined_df, output_rds_path)
+  saveRDS(combined_df, here("data", "prep", "ema", "ema_data_1.RDS"))
+  
+  return(combined_df)
 }
 
 
 #' process_ema_data() ----------------------------------------------------------
 #' 
-process_ema_data <- function(input_rds_path, output_rds_path) {
+process_ema_data <- function(d) {
   suppressPackageStartupMessages({
     library("psych")
     library("ggplot2")
@@ -146,8 +148,6 @@ process_ema_data <- function(input_rds_path, output_rds_path) {
     library("lubridate")
     library("tidyr")
   })
-  
-  d <- readRDS(input_rds_path)
   
   new_column_names <- c(
     "question_context_multiple_choice" = "context",
@@ -230,7 +230,9 @@ process_ema_data <- function(input_rds_path, output_rds_path) {
   d$user_id <- 
     gsub("/Users/corrado/_repositories/ema_scs_mpath/data/raw/m_path_data_2023/", "", d$user_id)
   
-  saveRDS(d, output_rds_path)
+  saveRDS(d, here("data", "prep", "ema", "ema_data_2.RDS"))
+  
+  return(d)
 }
 
 
@@ -242,12 +244,9 @@ process_ema_data <- function(input_rds_path, output_rds_path) {
 #' @param filepath The data frame after data wrangling
 #' @return A data frame.
 #' 
-remove_wrong_days <- function(filepath_input, filepath_output) {
+remove_wrong_days <- function(data) {
   library(dplyr)
   library(here)
-  
-  # Read raw data
-  data <- readRDS(here::here(filepath_input))
   
   # Define project days
   project_days <- c(
@@ -278,7 +277,9 @@ remove_wrong_days <- function(filepath_input, filepath_output) {
     mutate(bysubj_day = dense_rank(day)) %>%
     ungroup()
   
-  saveRDS(filtered_data, filepath_output)
+  saveRDS(filtered_data, here("data", "prep", "ema", "ema_data_3.RDS"))
+  
+  return(filtered_data)
 }
 
 
@@ -384,6 +385,7 @@ get_state_self_comp_piel_mpath <- function() {
   # Paths to data files
   piel_path <- 
     "~/_repositories/ema_scs_piel/data/prep/ema/ema_data_2.RDS"
+  
   mpath_path <- here("data", "prep", "ema", "ema_data_3.RDS")
   
   # Process data for each dataset
@@ -624,7 +626,7 @@ compute_exam_effects_on_neg_aff <- function(exam_data, exam_type) {
       set_prior("normal(0, 100)", class = "sigma"),
       set_prior("normal(0, 0.2)", class = "quantile")
     ),
-    iter = 10000,
+    control = list(adapt_delta = 0.99),
     backend = "cmdstanr",
     chains = 3,
     cores = 6,
@@ -636,18 +638,6 @@ compute_exam_effects_on_neg_aff <- function(exam_data, exam_type) {
 }
 
 
-#' get_estimates_neg_aff_difference_exam() -------------------------------------
-#' 
-#' @description
-#' Returns the estimates of the negative affect difference pre-exam - post-exam
-#' @param EXAM_TYPE Either "first_exam" or "second_exam"
-#' @return A list
-#' 
-get_estimates_neg_aff_difference_exam <- function(EXAM_TYPE) {
-  data = process_exam_data(EXAM_TYPE)
-  compute_exam_effects_on_neg_aff(data, EXAM_TYPE)
-}
-
 #' calculate_compliance() ------------------------------------------------------
 #' @description
 #' Get the compliance in terms of the proportion of subjects (out of the total), 
@@ -656,12 +646,9 @@ get_estimates_neg_aff_difference_exam <- function(EXAM_TYPE) {
 #' @param filepath The path to the data to be analyzed (ema_data_3.RDS)
 #' @return A list.
 #' 
-calculate_compliance <- function(filepath) {
+calculate_compliance <- function(alldata) {
   library(dplyr)
   library(here)
-  
-  # Read data
-  alldata <- readRDS(here::here(filepath))
   
   # Calculate compliance rate
   n_per_day <- alldata %>%
@@ -692,6 +679,7 @@ calculate_compliance <- function(filepath) {
   
   return(output_list)
 }
+
 
 #' calculate_min_max_neg_aff() -------------------------------------------------
 #' 
@@ -795,10 +783,7 @@ compute_no_exam_effects_on_neg_aff <- function(data, comparison_type) {
 
 #' gen_data_comparison_avg_pre_post_neg_aff() ----------------------------------
 #' 
-gen_data_comparison_avg_pre_post_neg_aff <- function(comparison_type) {
-  
-  # Read raw data.
-  d <- readRDS(here::here("data", "prep", "ema", "ema_data_3.RDS"))
+gen_data_comparison_avg_pre_post_neg_aff <- function(d, comparison_type) {
   
   no_exam_df <- d |> 
     dplyr::filter(exam_day == "no_exam")
@@ -848,7 +833,6 @@ gen_data_comparison_avg_pre_post_neg_aff <- function(comparison_type) {
   }
   
   return(result)
-  
 }
 
 

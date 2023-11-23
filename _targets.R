@@ -72,9 +72,9 @@ list.files(
 
 
 source("targets_lists/_targets_preprocessing.R")
-source("targets_lists/_targets_exam_pre_post.R")
+# source("targets_lists/_targets_exam_pre_post.R")
+source("targets_lists/_targets_models_comparison.R")
 # source("targets_lists/_targets_stats_coefs.R")
-# source("targets_lists/_targets_models_comparison.R")
 # source("targets_lists/_targets_figures_coefs.R") 
 # source("targets_lists/_targets_report.R")
 

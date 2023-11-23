@@ -9,45 +9,49 @@
 
 # Targets:
 list(
+  
+  tar_load(ema_data),
 
   # State Self-Compassion - Negative component
   tar_target(
-    plot_ssc_neg_coefs,
+    plot_mod_5_state_ucs_coefs,
     plot_brms_coefficients(
-      readRDS(here::here("workflows", "scripts", "ema", "brms_fits", "bmod9_nsc.rds")),
+      readRDS(here::here("workflows", "scripts", "ema", "brms_fits", "mod_5_state_ucs.rds")),
       parameters_of_interest = NULL,
-      "Negative Component"
+      "Negative Component",
+      "plot_coefs_state_ucs.pdf"
     ),
     format = "file"
   ),
 
   # State Self-Compassion - Positive component
   tar_target(
-    plot_ssc_pos_coefs,
+    plot_mod_5_state_cs_coefs,
     plot_brms_coefficients(
-      readRDS(here::here("workflows", "scripts", "ema", "brms_fits", "bmod9_psc.rds")),
+      readRDS(here::here("workflows", "scripts", "ema", "brms_fits", "mod_5_state_cs.rds")),
       parameters_of_interest = NULL,
-      "Positive Component"
+      "Positive Component",
+      "plot_coefs_state_cs.pdf"
     ),
     format = "file"
   ),
 
   # Variance components for the random effects of the model for CS
   tar_target(
-    plot_var_comp_cs,
+    plot_var_comp_mod_5_cs,
     posterior_variance_estimates(
-      here::here("workflows", "scripts", "ema", "brms_fits", "bmod9_psc.rds"),
-      here::here("doc", "figures", "var_comp_cs.pdf")
+      here::here("workflows", "scripts", "ema", "brms_fits", "mod_5_state_cs.rds"),
+      here::here("doc", "figures", "var_comp_mod_5_cs.pdf")
     ),
     format = "file"
   ),
 
   # Variance components for the random effects of the model for UCS
   tar_target(
-    plot_var_comp_ucs,
+    plot_var_comp_mod_5_ucs,
     posterior_variance_estimates(
-      here::here("workflows", "scripts", "ema", "brms_fits", "bmod9_nsc.rds"),
-      here::here("doc", "figures", "var_comp_ucs.pdf")
+      here::here("workflows", "scripts", "ema", "brms_fits", "mod_5_state_ucs.rds"),
+      here::here("doc", "figures", "var_comp_mod_5_ucs.pdf")
     ),
     format = "file"
   ),
@@ -57,11 +61,10 @@ list(
   tar_target(
     plot_cs_ucs_by_neg_aff_day_figures,
     plot_cs_ucs_by_neg_aff_day(
-      here::here("data", "prep", "ema", "ema_data_3.RDS"),
-      here::here("doc", "figures", "cs_ucs_neg_aff_day.pdf"),
-      format = "file"
-    )
-
+      ema_data, 
+      here::here("doc", "figures", "cs_ucs_neg_aff_day.pdf")
+    ),
+    format = "file"
     # close list
   )
 )

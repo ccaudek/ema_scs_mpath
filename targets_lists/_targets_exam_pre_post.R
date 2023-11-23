@@ -1,20 +1,26 @@
 # _targets_pre_post.R #
 
+# Source the functions that will be used to build the targets in _targets_pre_post.R
+
+
 # Targets:
 list(
+  
+  # Load ema_data created by another targets list.
+  tar_load(ema_data),
   
   # Get estimate and effect size of negative affect pre-exam - post-exam
   # First exam
   tar_target(
     list_params_first_exam_neg_aff_difference,
-    get_estimates_neg_aff_difference_exam("first_exam")
+    compute_exam_effects_on_neg_aff(ema_data, "first_exam")
   ),
 
   # Get estimate and effect size of negative affect pre-exam - post-exam
   # Second exam
   tar_target(
     list_params_second_exam_neg_aff_difference,
-    get_estimates_neg_aff_difference_exam("second_exam")
+    compute_exam_effects_on_neg_aff(ema_data, "second_exam")
   ),
 
   # Comparison of the average negative affect in the days not coinciding with
@@ -29,7 +35,9 @@ list(
   tar_target(
     list_params_no_exam_pre_neg_aff_difference,
     compute_no_exam_effects_on_neg_aff(
-      gen_data_comparison_avg_pre_post_neg_aff("pre"), "pre")
+      gen_data_comparison_avg_pre_post_neg_aff(ema_data, "pre"), 
+      "pre"
+    )
   ),
 
   # Here is the comparison between the average negative affect in the no-exam
@@ -37,7 +45,9 @@ list(
   tar_target(
     list_params_no_exam_post_neg_aff_difference,
     compute_no_exam_effects_on_neg_aff(
-      gen_data_comparison_avg_pre_post_neg_aff("post"), "post")
+      gen_data_comparison_avg_pre_post_neg_aff(ema_data, "post"), 
+      "post"
+    )
   )
   
   # close list  

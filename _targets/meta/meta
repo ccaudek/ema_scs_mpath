@@ -1,36 +1,47 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-.Random.seed|object|3229c4269676de4f|||||||||||||||
+.Random.seed|object|9ea1da3dc72dc9fd|||||||||||||||
 calculate_bysubj_mean_neg_aff_w5|function|6fd980ff921d43d6|||||||||||||||
-calculate_compliance|function|20d6fecd8cba8742|||||||||||||||
+calculate_compliance|function|6c228beb6c537e8d|||||||||||||||
 calculate_min_max_neg_aff|function|54b7fe69ba86d1ef|||||||||||||||
 calculate_ssc_reliabilities|function|acde6313221a258e|||||||||||||||
 center3L|function|480744973b33658f|||||||||||||||
-clean_mpath_ema_data|stem|da7e5646cbdfced7|03c6c0006a161b44|884761688e689976|-587928903||t0s|f4066a65ff755f48|0|file|local|vector|||0.434||
-compliance_results|stem|1ef71e75c1efc00a|70925b7a700e3b86|aa983f636ace1313|1550561917||t19682.9544509464s|4956b68a23f9e1fc|122|qs|local|vector|||0.17||
+clean_mpath_ema_data|stem|d0cfaa38c5bcae57|ae56c016a93ab56b|317384a34e91c0cf|-587928903||t19684.4624694s|1db10f8d9247fe20|125540|qs|local|vector|||0.338||
+compliance_results|stem|1ef71e75c1efc00a|8e26e816a80e235f|f137b28b4309fdb2|1550561917||t19684.462471441s|4956b68a23f9e1fc|122|qs|local|vector|||0.07||
 compute_effect_size|function|e70136f3d8022a51|||||||||||||||
 compute_effect_size_ci|function|2ee273be782de734|||||||||||||||
-compute_exam_effects_on_neg_aff|function|43d85e1b8da131a4|||||||||||||||
+compute_exam_effects_on_neg_aff|function|f97b2679268c5663|||||||||||||||
 compute_no_exam_effects_on_neg_aff|function|569223689c9ce85d|||||||||||||||
+data_for_models_comparison|stem|1ecff99df4c1e1ff|d02f71f39904d490|f635415f08b06cf4|1361953083||t19684.5739015029s|7d277a5c1f1f31d0|326118|qs|local|vector|||9.445|Number of logged events 1. 1m22mUsing by  character to perform a cross join was deprecated in dplyr 1.1.0.36mℹ39m Please use cross_join instead.|
 delete_first_row_xlsx|function|9d14bd35928cdb65|||||||||||||||
-fit_and_compare_neg_ssc_models|function|46837f21ffcd05ee|||||||||||||||
-fit_and_compare_pos_ssc_models|function|279b4fa213aea098|||||||||||||||
-gen_data_comparison_avg_pre_post_neg_aff|function|066fc2f9aa41b576|||||||||||||||
-get_data_models_comparison|function|7a502d1cb1e1016e|||||||||||||||
+ema_data|stem|a718651b7984c03b|5f070a4d3a4bb2ae|5ee8ac5219a0c770|-925799623||t19684.6823270851s|106437fe63662e63|145966|qs|local|vector|||0.115||
+fit_and_compare_models|function|6651c4a44aec6120|||||||||||||||
+fit_and_compare_neg_ssc_models|function|6651c4a44aec6120|||||||||||||||
+gen_data_comparison_avg_pre_post_neg_aff|function|00b05f51b56cc895|||||||||||||||
+get_data_for_model_comparisons|function|988f7514b8d75c0e|||||||||||||||
+get_data_models_comparison|function|50ab13fd68ff3a21|||||||||||||||
 get_estimates_neg_aff_difference_exam|function|802af2ba6267ab94|||||||||||||||
 get_state_self_comp_piel_mpath|function|d63cdc6214d71400|||||||||||||||
 get_stats_brms_param|function|2b95359c3062f287|||||||||||||||
-import_ema_data|function|18b095a3a5f37274|||||||||||||||
-list_params_first_exam_neg_aff_difference|stem|79596ad51bc4744f|ad6d695c28c3ee27|dc62ea981b550075|-396268842||t19682.9576048243s|bbe0e43529942e5e|163|qs|local|vector|||224.564|Number of logged events 2. Dropping draws_df class as required metadata was removed.. Dropping draws_df class as required metadata was removed.|
-list_params_no_exam_post_neg_aff_difference|stem|381ce717dd5fb9fc|6a556ec08247dc9f|e483895f0ca7f61c|-1462879069||t19682.955005559s|bbe0e43529942e5e|163|qs|local|vector|||21.668|Dropping draws_df class as required metadata was removed.. Dropping draws_df class as required metadata was removed.|
-mpath_ema_data_raw|stem|da7e5646cbdfced7|078259b90f0c3e10|2af4a00f0a5201e0|496426626||t0s|f4066a65ff755f48|0|file|local|vector|||5.843||
-plot_brms_coefficients|function|1562bbf80608fdf9|||||||||||||||
-plot_ssc_pos_coefs|stem||e480b393392b8f3e|319958dbf5db27b3|374839115||t19682.9540400298s||0|file|local|vector|||0.107|cannot open compressed file Userscorrado_repositoriesema_scs_mpathworkflowsscriptsemabrms_fitsbmod9_psc.rds, probable reason No such file or directory|error in evaluating the argument object in selecting a method for function summary cannot open the connection
-posterior_variance_estimates|function|d24394d8b99ffcb5|||||||||||||||
-process_ema_data|function|765c8d7e9906514c|||||||||||||||
+import_ema_data|function|3594c1abfa4ca0ba|||||||||||||||
+list_params_first_exam_neg_aff_difference|stem||fc124c1d3c9c140a|86e1696b87c11c78|-396268842||t19684.5447301456s||0|qs|local|vector|||0.11||object ema_data not found
+list_params_no_exam_post_neg_aff_difference|stem|6486a74a69cc313b|fe39dc4f6775f9b7|a697b99ea236024a|-1462879069||t19684.5471092479s|bbe0e43529942e5e|163|qs|local|vector|||19.344|Dropping draws_df class as required metadata was removed.. Dropping draws_df class as required metadata was removed.|
+list_params_no_exam_pre_neg_aff_difference|stem||c2b79d1d7910bf7e|5c7ce058d145b6ea|-1289183516||t19684.4998535879s||0|qs|local|vector|||0.111||object ema_data not found
+mpath_ema_data_raw|stem|d31ccaf16d321d94|8ce6724465623724|6e82a214b7d52479|496426626||t19684.4624264981s|4c12dd887716acf3|186635|qs|local|vector|||5.762||
+plot_brms_coefficients|function|d1a486714321428b|||||||||||||||
+plot_cs_ucs_by_neg_aff_day|function|c7703ce8fade0be6|||||||||||||||
+posterior_variance_estimates|function|84e0153b9453665e|||||||||||||||
+process_ema_data|function|a46686946d73a2a6|||||||||||||||
 process_exam_data|function|d9763267cef9fdab|||||||||||||||
-reliabilities_sem|stem|9da8ccbbcee4c0b0|19e18bc90852b0f7|de069f7fc4f55b3d|-2075012037||t19682.954561165s|9c4bb1876e1721ca|190|qs|local|vector|||3.035||
-remove_wrong_days|function|0426d269f33d3429|||||||||||||||
-removed_wrong_days_data|stem|da7e5646cbdfced7|824191280571cdca|71ec1430cb21b7e4|2147017707||t0s|f4066a65ff755f48|0|file|local|vector|||0.114||
-report|stem||63693a2b92c9b208|ef46db3751d8e999|1464725162||t19682.9537177302s||0|file|local|vector|||4.972||33m39m System command quarto failed
+reliabilities_sem|stem|9da8ccbbcee4c0b0|19e18bc90852b0f7|de069f7fc4f55b3d|-2075012037||t19684.4624653921s|9c4bb1876e1721ca|190|qs|local|vector|||3.356||
+remove_wrong_days|function|d0e37c81f52c8cae|||||||||||||||
 SEED|object|ac973a9ac4a150e7|||||||||||||||
-state_self_comp_piel_mpath_data|stem|9eef4bf6169b972d|fc95d0d344bbdf33|23c659ff28710551|969708579||t19682.9544519277s|92678b63dab3fcac|94176|qs|local|vector|||0.067||
+state_self_comp_piel_mpath_data|stem|9eef4bf6169b972d|fc95d0d344bbdf33|23c659ff28710551|969708579||t19684.4623595249s|92678b63dab3fcac|94176|qs|local|vector|||0.157||
+stats_coef_con_day|stem|0041bc8d5f07cf0f|17b69507dda4d9e6|e7d45ce76a7d6d0e|1497020996||t19684.5866616084s|7494604cdee30942|14686|qs|local|vector|||0.404|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
+stats_coef_con_moment|stem|ba9acd0229975676|29e2132dabaa650d|e7d45ce76a7d6d0e|1443677094||t19684.58666614s|929b1c1eb1daf360|14269|qs|local|vector|||0.387|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
+stats_coef_con_person|stem|f0c5a222b7e08815|7f22c24000e583ec|e7d45ce76a7d6d0e|2045369469||t19684.5866520332s|a74cf088db72ed81|14497|qs|local|vector|||0.541|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
+stats_coef_dec_day|stem|82ace9b245a9404f|6e503c8cad97b536|e7d45ce76a7d6d0e|-2106513243||t19684.58667523s|fb2bdeb3e86644b8|13514|qs|local|vector|||0.387|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
+stats_coef_dec_moment|stem|6eb1333c39d2cb0b|2494f43031e12844|e7d45ce76a7d6d0e|186073264||t19684.5866888956s|5a57321016baf4bb|13549|qs|local|vector|||0.384|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
+stats_coef_dec_person|stem|d67197f4d2319928|2d24d1b3272fd9d3|e7d45ce76a7d6d0e|-112837793||t19684.586684409s|ad308a8820bd849c|13777|qs|local|vector|||0.392|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
+stats_coef_na_day|stem|4477a8e650427b9c|8e977231793f1bd6|e7d45ce76a7d6d0e|-424366937||t19684.5866798265s|73e73c3014de598b|13648|qs|local|vector|||0.392|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
+stats_coef_na_moment|stem|57cdef2d5d0ae94a|26faea6083c25248|e7d45ce76a7d6d0e|1798343133||t19684.5866568932s|06023c21eb1834af|13250|qs|local|vector|||0.403|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
+stats_coef_na_person|stem|966ea572db5b48f8|b20d9c5237b6393f|e7d45ce76a7d6d0e|971000715||t19684.5866707174s|425fc934246e2ece|13491|qs|local|vector|||0.391|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|

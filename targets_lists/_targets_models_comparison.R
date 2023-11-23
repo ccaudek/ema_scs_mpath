@@ -1,24 +1,28 @@
 # _targets_models_comparison.R #
 
+source(here:::here("workflows", "scripts", "ema", "functions", "funs_model_comparisons.R"))
+
 # Targets:
 list(
+  
+  tar_load(ema_data),
   
   # Get data for brms models' comparisons
   tar_target(
     data_for_models_comparison,
-    get_data_models_comparison()
+    get_data_for_model_comparisons(ema_data)
   ),
 
-  # LOO model comparison for the negative component of the State Self_Compassion
+  # LOO model comparison for the UCS component of the State Self_Compassion
   tar_target(
-    loo_comparison_nssc_models,
-    fit_and_compare_neg_ssc_models(data_for_models_comparison)
+    loo_comparison_state_ucs_models,
+    fit_and_compare_models(data_for_models_comparison, "state_ucs")
   ),
   
-  # LOO model comparison for the positive component of the State Self_Compassion
+  # LOO model comparison for the CS component of the State Self_Compassion
   tar_target(
-    loo_comparison_pssc_models,
-    fit_and_compare_pos_ssc_models(data_for_models_comparison)
+    loo_comparison_state_cs_models,
+    fit_and_compare_models(data_for_models_comparison, "state_cs")
   )
 
   # close list  

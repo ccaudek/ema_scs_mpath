@@ -117,14 +117,13 @@ loo_model_7 <- loo(model_7)
 
 
 
-
-model_7 <- brm(
+model_8 <- brm(
   state_ucs ~ na_person + dec_person + con_person + # Between-subject variables
     na_moment + na_day + # Within-subject variables (day and moment)
     dec_moment + dec_day +
     con_moment + con_day + 
     (1 + na_moment + na_day + dec_moment + dec_day | user_id) + 
-    (1 | user_id:day:moment),
+    (1 + na_moment + na_day + dec_moment + dec_day | user_id:day),
   data = dat, 
   family = student(),
   control = list(adapt_delta = 0.99),
@@ -134,6 +133,11 @@ model_7 <- brm(
   threads = threading(3),
   silent = 2
 )
+loo_model_8 <- loo(model_8)
+
+loo_compare(loo_model_5, loo_model_6, loo_model_7, loo_model_8)
+
+
 
 
 
