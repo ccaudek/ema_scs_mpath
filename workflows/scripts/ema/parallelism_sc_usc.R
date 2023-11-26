@@ -1,53 +1,77 @@
 
 
-d <- get_data_models_comparison()
+source(here:::here("workflows", "scripts", "ema", "functions", "funs_model_comparisons.R"))
+
+
+tar_load(ema_data)
+
+d <- ema_data |> 
+  dplyr::select(-calendar_day) |> 
+  dplyr::rename(
+    state_cs = psc, 
+    state_ucs = nsc,
+    moment = time_window,
+    calendar_day = day,
+    day = bysubj_day
+  )
+
 
 d1 <- d |> 
   dplyr::select(
-    psc, nsc, 
+    state_cs, state_ucs, 
     neg_aff, dec,
-    time_window, bysubj_day, user_id
+    moment, day, user_id
   ) |> 
   mutate(
-    nsc_rev = nsc * -1
+    state_ucs_rev = state_ucs * -1
   ) |> 
-  dplyr::select(-nsc) |> 
+  dplyr::select(-state_ucs) |> 
   dplyr::rename(
-    "ucs" = "nsc_rev",
-    "sc" = "psc"
+    "state_ucs" = "state_ucs_rev"
   )
 
 long_df <- pivot_longer(
-  d1, -c("neg_aff", "dec", "time_window", "bysubj_day", "user_id"), 
+  d1, -c("neg_aff", "dec", "moment", "day", "user_id"), 
   names_to = "dimension", values_to = "ssc"
 )
 
 foo <- long_df |> 
-  dplyr::select(-c(time_window, user_id, bysubj_day))
+  dplyr::select(-c(moment, user_id, day))
 
-performance::check_outliers(foo)
-
-bad_obs <- c(
-  572, 580, 588, 589, 989, 2971, 2972, 2974, 2980, 2981, 2982, 2988, 3007, 3008, 7477,
-  10992, 11503, 11869, 12756, 12770, 12788, 12794
-)
+res <- performance::check_outliers(foo)
+attr_list <- attributes(res)
+outlier_count <- attr_list$outlier_count
+bad_row_indices <- outlier_count$all$Row
+# bad_row_indices
 
 # Specify the columns for which you want to set the values to NA
 columns_to_na <- c("neg_aff", "dec", "ssc")
 
 # Set the values to NA for the specified rows and columns
-long_df[bad_obs, columns_to_na] <- NA
+long_df[bad_row_indices, columns_to_na] <- NA
+
+long_df$moment <- factor(long_df$moment)
+long_df$day <- factor(long_df$day)
+long_df$user_id <- factor(long_df$user_id)
+long_df$dimension <- factor(long_df$dimension)
 
 # Imputing missing data
-imputed_data <- mice(long_df %>% dplyr::select(all_of(columns_to_na)),
-                     m = 1, maxit = 50, method = "pmm", seed = 123
+imputed_data <- mice(
+  long_df,
+  m = 1, maxit = 50, method = "pmm", seed = 123
 ) %>%
   complete(1)
 
-imputed_data$user_id <- long_df$user_id
-imputed_data$bysubj_day <- long_df$bysubj_day
-imputed_data$time_window <- long_df$time_window
-imputed_data$dimension <- long_df$dimension
+# # Imputing missing data
+# imputed_data <- mice(long_df %>% dplyr::select(all_of(columns_to_na)),
+#                      m = 1, maxit = 50, method = "pmm", seed = 123
+# ) %>%
+#   complete(1)
+
+# imputed_data$user_id <- long_df$user_id
+# imputed_data$bysubj_day <- long_df$bysubj_day
+# imputed_data$time_window <- long_df$time_window
+# imputed_data$dimension <- long_df$dimension
 
 imputed_data$zna <- as.vector(scale(imputed_data$neg_aff))
 imputed_data$zdec <- as.vector(scale(imputed_data$dec))
@@ -59,48 +83,49 @@ priors1 <- c(
 
 mod_parallel <- brm(
   zssc ~ dimension * (zdec + zna) +
-    (1 | user_id) + # Random intercept for subject
-    (1 + time_window | user_id:bysubj_day), # Random intercept and slope for time window within day within subject 
+    (1 + zdec + zna | user_id) + 
+    (1 | user_id:day), 
   data = imputed_data,
   prior = priors1,
-  family = asym_laplace(),
-  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  family = student(),
+  control = list(adapt_delta = 0.99),
   backend = "cmdstanr",
   cores = 6,
   chains = 2,
   threads = threading(3),
-  silent = 2,
-  file = here::here("workflows", "scripts", "ema", "brms_fits", "mod_parallel.rds")
+  silent = 2
+  # file = here::here("workflows", "scripts", "ema", "brms_fits", "mod_parallel.rds")
 )
-pp_check(mod)
-loo_mod <- loo(mod)
+pp_check(mod_parallel)
+loo_mod_parallel <- loo(mod_parallel)
 
-mod_parallel_0 <- brm(
+
+mod0_parallel <- brm(
   zssc ~ dimension + (zdec + zna) +
-    (1 | user_id) + # Random intercept for subject
-    (1 + time_window | user_id:bysubj_day), # Random intercept and slope for time window within day within subject 
+    (1 + zdec + zna | user_id) + 
+    (1 | user_id:day), 
   data = imputed_data,
   prior = priors1,
-  family = asym_laplace(),
-  # control = list(adapt_delta = 0.99, max_treedepth = 20),
+  family = student(),
+  control = list(adapt_delta = 0.99),
   backend = "cmdstanr",
   cores = 6,
   chains = 2,
   threads = threading(3),
-  silent = 2,
-  file = here::here("workflows", "scripts", "ema", "brms_fits", "mod_parallel_0.rds")
+  silent = 2
+  # file = here::here("workflows", "scripts", "ema", "brms_fits", "mod_parallel.rds")
 )
-loo_mod_noint <- loo(mod_noint)
+loo_mod0_parallel <- loo(mod0_parallel)
 
-loo_compare(loo_mod, loo_mod_noint)
+loo_compare(loo_mod_parallel, loo_mod0_parallel)
 #          elpd_diff se_diff
 # mod_noint    0.0       0.0 
 # mod       -786.7      46.3 
 
-bayes_R2(mod)
+bayes_R2(mod_parallel)
 #     Estimate  Est.Error      Q2.5     Q97.5
 # R2 0.7427189 0.01170741 0.7151978 0.7625236
-bayes_R2(mod_noint)
+bayes_R2(mod0_parallel)
 #     Estimate   Est.Error     Q2.5     Q97.5
 # R2 0.7664634 0.002552426 0.761222 0.7715766
 
@@ -108,7 +133,7 @@ pp_check(mod)
 
 print(loo_mod)
 
-summary(mod)
+summary(mod_parallel)
 # Population-Level Effects: 
 #                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
 # Intercept             0.46      0.03     0.40     0.52 1.00      922      899

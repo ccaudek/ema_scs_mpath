@@ -1,5 +1,7 @@
 # _targets_preprocessing.R #
 
+source(here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R"))
+
 # Targets:
 list(
 
