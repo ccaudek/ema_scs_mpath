@@ -1,19 +1,19 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-.Random.seed|object|9ea1da3dc72dc9fd|||||||||||||||
+.Random.seed|object|7b03ec815ab5e11d|||||||||||||||
 calculate_bysubj_mean_neg_aff_w5|function|6fd980ff921d43d6|||||||||||||||
 calculate_compliance|function|6c228beb6c537e8d|||||||||||||||
 calculate_min_max_neg_aff|function|54b7fe69ba86d1ef|||||||||||||||
 calculate_ssc_reliabilities|function|acde6313221a258e|||||||||||||||
 center3L|function|480744973b33658f|||||||||||||||
-clean_mpath_ema_data|stem|d0cfaa38c5bcae57|ae56c016a93ab56b|317384a34e91c0cf|-587928903||t19684.4624694s|1db10f8d9247fe20|125540|qs|local|vector|||0.338||
-compliance_results|stem|1ef71e75c1efc00a|8e26e816a80e235f|f137b28b4309fdb2|1550561917||t19684.462471441s|4956b68a23f9e1fc|122|qs|local|vector|||0.07||
+clean_mpath_ema_data|stem|d0cfaa38c5bcae57|ae56c016a93ab56b|317384a34e91c0cf|-587928903||t19688.3598621611s|1db10f8d9247fe20|125540|qs|local|vector|||0.218||
+compliance_results|stem|d62d0b3f51ad601d|8e26e816a80e235f|f137b28b4309fdb2|1550561917||t19688.3598651554s|4956b68a23f9e1fc|122|qs|local|vector|||0.178||
 compute_effect_size|function|e70136f3d8022a51|||||||||||||||
 compute_effect_size_ci|function|2ee273be782de734|||||||||||||||
 compute_exam_effects_on_neg_aff|function|f97b2679268c5663|||||||||||||||
 compute_no_exam_effects_on_neg_aff|function|569223689c9ce85d|||||||||||||||
 data_for_models_comparison|stem|1ecff99df4c1e1ff|d02f71f39904d490|f635415f08b06cf4|1361953083||t19684.5739015029s|7d277a5c1f1f31d0|326118|qs|local|vector|||9.445|Number of logged events 1. 1m22mUsing by  character to perform a cross join was deprecated in dplyr 1.1.0.36mℹ39m Please use cross_join instead.|
 delete_first_row_xlsx|function|9d14bd35928cdb65|||||||||||||||
-ema_data|stem|a718651b7984c03b|5f070a4d3a4bb2ae|5ee8ac5219a0c770|-925799623||t19684.6823270851s|106437fe63662e63|145966|qs|local|vector|||0.115||
+ema_data|stem|a718651b7984c03b|5f070a4d3a4bb2ae|5ee8ac5219a0c770|-925799623||t19688.3598630578s|106437fe63662e63|145966|qs|local|vector|||0.071||
 fit_and_compare_models|function|6651c4a44aec6120|||||||||||||||
 fit_and_compare_neg_ssc_models|function|6651c4a44aec6120|||||||||||||||
 gen_data_comparison_avg_pre_post_neg_aff|function|00b05f51b56cc895|||||||||||||||
@@ -26,16 +26,16 @@ import_ema_data|function|3594c1abfa4ca0ba|||||||||||||||
 list_params_first_exam_neg_aff_difference|stem||fc124c1d3c9c140a|86e1696b87c11c78|-396268842||t19684.5447301456s||0|qs|local|vector|||0.11||object ema_data not found
 list_params_no_exam_post_neg_aff_difference|stem|6486a74a69cc313b|fe39dc4f6775f9b7|a697b99ea236024a|-1462879069||t19684.5471092479s|bbe0e43529942e5e|163|qs|local|vector|||19.344|Dropping draws_df class as required metadata was removed.. Dropping draws_df class as required metadata was removed.|
 list_params_no_exam_pre_neg_aff_difference|stem||c2b79d1d7910bf7e|5c7ce058d145b6ea|-1289183516||t19684.4998535879s||0|qs|local|vector|||0.111||object ema_data not found
-mpath_ema_data_raw|stem|d31ccaf16d321d94|8ce6724465623724|6e82a214b7d52479|496426626||t19684.4624264981s|4c12dd887716acf3|186635|qs|local|vector|||5.762||
+mpath_ema_data_raw|stem|d31ccaf16d321d94|8ce6724465623724|6e82a214b7d52479|496426626||t19688.359859542s|4c12dd887716acf3|186635|qs|local|vector|||3.261||
 plot_brms_coefficients|function|d1a486714321428b|||||||||||||||
 plot_cs_ucs_by_neg_aff_day|function|c7703ce8fade0be6|||||||||||||||
 posterior_variance_estimates|function|84e0153b9453665e|||||||||||||||
 process_ema_data|function|a46686946d73a2a6|||||||||||||||
 process_exam_data|function|d9763267cef9fdab|||||||||||||||
-reliabilities_sem|stem|9da8ccbbcee4c0b0|19e18bc90852b0f7|de069f7fc4f55b3d|-2075012037||t19684.4624653921s|9c4bb1876e1721ca|190|qs|local|vector|||3.356||
+reliabilities_sem|stem|9da8ccbbcee4c0b0|19e18bc90852b0f7|de069f7fc4f55b3d|-2075012037||t19688.310010991s|9c4bb1876e1721ca|190|qs|local|vector|||3.356||
 remove_wrong_days|function|d0e37c81f52c8cae|||||||||||||||
 SEED|object|ac973a9ac4a150e7|||||||||||||||
-state_self_comp_piel_mpath_data|stem|9eef4bf6169b972d|fc95d0d344bbdf33|23c659ff28710551|969708579||t19684.4623595249s|92678b63dab3fcac|94176|qs|local|vector|||0.157||
+state_self_comp_piel_mpath_data|stem|9eef4bf6169b972d|fc95d0d344bbdf33|23c659ff28710551|969708579||t19688.3100109931s|92678b63dab3fcac|94176|qs|local|vector|||0.157||
 stats_coef_con_day|stem|0041bc8d5f07cf0f|17b69507dda4d9e6|e7d45ce76a7d6d0e|1497020996||t19684.5866616084s|7494604cdee30942|14686|qs|local|vector|||0.404|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
 stats_coef_con_moment|stem|ba9acd0229975676|29e2132dabaa650d|e7d45ce76a7d6d0e|1443677094||t19684.58666614s|929b1c1eb1daf360|14269|qs|local|vector|||0.387|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
 stats_coef_con_person|stem|f0c5a222b7e08815|7f22c24000e583ec|e7d45ce76a7d6d0e|2045369469||t19684.5866520332s|a74cf088db72ed81|14497|qs|local|vector|||0.541|Method posterior_samples is deprecated. Please see as_draws for recommended alternatives.|
