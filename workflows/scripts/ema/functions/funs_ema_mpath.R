@@ -277,7 +277,7 @@ remove_wrong_days <- function(data) {
     mutate(bysubj_day = dense_rank(day)) %>%
     ungroup()
   
-  saveRDS(filtered_data, here("data", "prep", "ema", "ema_data_3.RDS"))
+  saveRDS(filtered_data, here::here("data", "prep", "ema", "ema_data_3.RDS"))
   
   return(filtered_data)
 }
@@ -366,14 +366,7 @@ compute_effect_size_ci <- function(brms_model, effect_name, probs = c(0.025, 0.9
 # get_state_self_comp_piel_mpath() ---------------------------------------------
 
 get_state_self_comp_piel_mpath <- function() {
-  suppressPackageStartupMessages({
-    library(tidyverse)
-    library(here)
-    library(psych)
-    library(rio)
-    library(semTools)
-  })
-  
+
   # Function to process each dataset
   process_data <- function(path) {
     readRDS(path) |>
@@ -386,7 +379,7 @@ get_state_self_comp_piel_mpath <- function() {
   piel_path <- 
     "~/_repositories/ema_scs_piel/data/prep/ema/ema_data_2.RDS"
   
-  mpath_path <- here("data", "prep", "ema", "ema_data_3.RDS")
+  mpath_path <- here::here("data", "prep", "ema", "ema_data_3.RDS")
   
   # Process data for each dataset
   scs_items_piel <- process_data(piel_path)
@@ -401,9 +394,6 @@ get_state_self_comp_piel_mpath <- function() {
 
 # calculate_ssc_reliabilities() ------------------------------------------------
 calculate_ssc_reliabilities <- function(both_df) {
-  library(tidyverse)
-  library(lavaan)
-  library(semTools)
 
   process_ssc_data <- function(df, mcfa_model) {
     suppressWarnings({

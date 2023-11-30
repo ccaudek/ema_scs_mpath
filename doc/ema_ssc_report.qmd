@@ -30,7 +30,7 @@ Our hypothesis is twofold: If situational factors affect UCS and CS in parallel 
 
 This exploration is crucial for a deeper understanding of self-compassion, as it not only contributes to theoretical knowledge but also has practical implications. Understanding the situational dynamics of self-compassion can enhance psychological interventions and promote well-being by identifying specific contexts in which self-compassionate or uncompassionate responses are more likely to be elicited. Such insights could be pivotal in developing more nuanced and effective therapeutic strategies that cater to individual differences and situational variables, ultimately fostering a more compassionate self-relationship in diverse life situations.
 
-## The Nature of State Self-Compassion
+## The State Self-Compassion Construct
 
 The concept of self-compassion, as defined by Kristin Neff, is indeed an interesting area to explore within the framework of psychological resilience. To address your question, it's important to first understand the distinct aspects of self-compassion and how they might fit into the resilience framework as proposed by Troy et al.
 
@@ -51,7 +51,6 @@ This dual conceptualization is not uncommon in psychological constructs, where a
 ## The Role of the Context
 
 The relationship between state self-compassion and contextual factors can be highlighted by observing how different types of events (e.g., minor vs. major stressors, personal failures, life changes) impact the self-compassion trajectory. For instance, individuals with higher trait self-compassion might show a quicker recovery in their state self-compassion following adversity, or they might not experience as significant a drop in the first place.
-
 
 
 ## Decentering
@@ -103,65 +102,32 @@ suppressPackageStartupMessages({
 ### Compliance
 
 ```{r}
+#| echo: false
 tar_load(compliance_results)
 compliance_results
 ```
 
 ## Multilevel Reilabilities
 
+
 ```{r}
+#| echo: false
 tar_load(reliabilities_sem)
 ```
 
 ### Positive State Self-Compassion
 
 ```{r}
+#| echo: false
 reliabilities_sem[[1]]
 ```
 
 ### Negative State Self-Compassion
 
 ```{r}
+#| echo: false
 reliabilities_sem[[2]]
 ```
-
-
-## Negative Affect Variation Before and After the Exam
-
-First exam.
-
-```{r}
-tar_load(list_params_first_exam_neg_aff_difference)
-list_params_first_exam_neg_aff_difference
-```
-
-Second exam.
-
-```{r}
-tar_load(list_params_second_exam_neg_aff_difference)
-list_params_second_exam_neg_aff_difference
-```
-
-## Comparison Negative Affect Pre-exam / Post-exam and the Other Days
-
-Comparison between the negative affect either pre-exam and post-exam and the average negative affect in the other days.
-
-Comparison other days and pre-exam.
-
-```{r}
-tar_load(list_params_no_exam_pre_neg_aff_difference)
-list_params_no_exam_pre_neg_aff_difference
-```
-
-Comparison other days and post-exam.
-
-```{r}
-tar_load(list_params_no_exam_post_neg_aff_difference)
-list_params_no_exam_post_neg_aff_difference
-```
-
-
-### Interpretation
 
 In our multilevel analysis of State Self-Compassion, we observed significant 
 reliability indices for both the positive and negative components. Focusing 
@@ -175,8 +141,9 @@ in capturing stable individual differences in self-compassion.
 Moreover, the composite reliability of the overall positive score 
 ($\omega^{2L}$), which integrates both within and between subject 
 variabilities, was calculated to be 0.79. This aligns with the framework 
-proposed by Lai (2021) and confirms the measure's reliability in a 
+proposed by @lai2021composite and confirms the measure's reliability in a 
 comprehensive manner.
+
 Turning to the negative component of State Self-Compassion, the 
 within-subject reliability ($\tilde{\omega}^w$) was slightly higher at 
 0.68, while the between-subject reliability ($\tilde{\omega}^b$) further 
@@ -191,12 +158,53 @@ of State Self-Compassion as a dynamic construct, influenced by changing
 circumstances and internal states. Therefore, the lower within-subject 
 reliabilities underscore the measure's sensitivity to these temporal changes 
 within individuals.
+
 In summary, the multilevel reliabilities of the State Self-Compassion measure, 
 with robust between-subject reliability and lower, yet insightful, 
 within-subject reliability, demonstrate its overall soundness and 
 applicability in the present study. The composite reliability figures further 
 confirm the measure's effectiveness in comprehensively capturing the 
 construct of State Self-Compassion across different levels of analysis.
+
+
+## Negative Affect Variation Before and After the Exam
+
+First exam.
+
+```{r}
+# tar_load(list_params_first_exam_neg_aff_difference)
+# list_params_first_exam_neg_aff_difference
+```
+
+Second exam.
+
+```{r}
+# tar_load(list_params_second_exam_neg_aff_difference)
+# list_params_second_exam_neg_aff_difference
+```
+
+## Comparison Negative Affect Pre-exam / Post-exam and the Other Days
+
+Comparison between the negative affect either pre-exam and post-exam and the average negative affect in the other days.
+
+Comparison other days and pre-exam.
+
+```{r}
+# tar_load(list_params_no_exam_pre_neg_aff_difference)
+# list_params_no_exam_pre_neg_aff_difference
+```
+
+Comparison other days and post-exam.
+
+```{r}
+# tar_load(list_params_no_exam_post_neg_aff_difference)
+# list_params_no_exam_post_neg_aff_difference
+```
+
+
+### Interpretation
+
+
 
 
 ## Models' Comparisons
@@ -258,22 +266,22 @@ The model diagnostics indicate satisfactory convergence with Rhat values close t
 `b_dec_moment`
 
 ```{r}
-tar_load(stats_coef_dec_moment)
-stats_coef_dec_moment
+# tar_load(stats_coef_dec_moment)
+# stats_coef_dec_moment
 ```
 
 `b_dec_day`
 
 ```{r}
-tar_load(stats_coef_dec_moment)
-stats_coef_dec_day
+# tar_load(stats_coef_dec_moment)
+# stats_coef_dec_day
 ```
 
 `b_dec_person`
 
 ```{r}
-tar_load(stats_coef_dec_moment)
-stats_coef_dec_person
+# tar_load(stats_coef_dec_moment)
+# stats_coef_dec_person
 ```
 
 

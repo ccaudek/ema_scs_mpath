@@ -20,19 +20,13 @@ list(
   # Remove data deriving from responses in days not included in the project
   tar_target(
     ema_data,
-    remove_wrong_days(
-      clean_mpath_ema_data
-      # filepath_input = here("data", "prep", "ema", "ema_data_2.RDS"),
-      # filepath_output = here("data", "prep", "ema", "ema_data_3.RDS")
-    )
+    remove_wrong_days(clean_mpath_ema_data)
   ),
 
   # Get compliance
   tar_target(
     compliance_results,
-    calculate_compliance(
-      ema_data
-    )
+    calculate_compliance(ema_data)
   ),
 
   # Get State Self Compassion data for both piel and mpath samples

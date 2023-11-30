@@ -49,7 +49,7 @@ tar_option_set(
     "cmdstanr", "brms", "posterior", "loo", "mice", "parallel", "emmeans",
     "quarto", "bayesplot", "gridExtra", "ggdist", "effectsize", "rio",
     "sjstats", "sjPlot", "sjmisc", "viridis", "lubridate", "readxl",
-    "janitor", "semTools", "bayestestR"
+    "janitor", "lavaan", "semTools", "psych", "bayestestR"
   ),
   format = "qs", # faster than rds
   seed = SEED
@@ -72,11 +72,12 @@ list.files(
 
 
 source("targets_lists/_targets_preprocessing.R")
+# source("targets_lists/_targets_neg_aff_delta.R")
 # source("targets_lists/_targets_exam_pre_post.R")
 # source("targets_lists/_targets_models_comparison.R")
 # source("targets_lists/_targets_stats_coefs.R")
-# source("targets_lists/_targets_figures_coefs.R") 
-# source("targets_lists/_targets_report.R")
+# source("targets_lists/_targets_figures.R") 
+source("targets_lists/_targets_report.R")
 
 
 
