@@ -2,9 +2,9 @@
 #' delete_first_row_xlsx() -----------------------------------------------------
 #' 
 delete_first_row_xlsx <- function(FOLDER_NAME) {
-  library(readxl)
-  library(writexl)
-  library(fs)
+  library("readxl")
+  library("writexl")
+  library("fs")
 
   # Directory path where Excel files are located
   directory_path <- here("data", "raw", FOLDER_NAME)
@@ -30,124 +30,98 @@ delete_first_row_xlsx <- function(FOLDER_NAME) {
 #' 
 #' @description
 #' This code imports and cleans data prior to modeling and analysis.
+#' output_path: "data/prep/ema/mpath_ema_data_raw.rds"
 #' 
-import_ema_data <- function(input_folder) {
-  
+import_ema_data <- function(input_folder, output_path) {
   suppressPackageStartupMessages({
-    library(psych)
-    library(ggplot2)
-    library(sjPlot)
-    library(dplyr)
-    library(rio)
-    library(here)
-    library(purrr)
-    library(lubridate)
-    library(readxl)
-    library(janitor)
+    library("dplyr")
+    library("purrr")
+    library("lubridate")
+    library("readxl")
+    library("janitor")
   })
   
-  source(here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R"))
-  
-  complete_column_names <- c(
-    "Date and time",
-    "question_context (multipleChoice)",
-    "question8scs (multipleChoice)",
-    "question_satisfied (smiley)",
-    "question_nervous (smiley)",
-    "question_dec1 (multipleChoice)",
-    "question_happiness (smiley)",
-    "question5scs (multipleChoice)",
-    "question2scs (multipleChoice)",
-    "question_dec3 (multipleChoice)",
-    "question_sad (smiley)",
-    "question7scs (multipleChoice)",
-    "question3scs (multipleChoice)",
-    "question4scs (multipleChoice)",
-    "question_dec2 (multipleChoice)",
-    "question_dec4 (multipleChoice)",
-    "question1scs (multipleChoice)",
-    "question6scs (multipleChoice)",
-    "question_emotion (multiSmiley)",
-    "yesnoexam (yesno)",
-    "momentary_emotion_yes (multiSmiley)",
-    "exam_preparation (sliderNegPos)",
-    "grade_exp (sliderNeutralPos)",
-    "momentary_emotion_no (multiSmiley)",
-    "emotion_valence_no (smiley)",
-    "real_grade (sliderNeutralPos)",
-    "emotion_valence_yes (smiley)"
-  )
-  
-  FOLDER_NAME <- input_folder
-  
-  if (file.exists(here::here("data", "raw", FOLDER_NAME, "boop.txt"))) {
-    delete_first_row_xlsx(FOLDER_NAME)
-    file.remove(here::here("data", "raw", FOLDER_NAME, "boop.txt"))
+  source_local_scripts <- function() {
+    library("here")
+    source(here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R"))
   }
   
-  dir <- here::here("data", "raw", FOLDER_NAME)
+  read_and_process_file <- function(file_name) {
+    tryCatch({
+      d <- readxl::read_excel(file_name)
+      
+      missing_cols <- setdiff(complete_column_names, names(d))
+      d[missing_cols] <- NA
+      d <- d[complete_column_names]
+      
+      d$subj_code <- substr(file_name, 1, nchar(file_name) - 5)
+      d$datetime <- strptime(d$`Date and time`, "%a, %d %b %Y %H:%M:%S")
+      d$day <- ymd(substring(d$datetime, 1, 10))
+      d$hour <- hour(d$datetime)
+      d$minute <- minute(d$datetime)
+      
+      d$time_window <- case_when(
+        d$hour >= 0 & d$hour < 12 ~ 1,
+        d$hour >= 12 & d$hour < 16 ~ 2,
+        d$hour >= 16 & d$hour < 19 ~ 3,
+        d$hour >= 19 & d$hour < 21 ~ 4,
+        d$hour >= 21 & d$hour < 24 ~ 5,
+        TRUE ~ NA_integer_
+      )
+      
+      d$calendar_day <- as.numeric(factor(d$day))
+      
+      d %>%
+        mutate(bysubj_day = dense_rank(calendar_day)) %>%
+        select(-`Date and time`, -datetime) %>%
+        clean_names() %>%
+        mutate(
+          momentary_emotion_no_multi_smiley = if("momentary_emotion_no_multi_smiley" %in% names(d)) as.character(d$momentary_emotion_no_multi_smiley) else NA,
+          momentary_emotion_yes_multi_smiley = if("momentary_emotion_yes_multi_smiley" %in% names(d)) as.character(d$momentary_emotion_yes_multi_smiley) else NA
+        )
+    }, error = function(e) {
+      warning("Failed to process file: ", file_name, "\nError: ", e)
+      NULL
+    })
+  }
+  
+  source_local_scripts()
+  
+  complete_column_names <- c(
+    "Date and time", "question_context (multipleChoice)", "question8scs (multipleChoice)", 
+    "question_satisfied (smiley)", "question_nervous (smiley)", "question_dec1 (multipleChoice)", 
+    "question_happiness (smiley)", "question5scs (multipleChoice)", "question2scs (multipleChoice)", 
+    "question_dec3 (multipleChoice)", "question_sad (smiley)", "question7scs (multipleChoice)", 
+    "question3scs (multipleChoice)", "question4scs (multipleChoice)", "question_dec2 (multipleChoice)", 
+    "question_dec4 (multipleChoice)", "question1scs (multipleChoice)", "question6scs (multipleChoice)", 
+    "question_emotion (multiSmiley)", "yesnoexam (yesno)", "momentary_emotion_yes (multiSmiley)", 
+    "exam_preparation (sliderNegPos)", "grade_exp (sliderNeutralPos)", "momentary_emotion_no (multiSmiley)", 
+    "emotion_valence_no (smiley)", "real_grade (sliderNeutralPos)", "emotion_valence_yes (smiley)"
+  )
+  
+  dir <- here::here("data", "raw", input_folder)
   file_names <- list.files(path = dir, full.names = TRUE)
   
-  d_list <- lapply(file_names, function(file_name) {
-    d <- rio::import(file_name, header = TRUE)
-    
-    missing_cols <- setdiff(complete_column_names, names(d))
-    d[missing_cols] <- NA
-    d <- d[complete_column_names]
-    
-    d$subj_code <- substr(file_name, 1, nchar(file_name) - 5)
-    d$datetime <- strptime(d$`Date and time`, "%a, %d %b %Y %H:%M:%S")
-    d$day <- ymd(substring(d$datetime, 1, 10))
-    d$hour <- hour(d$datetime)
-    d$minute <- minute(d$datetime)
-    
-    d$time_window <- case_when(
-      d$hour >= 0 & d$hour < 12 ~ 1,
-      d$hour >= 12 & d$hour < 16 ~ 2,
-      d$hour >= 16 & d$hour < 19 ~ 3,
-      d$hour >= 19 & d$hour < 21 ~ 4,
-      d$hour >= 21 & d$hour < 24 ~ 5,
-      TRUE ~ NA_integer_
-    )
-    
-    d$calendar_day <- as.numeric(factor(d$day))
-    
-    d <- d %>%
-      mutate(bysubj_day = dense_rank(calendar_day)) %>%
-      select(-`Date and time`, -datetime) %>%
-      clean_names()
-    
-    if ("momentary_emotion_no_multi_smiley" %in% names(d)) {
-      d$momentary_emotion_no_multi_smiley <- as.character(d$momentary_emotion_no_multi_smiley)
-    }
-    
-    if ("momentary_emotion_yes_multi_smiley" %in% names(d)) {
-      d$momentary_emotion_yes_multi_smiley <- as.character(d$momentary_emotion_yes_multi_smiley)
-    }
-    
-    d
-  })
+  combined_df <- map_df(file_names, read_and_process_file)
   
-  combined_df <- bind_rows(d_list)
-  
-  saveRDS(combined_df, here("data", "prep", "ema", "ema_data_1.RDS"))
-  
-  return(combined_df)
+  saveRDS(combined_df, output_path)
 }
 
 
 #' process_ema_data() ----------------------------------------------------------
 #' 
-process_ema_data <- function(d) {
+process_ema_data <- function(input_path, output_path) {
+  
   suppressPackageStartupMessages({
     library("psych")
     library("ggplot2")
     library("dplyr")
-    library("rio")
     library("here")
     library("lubridate")
     library("tidyr")
   })
+  
+  d <- readRDS(input_path)
   
   new_column_names <- c(
     "question_context_multiple_choice" = "context",
@@ -230,9 +204,8 @@ process_ema_data <- function(d) {
   d$user_id <- 
     gsub("/Users/corrado/_repositories/ema_scs_mpath/data/raw/m_path_data_2023/", "", d$user_id)
   
-  saveRDS(d, here("data", "prep", "ema", "ema_data_2.RDS"))
-  
-  return(d)
+  # saveRDS(d, here("data", "prep", "ema", "ema_data_2.RDS"))
+  saveRDS(d, output_path)
 }
 
 
@@ -244,9 +217,11 @@ process_ema_data <- function(d) {
 #' @param filepath The data frame after data wrangling
 #' @return A data frame.
 #' 
-remove_wrong_days <- function(data) {
-  library(dplyr)
-  library(here)
+remove_wrong_days <- function(input_path, output_path) {
+  library("dplyr")
+  library("here")
+  
+  data <- readRDS(input_path)
   
   # Define project days
   project_days <- c(
@@ -277,9 +252,7 @@ remove_wrong_days <- function(data) {
     mutate(bysubj_day = dense_rank(day)) %>%
     ungroup()
   
-  saveRDS(filtered_data, here::here("data", "prep", "ema", "ema_data_3.RDS"))
-  
-  return(filtered_data)
+  saveRDS(filtered_data, output_path)
 }
 
 
@@ -317,8 +290,8 @@ remove_wrong_days <- function(data) {
 #' @example: effect_size <- compute_effect_size(m1, "exam_daypost")
 
 compute_effect_size <- function(brms_model, effect_name) {
-  library(brms)
-  library(posterior)
+  library("brms")
+  library("posterior")
   
   # Estrai i campioni posteriori usando as_draws_df
   posterior_samples <- as_draws_df(brms_model)
@@ -365,7 +338,8 @@ compute_effect_size_ci <- function(brms_model, effect_name, probs = c(0.025, 0.9
 
 # get_state_self_comp_piel_mpath() ---------------------------------------------
 
-get_state_self_comp_piel_mpath <- function() {
+get_state_self_comp_piel_mpath <- function(mpath_path, output_path) {
+  library("dplyr")
 
   # Function to process each dataset
   process_data <- function(path) {
@@ -376,10 +350,10 @@ get_state_self_comp_piel_mpath <- function() {
   }
   
   # Paths to data files
-  piel_path <- 
+  piel_path <-
     "~/_repositories/ema_scs_piel/data/prep/ema/ema_data_2.RDS"
-  
-  mpath_path <- here::here("data", "prep", "ema", "ema_data_3.RDS")
+
+  # mpath_path <- here::here("data", "prep", "ema", "ema_data.rds")
   
   # Process data for each dataset
   scs_items_piel <- process_data(piel_path)
@@ -388,12 +362,20 @@ get_state_self_comp_piel_mpath <- function() {
   # Combine both data sets
   both_df <- bind_rows(scs_items_piel, scs_items_mpath)
   
-  return(both_df)
+  saveRDS(both_df, output_path)
 }
 
 
-# calculate_ssc_reliabilities() ------------------------------------------------
-calculate_ssc_reliabilities <- function(both_df) {
+# get_ssc_reliabilities() ------------------------------------------------
+get_ssc_reliabilities <- function(input_path, output_path) {
+  
+  suppressPackageStartupMessages({
+    library("dplyr")
+    library("lavaan")
+    library("semTools")
+  })
+  
+  both_df <- readRDS(input_path)
 
   process_ssc_data <- function(df, mcfa_model) {
     suppressWarnings({
@@ -456,13 +438,17 @@ calculate_ssc_reliabilities <- function(both_df) {
     negative = neg_reliabilities
   )
 
-  return(results)
+  saveRDS(results, output_path)
 }
 
 
 #' center3L() ------------------------------------------------------------------
 #' 
 center3L <- function(dataname, varname, idname, dayname) {
+  suppressPackageStartupMessages({
+    library("dplyr")
+  })
+  
   within <- dataname %>%
     group_by({{ idname }}, {{ dayname }}) %>%
     mutate("{{varname}}_DddM" := mean({{ varname }}, na.rm = TRUE)) %>%
@@ -636,12 +622,14 @@ compute_exam_effects_on_neg_aff <- function(exam_data, exam_type) {
 #' @param filepath The path to the data to be analyzed (ema_data_3.RDS)
 #' @return A list.
 #' 
-calculate_compliance <- function(alldata) {
-  library(dplyr)
-  library(here)
+get_compliance <- function(input_path, output_path) {
+  library("dplyr")
+  library("here")
+  
+  d <- readRDS(input_path)
   
   # Calculate compliance rate
-  n_per_day <- alldata %>%
+  n_per_day <- d %>%
     group_by(bysubj_day) %>%
     summarize(n = n_distinct(user_id)) %>%
     mutate(compliance_day = n / max(n)) %>%
@@ -652,7 +640,7 @@ calculate_compliance <- function(alldata) {
   # Calculate compliance of notification frequency within each day
   days_exams <- c("2023-04-16", "2023-04-17", "2023-05-21", "2023-05-22")
   
-  compliance_notification_frequeny_per_day <- alldata %>%
+  compliance_notification_frequeny_per_day <- d %>%
     filter(!day %in% days_exams) %>%
     group_by(user_id, bysubj_day) %>%
     summarize(n_responses = n_distinct(time_window)) %>%
@@ -667,7 +655,7 @@ calculate_compliance <- function(alldata) {
     compliance_notification_frequeny_per_day = compliance_notification_frequeny_per_day
   )
   
-  return(output_list)
+  saveRDS(output_list, output_path)
 }
 
 

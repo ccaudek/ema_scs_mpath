@@ -38,7 +38,7 @@ list(
   # Compute multilevel reliabilities
   tar_target(
     reliabilities_sem,
-    calculate_ssc_reliabilities(state_self_comp_piel_mpath_data)
+    get_ssc_reliabilities(state_self_comp_piel_mpath_data)
   )
 
   # close list

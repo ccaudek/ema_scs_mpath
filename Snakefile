@@ -1,4 +1,6 @@
-""" EMA Self-compassion Mpath 2023 """
+""" 
+EMA State Self-Compassion Mpath 2023 
+"""
 
 import os
 from pathlib import Path
@@ -6,11 +8,11 @@ from snakemake.utils import min_version
 
 
 # Snake Version
-min_version("5.7.1")
+# min_version("5.7.1")
 
 
 # Configuration file
-configfile: "config/config.yaml"
+# configfile: "config/config.yaml"
 
 
 # print(f"Current directory: {Path.cwd()}")
@@ -22,60 +24,141 @@ configfile: "config/config.yaml"
 
 rule all:
     input:
-        # os.path.join(prepdir, "groundhog_raw.RDS"),
-        config["ema_data_raw"],
-        config["ema_data_clean"],
-        config["quest_data"],
-        # config["quest_data1_clean"],
-        # config["quest_data2_clean"],
-        # "data/prep/quest_scales/nates_scores.csv",
-        "data/prep/quest_scales/dass21_scores.csv",
-        # "data/prep/quest_scales/ders_scores.csv",
-        # "data/prep/quest_scales/neoffi60_neuro_scores.csv",
-        "data/prep/quest_scales/rosenberg_scores.csv",
-        "data/prep/quest_scales/bdi2_scores.csv",
-        # "data/prep/quest_scales/rscs_scores.csv",
-        # "data/prep/quest_scales/scl90_scores.csv",
-        "data/prep/quest_scales/scs_scores.csv",
+        "data/prep/ema/mpath_ema_data_raw.rds",
+        "data/prep/ema/mpath_ema_data_clean.rds",
+        "data/prep/ema/ema_data.rds",
+        "data/prep/ema/compliance_results.rds",
+        "data/prep/ema/combined_piel_mpath_ema_data.rds",
+        "data/prep/ema/ssc_reliabilities.rds",
+        "doc/ema_ssc_report.html",
+        "data/prep/ema/brms_fits/fit_psc_delta_neg_aff.rds",
+        "data/prep/ema/brms_fits/fit_nsc_delta_neg_aff.rds",
 
 
-# %% Read individual EMA data and save an RDS file ------------------
-
-
-rule read_ema_data:
+# Import EMA data.
+rule import_ema_data:
     output:
-        rds=config["ema_data_raw"],
-    log:
-        "logs/read_ema_data.log",
-    message:
-        "Reading EMA data"
-    script:
-        "workflows/scripts/ema/mpath_import_ema_data.R"
+        "data/prep/ema/mpath_ema_data_raw.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_ema_mpath.R"); 
+        import_ema_data("m_path_data_2023", "{output}")'
+        """
 
 
-# Initial EMA data wrangling.
-rule wrangling_ema_data:
+# Data wrangling.
+rule process_mpath_ema_data:
     input:
-        rds=config["ema_data_raw"],
+        "data/prep/ema/mpath_ema_data_raw.rds",
     output:
-        rds=config["ema_data_clean"],
-    log:
-        "logs/wangling_ema_data.log",
-    script:
-        "workflows/scripts/ema/mpath_data_wrangling.R"
+        "data/prep/ema/mpath_ema_data_clean.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_ema_mpath.R");
+        process_ema_data("{input}", "{output}")'
+        """
 
 
-# %% Read questionnaire data and save two CSV files -----------------
-
-
-rule read_quest_data:
+# Remove wrong days.
+rule remove_wrong_days:
+    input:
+        "data/prep/ema/mpath_ema_data_clean.rds",
     output:
-        quest_data=config["quest_data"],
-    log:
-        "logs/read_quest_data.log",
-    script:
-        "workflows/scripts/quest/mpath_import_quest_data.R"
+        "data/prep/ema/ema_data.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_ema_mpath.R");
+        remove_wrong_days("{input}", "{output}")'
+        """
 
+
+# Get compliance
+rule get_compliance:
+    input:
+        "data/prep/ema/ema_data.rds",
+    output:
+        "data/prep/ema/compliance_results.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_ema_mpath.R");
+        get_compliance("{input}", "{output}")'
+        """
+
+
+# Get State Self-Compassion data for both piel and mpath projects
+rule get_state_self_comp_piel_mpath:
+    input:
+        "data/prep/ema/ema_data.rds",
+    output:
+        "data/prep/ema/combined_piel_mpath_ema_data.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_ema_mpath.R");
+        get_state_self_comp_piel_mpath("{input}", "{output}")'
+        """
+
+
+# Compute multilevel reliabilities
+rule get_ssc_reliabilities:
+    input:
+        "data/prep/ema/combined_piel_mpath_ema_data.rds",
+    output:
+        "data/prep/ema/ssc_reliabilities.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_ema_mpath.R");
+        get_ssc_reliabilities("{input}", "{output}")'
+        """
+
+
+rule create_report:
+    output:
+        report="doc/ema_ssc_report.html",  # Quarto will automatically place the output here
+    shell:
+        """
+        quarto render doc/ema_ssc_report.qmd --to html
+        """
+
+
+rule fit_psc_delta_neg_aff_model:
+    input:
+        data_path="data/prep/ema/ema_data.rds",
+    params:
+        dependent_var="psc",
+    output:
+        model_path="data/prep/ema/brms_fits/fit_psc_delta_neg_aff.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_delta_neg_aff.R");
+        fit_delta_neg_aff_model("{input.data_path}", "{params.dependent_var}", "{output.model_path}")'
+        """
+
+
+rule fit_nsc_delta_neg_aff_model:
+    input:
+        data_path="data/prep/ema/ema_data.rds",
+    params:
+        dependent_var="nsc",
+    output:
+        model_path="data/prep/ema/brms_fits/fit_nsc_delta_neg_aff.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_delta_neg_aff.R");
+        fit_delta_neg_aff_model("{input.data_path}", "{params.dependent_var}", "{output.model_path}")'
+        """
+
+
+# # %% Read questionnaire data and save two CSV files -----------------
+#
+#
+# rule read_quest_data:
+#     output:
+#         quest_data=config["quest_data"],
+#     log:
+#         "logs/read_quest_data.log",
+#     script:
+#         "workflows/scripts/quest/mpath_import_quest_data.R"
+#
 
 # # Select columns of the NATES questionnaire -------------------------
 # rule select_cols_nates:
@@ -104,58 +187,58 @@ rule read_quest_data:
 # include: "workflows/rules/closing_messages.smk"
 
 
-# %% DASS-21 rules --------------------------------------------------
-
-
-rule select_cols_dass21:
-    input:
-        quest_data=config["quest_data"],
-    output:
-        dass21_cols="data/prep/quest_scales/dass21_items.csv",
-    log:
-        "logs/select_cols_dass21.log",
-    script:
-        "workflows/scripts/quest/select_cols_dass21.R"
-
-
-# Scoring of the DASS-21 questionnaire.
-rule scoring_dass21:
-    input:
-        dass21_cols="data/prep/quest_scales/dass21_items.csv",
-    output:
-        dass21_scores="data/prep/quest_scales/dass21_scores.csv",
-    log:
-        "logs/scoring_dass21.log",
-    script:
-        "workflows/scripts/quest/scoring_dass21.R"
-
-
-# %% BDI-II rules ---------------------------------------------------
-
-
-rule select_cols_bdi2:
-    input:
-        quest_data=config["quest_data"],
-    output:
-        bdi2_cols="data/prep/quest_scales/bdi2_items.csv",
-    log:
-        "logs/select_cols_bdi2.log",
-    script:
-        "workflows/scripts/quest/select_cols_bdi2.R"
-
-
-# Scoring of the DASS-21 questionnaire.
-rule scoring_bdi2:
-    input:
-        bdi2_cols="data/prep/quest_scales/bdi2_items.csv",
-    output:
-        bdi2_scores="data/prep/quest_scales/bdi2_scores.csv",
-    log:
-        "logs/scoring_bdi2.log",
-    script:
-        "workflows/scripts/quest/scoring_bdi2.R"
-
-
+# # %% DASS-21 rules --------------------------------------------------
+#
+#
+# rule select_cols_dass21:
+#     input:
+#         quest_data=config["quest_data"],
+#     output:
+#         dass21_cols="data/prep/quest_scales/dass21_items.csv",
+#     log:
+#         "logs/select_cols_dass21.log",
+#     script:
+#         "workflows/scripts/quest/select_cols_dass21.R"
+#
+#
+# # Scoring of the DASS-21 questionnaire.
+# rule scoring_dass21:
+#     input:
+#         dass21_cols="data/prep/quest_scales/dass21_items.csv",
+#     output:
+#         dass21_scores="data/prep/quest_scales/dass21_scores.csv",
+#     log:
+#         "logs/scoring_dass21.log",
+#     script:
+#         "workflows/scripts/quest/scoring_dass21.R"
+#
+#
+# # %% BDI-II rules ---------------------------------------------------
+#
+#
+# rule select_cols_bdi2:
+#     input:
+#         quest_data=config["quest_data"],
+#     output:
+#         bdi2_cols="data/prep/quest_scales/bdi2_items.csv",
+#     log:
+#         "logs/select_cols_bdi2.log",
+#     script:
+#         "workflows/scripts/quest/select_cols_bdi2.R"
+#
+#
+# # Scoring of the DASS-21 questionnaire.
+# rule scoring_bdi2:
+#     input:
+#         bdi2_cols="data/prep/quest_scales/bdi2_items.csv",
+#     output:
+#         bdi2_scores="data/prep/quest_scales/bdi2_scores.csv",
+#     log:
+#         "logs/scoring_bdi2.log",
+#     script:
+#         "workflows/scripts/quest/scoring_bdi2.R"
+#
+#
 # # Select columns of the DERS questionnaire --------------------------
 # rule select_cols_ders:
 #     input:
@@ -201,35 +284,35 @@ rule scoring_bdi2:
 #     log:
 #         "logs/scoring_neoffi60neuro.log",
 #     script:
-#         "workflows/scripts/quest/scoring_neoffi60neuro.R"
+# #         "workflows/scripts/quest/scoring_neoffi60neuro.R"
+# #
 #
-
-# %% Rosenberg SES rules --------------------------------------------
-
-
-rule select_cols_rosenberg:
-    input:
-        quest_data=config["quest_data"],
-    output:
-        rosenberg_cols="data/prep/quest_scales/rosenberg_items.csv",
-    log:
-        "logs/select_cols_rosenberg.log",
-    script:
-        "workflows/scripts/quest/select_cols_rosenberg.R"
-
-
-# Scoring of the Rosenberg questionnaire.
-rule scoring_rosenberg:
-    input:
-        rosenberg_cols="data/prep/quest_scales/rosenberg_items.csv",
-    output:
-        rosenberg_scores="data/prep/quest_scales/rosenberg_scores.csv",
-    log:
-        "logs/scoring_rosenberg.log",
-    script:
-        "workflows/scripts/quest/scoring_rosenberg.R"
-
-
+# # %% Rosenberg SES rules --------------------------------------------
+#
+#
+# rule select_cols_rosenberg:
+#     input:
+#         quest_data=config["quest_data"],
+#     output:
+#         rosenberg_cols="data/prep/quest_scales/rosenberg_items.csv",
+#     log:
+#         "logs/select_cols_rosenberg.log",
+#     script:
+#         "workflows/scripts/quest/select_cols_rosenberg.R"
+#
+#
+# # Scoring of the Rosenberg questionnaire.
+# rule scoring_rosenberg:
+#     input:
+#         rosenberg_cols="data/prep/quest_scales/rosenberg_items.csv",
+#     output:
+#         rosenberg_scores="data/prep/quest_scales/rosenberg_scores.csv",
+#     log:
+#         "logs/scoring_rosenberg.log",
+#     script:
+#         "workflows/scripts/quest/scoring_rosenberg.R"
+#
+#
 # # Select columns of the RSCS questionnaire --------------------------
 # rule select_cols_rscs:
 #     input:
@@ -277,45 +360,41 @@ rule scoring_rosenberg:
 #     script:
 #         "workflows/scripts/quest/scoring_scl90.R"
 #
-
-# Select columns of the SCS questionnaire ---------------------------
-
-
-rule select_cols_scs:
-    input:
-        quest_data=config["quest_data"],
-    output:
-        scs_cols="data/prep/quest_scales/scs_items.csv",
-    log:
-        "logs/select_cols_scs.log",
-    script:
-        "workflows/scripts/quest/select_cols_scs.R"
-
-
-# Scoring of the SCS questionnaire.
-rule scoring_scs:
-    input:
-        scs_cols="data/prep/quest_scales/scs_items.csv",
-    output:
-        scs_scores="data/prep/quest_scales/scs_scores.csv",
-    log:
-        "logs/scoring_scs.log",
-    script:
-        "workflows/scripts/quest/scoring_scs.R"
-
-
+# # Select columns of the SCS questionnaire ---------------------------
+#
+#
+# rule select_cols_scs:
+#     input:
+#         quest_data=config["quest_data"],
+#     output:
+#         scs_cols="data/prep/quest_scales/scs_items.csv",
+#     log:
+#         "logs/select_cols_scs.log",
+#     script:
+#         "workflows/scripts/quest/select_cols_scs.R"
+#
+#
+# # Scoring of the SCS questionnaire.
+# rule scoring_scs:
+#     input:
+#         scs_cols="data/prep/quest_scales/scs_items.csv",
+#     output:
+#         scs_scores="data/prep/quest_scales/scs_scores.csv",
+#     log:
+#         "logs/scoring_scs.log",
+#     script:
+#         "workflows/scripts/quest/scoring_scs.R"
+#
 # %% logging information --------------------------------------------
-
-
 onstart:
-    shell('echo -e "running\t`date +%Y-%m-%d" "%H:%M`" > pipeline_status_ESM.txt')
+    shell('echo -e "running\t`date +%Y-%m-%d" "%H:%M`" > pipeline_status.txt')
 
 
 onsuccess:
-    shell('echo -e "success\t`date +%Y-%m-%d" "%H:%M`" > pipeline_status_ESM.txt')
+    shell('echo -e "success\t`date +%Y-%m-%d" "%H:%M`" > pipeline_status.txt')
     print("Workflow finished, no error")
 
 
 onerror:
-    shell('echo -e "error\t`date +%Y-%m-%d" "%H:%M`" > pipeline_status_ESM.txt'),
+    shell('echo -e "error\t`date +%Y-%m-%d" "%H:%M`" > pipeline_status.txt'),
     print("An error occurred")
