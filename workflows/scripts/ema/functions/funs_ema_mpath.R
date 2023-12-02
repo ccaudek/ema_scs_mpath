@@ -366,7 +366,7 @@ get_state_self_comp_piel_mpath <- function(mpath_path, output_path) {
 }
 
 
-# get_ssc_reliabilities() ------------------------------------------------
+# get_ssc_reliabilities() ------------------------------------------------------
 get_ssc_reliabilities <- function(input_path, output_path) {
   
   suppressPackageStartupMessages({

@@ -8,15 +8,15 @@ from snakemake.utils import min_version
 
 
 # Snake Version
-# min_version("5.7.1")
+min_version("5.7.1")
 
 
 # Configuration file
 # configfile: "config/config.yaml"
 
 
-# print(f"Current directory: {Path.cwd()}")
-# print(f"Home directory: {Path.home()}")
+print(f"Current directory: {Path.cwd()}")
+print(f"Home directory: {Path.home()}")
 
 
 # %% All rule  ------------------------------------------------------
@@ -24,18 +24,35 @@ from snakemake.utils import min_version
 
 rule all:
     input:
+        # ------------------- Get mpath EMA data
         "data/prep/ema/mpath_ema_data_raw.rds",
         "data/prep/ema/mpath_ema_data_clean.rds",
         "data/prep/ema/ema_data.rds",
+        # ------------------- Compliance
         "data/prep/ema/compliance_results.rds",
+        # ------------------- Multilevel reliabilities
         "data/prep/ema/combined_piel_mpath_ema_data.rds",
         "data/prep/ema/ssc_reliabilities.rds",
-        "doc/ema_ssc_report.html",
+        # ------------------- Delta negative affect
         "data/prep/ema/brms_fits/fit_psc_delta_neg_aff.rds",
         "data/prep/ema/brms_fits/fit_nsc_delta_neg_aff.rds",
+        # ------------------- Model comparisons
+        # Get data for model comparisons
+        "data/prep/ema/data_for_model_comparisons.rds",
+        # Test run for computing LOO values
+        # CS component
+        "data/prep/ema/brms_fits/loo_psc_rand_eff_mod_comp.rds",
+        "data/prep/ema/brms_fits/loo_psc_fixed_eff_mod_comp.rds",
+        # UCS component
+        "data/prep/ema/brms_fits/loo_nsc_rand_eff_mod_comp.rds",
+        "data/prep/ema/brms_fits/loo_nsc_fixed_eff_mod_comp.rds",
+        # ------------------- Report
+        "doc/ema_ssc_report.html",
 
 
-# Import EMA data.
+# %% ----- Import EMA data -----
+
+
 rule import_ema_data:
     output:
         "data/prep/ema/mpath_ema_data_raw.rds",
@@ -46,7 +63,9 @@ rule import_ema_data:
         """
 
 
-# Data wrangling.
+# %% ----- Data wrangling -----
+
+
 rule process_mpath_ema_data:
     input:
         "data/prep/ema/mpath_ema_data_raw.rds",
@@ -59,7 +78,7 @@ rule process_mpath_ema_data:
         """
 
 
-# Remove wrong days.
+# Remove wrong days
 rule remove_wrong_days:
     input:
         "data/prep/ema/mpath_ema_data_clean.rds",
@@ -72,7 +91,9 @@ rule remove_wrong_days:
         """
 
 
-# Get compliance
+# %% ----- Compute Compliance -----
+
+
 rule get_compliance:
     input:
         "data/prep/ema/ema_data.rds",
@@ -83,6 +104,9 @@ rule get_compliance:
         Rscript -e 'source("workflows/scripts/ema/functions/funs_ema_mpath.R");
         get_compliance("{input}", "{output}")'
         """
+
+
+# %% ----- Compute multilevel reliabilities -----
 
 
 # Get State Self-Compassion data for both piel and mpath projects
@@ -98,7 +122,6 @@ rule get_state_self_comp_piel_mpath:
         """
 
 
-# Compute multilevel reliabilities
 rule get_ssc_reliabilities:
     input:
         "data/prep/ema/combined_piel_mpath_ema_data.rds",
@@ -111,15 +134,10 @@ rule get_ssc_reliabilities:
         """
 
 
-rule create_report:
-    output:
-        report="doc/ema_ssc_report.html",  # Quarto will automatically place the output here
-    shell:
-        """
-        quarto render doc/ema_ssc_report.qmd --to html
-        """
+# %% ----- Influence of sequential changes in Negative Affect on State Self-Compassion -----
 
 
+# CS component of State Self-Compassion.
 rule fit_psc_delta_neg_aff_model:
     input:
         data_path="data/prep/ema/ema_data.rds",
@@ -134,6 +152,7 @@ rule fit_psc_delta_neg_aff_model:
         """
 
 
+# UCS component of State Self-Compassion.
 rule fit_nsc_delta_neg_aff_model:
     input:
         data_path="data/prep/ema/ema_data.rds",
@@ -145,6 +164,100 @@ rule fit_nsc_delta_neg_aff_model:
         """
         Rscript -e 'source("workflows/scripts/ema/functions/funs_delta_neg_aff.R");
         fit_delta_neg_aff_model("{input.data_path}", "{params.dependent_var}", "{output.model_path}")'
+        """
+
+
+# %% ----- Models' comparison -----
+
+
+# Get data for brms models' comparisons
+rule get_data_for_model_comparisons:
+    input:
+        "data/prep/ema/ema_data.rds",
+    output:
+        "data/prep/ema/data_for_model_comparisons.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_model_comparisons.R");
+        get_data_for_model_comparisons("{input}", "{output}")'
+        """
+
+
+# LOO model comparison for the CS component of the State Self_Compassion
+# Random-effect structure
+rule fit_and_compare_random_effects_cs:
+    input:
+        data_path="data/prep/ema/data_for_model_comparisons.rds",
+    params:
+        dependent_var="state_cs",
+        testing_mode="FALSE",  # Pass as a string
+    output:
+        model_path="data/prep/ema/brms_fits/loo_psc_rand_eff_mod_comp.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_model_comparisons.R");
+        fit_and_compare_random_effects("{input.data_path}", "{params.dependent_var}", "{output.model_path}", {params.testing_mode})'
+        """
+
+
+# Fixed-effect structure
+rule fit_and_compare_fixed_effects_cs:
+    input:
+        data_path="data/prep/ema/data_for_model_comparisons.rds",
+    params:
+        dependent_var="state_cs",
+        testing_mode="FALSE",
+    output:
+        model_path="data/prep/ema/brms_fits/loo_psc_fixed_eff_mod_comp.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_model_comparisons.R");
+        fit_and_compare_fixed_effects("{input.data_path}", "{params.dependent_var}", "{output.model_path}", {params.testing_mode})'
+        """
+
+
+# LOO model comparison for the UCS component of the State Self_Compassion
+# Random-effect structure
+rule fit_and_compare_random_effects_ucs:
+    input:
+        data_path="data/prep/ema/data_for_model_comparisons.rds",
+    params:
+        dependent_var="state_ucs",
+        testing_mode="FALSE",
+    output:
+        model_path="data/prep/ema/brms_fits/loo_nsc_rand_eff_mod_comp.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_model_comparisons.R");
+        fit_and_compare_random_effects("{input.data_path}", "{params.dependent_var}", "{output.model_path}", {params.testing_mode})'
+        """
+
+
+# Fixed-effect structure
+rule fit_and_compare_fixed_effects_ucs:
+    input:
+        data_path="data/prep/ema/data_for_model_comparisons.rds",
+    params:
+        dependent_var="state_ucs",
+        testing_mode="FALSE",
+    output:
+        model_path="data/prep/ema/brms_fits/loo_nsc_fixed_eff_mod_comp.rds",
+    shell:
+        """
+        Rscript -e 'source("workflows/scripts/ema/functions/funs_model_comparisons.R");
+        fit_and_compare_fixed_effects("{input.data_path}", "{params.dependent_var}", "{output.model_path}", {params.testing_mode})'
+        """
+
+
+# %% ----- Report -----
+
+
+rule create_report:
+    output:
+        report="doc/ema_ssc_report.html",  # Quarto will automatically place the output here
+    shell:
+        """
+        quarto render doc/ema_ssc_report.qmd --to html
         """
 
 
