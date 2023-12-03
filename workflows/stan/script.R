@@ -2,9 +2,23 @@ library("brms")
 library("here")
 library("cmdstanr")
 library("posterior")
+options(posterior.num_args=list(sigfig=2)) # by default summaries with 2 significant digits
 library("rstan")
+library("ggplot2")
 library("bayesplot")
 color_scheme_set("brightblue")
+theme_set(bayesplot::theme_default(base_family = "sans"))
+library("loo")
+library("tidyr")
+library("dplyr")
+options(pillar.neg=FALSE)
+library("gridExtra")
+library("ggdist")
+SEED <- 48927 # set random seed for reproducability
+
+
+
+
 
 
 d <- readRDS(here("data", "prep", "ema", "data_for_model_comparisons.rds"))
@@ -275,6 +289,8 @@ str(stan_data)
 
 # Compile the Stan model
 stan_file <- 'model_9.stan'  # Adjust the path if your Stan file is in a different folder
+
+# Sample from the posterior 
 mod <- cmdstan_model(stan_file)
 
 fit <- mod$sample(
@@ -283,18 +299,84 @@ fit <- mod$sample(
   parallel_chains = 4,
   iter_warmup = 1000,
   iter_sampling = 1000,
-  seed = 1234
+  seed = SEED
 )
 
-
 # Check the summary of the model fit
-print(fit$summary())
+fit$summary()
 
+# Plot a histogram of the posterior draws with bayesplot 
+draws <- fit$draws(format="df")
+mcmc_hist(draws, pars="beta_cs") # + xlim(c(0,1))
 
+draws |>
+  ggplot(aes(x=beta_cs)) + 
+  stat_dotsinterval() 
 
+params <- c(
+  "beta_cs", # "alpha_ucs", 
+  "beta_covariates[1]", "beta_covariates[2]", "beta_covariates[3]",
+  "sigma_ucs"
+)
+
+temps <- fit$draws(format = "df") |>
+  as_tibble() |>
+  select(all_of(params))
+
+mcmc_areas(temps) + xlab('')
+
+stanfit <- rstan::read_stan_csv(fit$output_files())
+
+# In order to use the PPC functions from the bayesplot package we need a 
+# vector y of outcome values
+y <- stan_data$UCS
+
+# and a matrix yrep of draws from the posterior predictive distribution
+y_rep <- as.matrix(stanfit, pars = "pred_UCS")
+# dim(y_rep)
+
+# The first is a comparison of the distribution of y and the distributions of 
+# some of the simulated datasets (rows) in the yrep matrix.
+ppc_dens_overlay(y, y_rep[1:200, ])
+
+ppc_ecdf_overlay(y, y_rep[sample(nrow(y_rep), 25), ])
+
+# ECDF and ECDF difference plot of the PIT values of y compared to yrep
+# with 99% simultaneous confidence bands.
+ppc_pit_ecdf(y, y_rep, prob = 0.99, plot_diff = FALSE)
+
+ppc_hist(y, y_rep[1:8, ])
+ppc_boxplot(y, y_rep[1:8, ])
+ppc_dens(y, y_rep[200:202, ])
+
+ppc_stat(y, y_rep, stat = "mean")
+ppc_stat(y, y_rep, stat = "median")
+ppc_stat(y, y_rep, stat = "sd")
+
+rhats <- rhat(fit, pars = params)
+mcmc_rhat(rhats)
+
+eff_ratio <- neff_ratio(fit, pars = params)
+mcmc_neff(eff_ratio)
+
+fit_draws <- fit$draws() # extract the posterior draws
+mcmc_acf(fit_draws, pars = params)
+
+rstan::traceplot(stanfit, pars = "beta_cs")
 
 
 # fatto fino a qui! ------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 
 
