@@ -28,125 +28,125 @@
 #' # To run the function and store the output in a variable:
 #' processed_data <- get_data_models_comparison(input_path, output_path)
 #'
-#' get_data_for_model_comparisons <- function(input_path, output_path) {
-#'   suppressPackageStartupMessages({
-#'     library("dplyr")
-#'     library("performance")
-#'     library("miceRanger")
-#'   })
-#'   
-#'   source(
-#'     here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R")
-#'   )
-#'   
-#'   # Read EMA data.
-#'   d <- readRDS(input_path)
-#'   
-#'   # Ensure the categorical variables are formatted as factors in R.
-#'   d$bysubj_day <- factor(d$bysubj_day)
-#'   d$user_id <- factor(d$user_id)
-#'   d$time_window <- factor(d$time_window)
-#'   d$exam_day <- factor(d$exam_day)
-#'   
-#'   # Add SCS scores
-#'   scs_trait_tot_df <- 
-#'     read.csv(here::here("data", "prep", "quest_scales", "scs_scores.csv"))
-#'   
-#'   scs_trait_df <- scs_trait_tot_df |> 
-#'     dplyr::select(user_id, scs_total_score)
-#'   
-#'   scs_trait_df$user_id <- gsub("_", "-", scs_trait_df$user_id)
-#'   scs_trait_df$user_id <- gsub("(\\d{2})(\\d{2})", "\\2", scs_trait_df$user_id)
-#'   
-#'   # Remove duplicate rows based on user_id, keeping the first occurrence
-#'   scs_trait_df <- scs_trait_df[!duplicated(scs_trait_df$user_id), ]
-#'   
-#'   d1 <- left_join(d, scs_trait_df, by = "user_id")
-#'   
-#'   # Check for outliers by considering the target variables
-#'   column_names <- c("psc", "nsc", "context", "neg_aff", "dec")
-#'   
-#'   foo <- d1 |>
-#'     dplyr::select(all_of(column_names))
-#'   
-#'   res <- performance::check_outliers(foo)
-#'   attr_list <- attributes(res)
-#'   outlier_count <- attr_list$outlier_count
-#'   bad_row_indices <- outlier_count$all$Row
-#'   # bad_row_indices
-#'   
-#'   # For the considered columns, replace the outliers with NAs
-#'   d1[bad_row_indices, column_names] <- NA
-#'   
-#'   # Select variables for multiple imputation
-#'   variables_for_mult_imp <- c(
-#'     column_names, "bysubj_day", "user_id", "time_window", "exam_day", 
-#'     "scs_total_score"
-#'   )
-#'   
-#'   temp <- d1 |> 
-#'     dplyr::select(all_of(variables_for_mult_imp))
-#'   
-#'   # Run multiple imputations
-#'   imputed_data <- miceRanger(
-#'     temp, 
-#'     seed = 123
-#'   )
-#'   
-#'   dataList <- completeData(imputed_data)
-#'   
-#'   numeric_cols <- sapply(dataList[[1]], is.numeric)
-#'   
-#'   # Initialize a data frame to store the mean values
-#'   # Convert to data.table if it's not already
-#'   mean_data <- setDT(dataList[[1]])
-#'   
-#'   # Compute mean for numeric columns
-#'   for (col in which(numeric_cols)) {
-#'     # Extract the specific column from each dataframe and calculate rowMeans
-#'     mean_data[, (col) := rowMeans(sapply(dataList, function(df) df[[col]]))]
-#'   }
-#'   
-#'   non_numeric_cols <- names(mean_data)[!numeric_cols]
-#'   mean_data[, (non_numeric_cols) := dataList[[1]][, ..non_numeric_cols]]
-#'   
-#'   # Centering data
-#'   centered_data <- center3L(mean_data, neg_aff, user_id, bysubj_day) |> 
-#'     center3L(context, user_id, bysubj_day)  |> 
-#'     center3L(dec, user_id, bysubj_day)
-#'   
-#'   # Standardize variables for modeling
-#'   df <- centered_data |> 
-#'     dplyr::mutate(
-#'       scs_trait = as.vector(scale(scs_total_score)),
-#'       na_moment = as.vector(scale(neg_aff_Moment)),
-#'       na_day = as.vector(scale(neg_aff_Day)),
-#'       na_person = as.vector(scale(neg_aff_Person)),
-#'       dec_moment = as.vector(scale(dec_Moment)),
-#'       dec_day = as.vector(scale(dec_Day)),
-#'       dec_person = as.vector(scale(dec_Person)),
-#'       con_moment = as.vector(scale(context_Moment)),
-#'       con_day = as.vector(scale(context_Day)),
-#'       con_person = as.vector(scale(context_Person)),
-#'       state_cs = as.vector(scale(psc)),
-#'       state_ucs = as.vector(scale(nsc))
-#'     ) |> 
-#'     dplyr::select(
-#'       scs_trait, state_cs, state_ucs,
-#'       na_moment, na_day, na_person, 
-#'       dec_moment, dec_day, dec_person,
-#'       con_moment, con_day, con_person,
-#'       user_id, bysubj_day, time_window
-#'     ) |> 
-#'     dplyr::rename(
-#'       day = bysubj_day,
-#'       moment = time_window
-#'     )
-#'   
-#'   saveRDS(df, output_path)
-#' }
-#' 
-#' 
+get_data_for_model_comparisons <- function(input_path, output_path) {
+  suppressPackageStartupMessages({
+    library("dplyr")
+    library("performance")
+    library("miceRanger")
+  })
+
+  source(
+    here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R")
+  )
+
+  # Read EMA data.
+  d <- readRDS(input_path)
+
+  # Ensure the categorical variables are formatted as factors in R.
+  d$bysubj_day <- factor(d$bysubj_day)
+  d$user_id <- factor(d$user_id)
+  d$time_window <- factor(d$time_window)
+  d$exam_day <- factor(d$exam_day)
+
+  # Add SCS scores
+  scs_trait_tot_df <-
+    read.csv(here::here("data", "prep", "quest_scales", "scs_scores.csv"))
+
+  scs_trait_df <- scs_trait_tot_df |>
+    dplyr::select(user_id, scs_total_score)
+
+  scs_trait_df$user_id <- gsub("_", "-", scs_trait_df$user_id)
+  scs_trait_df$user_id <- gsub("(\\d{2})(\\d{2})", "\\2", scs_trait_df$user_id)
+
+  # Remove duplicate rows based on user_id, keeping the first occurrence
+  scs_trait_df <- scs_trait_df[!duplicated(scs_trait_df$user_id), ]
+
+  d1 <- left_join(d, scs_trait_df, by = "user_id")
+
+  # Check for outliers by considering the target variables
+  column_names <- c("psc", "nsc", "context", "neg_aff", "dec")
+
+  foo <- d1 |>
+    dplyr::select(all_of(column_names))
+
+  res <- performance::check_outliers(foo)
+  attr_list <- attributes(res)
+  outlier_count <- attr_list$outlier_count
+  bad_row_indices <- outlier_count$all$Row
+  # bad_row_indices
+
+  # For the considered columns, replace the outliers with NAs
+  d1[bad_row_indices, column_names] <- NA
+
+  # Select variables for multiple imputation
+  variables_for_mult_imp <- c(
+    column_names, "bysubj_day", "user_id", "time_window", "exam_day",
+    "scs_total_score"
+  )
+
+  temp <- d1 |>
+    dplyr::select(all_of(variables_for_mult_imp))
+
+  # Run multiple imputations
+  imputed_data <- miceRanger(
+    temp,
+    seed = 123
+  )
+
+  dataList <- completeData(imputed_data)
+
+  numeric_cols <- sapply(dataList[[1]], is.numeric)
+
+  # Initialize a data frame to store the mean values
+  # Convert to data.table if it's not already
+  mean_data <- setDT(dataList[[1]])
+
+  # Compute mean for numeric columns
+  for (col in which(numeric_cols)) {
+    # Extract the specific column from each dataframe and calculate rowMeans
+    mean_data[, (col) := rowMeans(sapply(dataList, function(df) df[[col]]))]
+  }
+
+  non_numeric_cols <- names(mean_data)[!numeric_cols]
+  mean_data[, (non_numeric_cols) := dataList[[1]][, ..non_numeric_cols]]
+
+  # Centering data
+  centered_data <- center3L(mean_data, neg_aff, user_id, bysubj_day) |>
+    center3L(context, user_id, bysubj_day)  |>
+    center3L(dec, user_id, bysubj_day)
+
+  # Standardize variables for modeling
+  df <- centered_data |>
+    dplyr::mutate(
+      scs_trait = as.vector(scale(scs_total_score)),
+      na_moment = as.vector(scale(neg_aff_Moment)),
+      na_day = as.vector(scale(neg_aff_Day)),
+      na_person = as.vector(scale(neg_aff_Person)),
+      dec_moment = as.vector(scale(dec_Moment)),
+      dec_day = as.vector(scale(dec_Day)),
+      dec_person = as.vector(scale(dec_Person)),
+      con_moment = as.vector(scale(context_Moment)),
+      con_day = as.vector(scale(context_Day)),
+      con_person = as.vector(scale(context_Person)),
+      state_cs = as.vector(scale(psc)),
+      state_ucs = as.vector(scale(nsc))
+    ) |>
+    dplyr::select(
+      scs_trait, state_cs, state_ucs,
+      na_moment, na_day, na_person,
+      dec_moment, dec_day, dec_person,
+      con_moment, con_day, con_person,
+      user_id, bysubj_day, time_window
+    ) |>
+    dplyr::rename(
+      day = bysubj_day,
+      moment = time_window
+    )
+
+  saveRDS(df, output_path)
+}
+
+
 #' #' fit_and_compare_neg_ssc_models() --------------------------------------------
 #' #' 
 #' #' @description
