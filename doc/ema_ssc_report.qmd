@@ -108,7 +108,7 @@ compliance_results <- readRDS(
 compliance_results
 ```
 
-## Multilevel Reilabilities
+### Multilevel Reilabilities
 
 
 ```{r}
@@ -120,14 +120,14 @@ ssc_reliabilities_results <- readRDS(
 )
 ```
 
-### Positive State Self-Compassion
+#### Positive State Self-Compassion
 
 ```{r}
 #| echo: false
 ssc_reliabilities_results[[1]]
 ```
 
-### Negative State Self-Compassion
+#### Negative State Self-Compassion
 
 ```{r}
 #| echo: false
@@ -172,7 +172,7 @@ confirm the measure's effectiveness in comprehensively capturing the
 construct of State Self-Compassion across different levels of analysis.
 
 
-## Negative Affect Variation Before and After the Exam
+### Negative Affect Variation Before and After the Exam
 
 First exam.
 
@@ -188,7 +188,7 @@ Second exam.
 # list_params_second_exam_neg_aff_difference
 ```
 
-## Comparison Negative Affect Pre-exam / Post-exam and the Other Days
+### Comparison Negative Affect Pre-exam / Post-exam and the Other Days
 
 Comparison between the negative affect either pre-exam and post-exam and the average negative affect in the other days.
 
@@ -207,14 +207,11 @@ Comparison other days and post-exam.
 ```
 
 
-### Interpretation
+### Models' Comparisons
 
+#### Negative Component of State Self-Compassion
 
-
-
-## Models' Comparisons
-
-### Negative Component of State Self-Compassion
+TODO: Check whether this is the correct model!
 
 The final model for predicting the negative component of State Self-Compassion is as follows:
 
@@ -347,6 +344,12 @@ Overall, your analysis provides compelling evidence that the utilization of self
 
 The results indicate that variations in negative affect (delta_neg_aff) can predict subsequent changes in both the positive and negative components of state self-compassion (psc and nsc). However, changes in state self-compassion (both psc and nsc) do not predict subsequent changes in negative affect.
 This pattern supports the hypothesis that it is the change in the affective context that modulates state self-compassion, rather than changes in state self-compassion determining the variation in the affective response.
-It's important to remember that Granger Causality Tests are about predictability, not true causation. While these results suggest a predictive relationship, they do not confirm a causal effect.
-This analysis provides valuable evidence for your hypothesis regarding the contextual dependence of state self-compassion. It suggests that the affective state, as it evolves, is a significant factor influencing how individuals engage in self-compassion practices.
+It's important to remember that Granger Causality Tests are about predictability, not true causation. While these results suggest a predictive relationship, they do not confirm a causal effect. This analysis  suggests that the affective state, as it evolves, is a significant factor influencing how individuals engage in self-compassion practices.
+
+## General Discussion
+
+bla bla
+
+\newpage
+## References
 
