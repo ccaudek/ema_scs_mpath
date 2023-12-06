@@ -1,0 +1,114 @@
+
+In our analysis, we conducted a model selection process aimed at identifying the most appropriate random-effect and fixed-effect structures tailored to our dataset. Our approach commenced by exploring the full fixed-effect structure and proceeded with a systematic comparison of models featuring varying degrees of random-effect complexity. Once we determined the optimal random-effect structure, we turned our attention to assessing models with different fixed-effects configurations. To facilitate this thorough model comparison, we harnessed the Leave-One-Out (LOO) method, a robust Bayesian model selection technique implemented within Stan.
+
+### Model Comparison for SC
+
+#### Random-Effects
+
+| Model | elpd_diff | se_diff | elpd_loo | se_elpd_loo | p_loo | se_p_loo | looic | se_looic |
+|-------|-----------|---------|----------|-------------|-------|----------|-------|----------|
+| Model 1: Basic Model | 0.000 | 0.000 | -4819.217 | 82.577 | 1730.978 | 19.539 | 9638.434 | 165.154 |
+| Model 2: Add Random Effect for user_id | -0.649 | 1.475 | -4819.867 | 82.642 | 1722.286 | 19.540 | 9639.733 | 165.283 |
+| Model 3: Add Random Effects for user_id and user_id:day | -55.874 | 14.086 | -4875.092 | 81.771 | 1650.029 | 19.084 | 9750.183 | 163.542 |
+| Model 4: Add Random Slopes for na_moment, na_day on user_id | -277.645 | 30.437 | -5096.862 | 79.420 | 1482.200 | 17.144 | 10193.724 | 158.839 |
+| Model 5: Add Random Slopes for na_moment, na_day, dec_moment, dec_day on user_id | -789.645 | 48.574 | -5608.862 | 72.487 | 196.065 | 3.228 | 11217.724 | 144.973 |
+| Model 6: Complex Random Effects Structure | -3072.142 | 80.856 | -7891.359 | 56.662 | 12.095 | 0.248 | 15782.718 | 113.324 |
+
+The model comparison, utilizing the LOO method, clearly suggests that there is no valid justification for employing a random-effect structure more complex than participant-level clustering. In other words, the simpler approach of clustering at the participant level provides an adequate representation for our data, as evidenced by the minimal improvements gained from more intricate random-effect structures.
+
+#### Fixed-Effects
+
+| Model | elpd_diff | se_diff | elpd_loo | se_elpd_loo | p_loo | se_p_loo | looic | se_looic |
+|-------|-----------|---------|----------|-------------|-------|----------|-------|----------|
+| Model 1: Full Fixed Effects | 0.000 | 0.000 | -5608.300 | 72.496 | 195.102 | 3.201 | 11216.600 | 144.992 |
+| Model 2: With na and dec | -24.710 | 8.090 | -5633.009 | 72.604 | 192.525 | 3.151 | 11266.020 | 145.209 |
+| Model 3: With na and con | -221.866 | 23.337 | -5830.166 | 73.906 | 196.570 | 3.201 | 11660.330 | 147.812 |
+| Model 4: With dec and con | -250.379 | 25.097 | -5858.679 | 74.197 | 195.126 | 3.187 | 11717.360 | 148.393 |
+| Model 5: Only na | -309.078 | 28.153 | -5917.377 | 72.581 | 193.198 | 3.169 | 11834.750 | 145.163 |
+| Model 6: Only dec | -483.329 | 34.132 | -6091.628 | 72.610 | 189.759 | 3.082 | 12183.260 | 145.221 |
+| Model 7: Only con | -845.252 | 47.407 | -6453.552 | 77.215 | 197.078 | 3.056 | 12907.100 | 154.430 |
+
+Based on the model comparison using the LOO method, the best-fitting model among the options is "Model 1: Full Fixed Effects." It exhibits the highest estimated log pointwise predictive density (elpd_loo) and the lowest Leave-One-Out Information Criterion (looic), suggesting superior predictive performance compared to the other models.
+
+
+### Model Comparison for USC
+
+In parallel with our analysis of the SC component, we conducted a comprehensive model comparison for the USC component. This comparison aimed to identify the most appropriate random-effect and fixed-effect structures for our dataset, similar to the approach taken for the SC component.
+
+#### Random-Effects
+
+| Model | elpd_diff | se_diff | elpd_loo | se_elpd_loo | p_loo | se_p_loo | looic | se_looic |
+|-------|-----------|---------|----------|-------------|-------|----------|-------|----------|
+| Model 1: Basic Model | 0.000 | 0.000 | -4092.916 | 79.001 | 1811.519 | 21.200 | 8185.833 | 158.003 |
+| Model 2: Add Random Effect for user_id | -1.624 | 1.621 | -4094.540 | 79.052 | 1864.359 | 21.518 | 8189.080 | 158.105 |
+| Model 3: Add Random Effects for user_id and user_id:day | -100.703 | 19.063 | -4193.619 | 77.890 | 1649.191 | 19.389 | 8387.239 | 155.780 |
+| Model 4: Add Random Slopes for na_moment, na_day on user_id | -244.965 | 29.465 | -4337.881 | 76.222 | 1554.806 | 18.697 | 8675.762 | 152.445 |
+| Model 5: Add Random Slopes for na_moment, na_day, dec_moment, dec_day on user_id | -909.650 | 48.747 | -5002.566 | 70.572 | 186.517 | 3.028 | 10005.133 | 141.145 |
+| Model 6: Complex Random Effects Structure | -2907.030 | 79.747 | -6999.946 | 61.168 | 12.202 | 0.264 | 13999.893 | 122.337 |
+
+Our evaluation of random-effect structures using the LOO method yielded results consistent with those observed for the SC component. The model comparison for USC indicates that there is no compelling justification for employing a random-effect structure more complex than clustering at the participant level. This echoes the findings from the SC component analysis, where participant-level clustering proved sufficient to adequately represent our data. In both cases, more intricate random-effect structures did not significantly improve model performance.
+
+#### Fixed-Effects
+
+| Model | elpd_diff | se_diff | elpd_loo | se_elpd_loo | p_loo | se_p_loo | looic | se_looic |
+|-------|-----------|---------|----------|-------------|-------|----------|-------|----------|
+| Model 1: Full Fixed Effects | 0.000 | 0.000 | -5002.381 | 70.542 | 186.440 | 3.029 | 10004.760 | 141.083 |
+| Model 2: With na and dec | -3.461 | 3.778 | -5005.842 | 70.675 | 184.227 | 2.976 | 10011.680 | 141.350 |
+| Model 3: With na and con | -376.733 | 30.536 | -5379.114 | 68.721 | 184.424 | 3.304 | 10758.230 | 137.441 |
+| Model 4: With dec and con | -481.263 | 34.243 | -5483.644 | 68.580 | 184.144 | 3.485 | 10967.290 | 137.159 |
+| Model 5: Only na | -594.546 | 37.181 | -5596.927 | 70.916 | 182.813 | 2.809 | 11193.850 | 141.831 |
+| Model 6: Only dec | -602.642 | 37.497 | -5605.023 | 71.067 | 181.365 | 2.789 | 11210.050 | 142.134 |
+| Model 7: Only con | -1492.409 | 58.479 | -6494.791 | 71.655 | 186.471 | 2.894 | 12989.580 | 143.309 |
+
+When considering fixed-effect structures for the USC component, our analysis identified 'Model 1: Full Fixed Effects' as the best-fitting model. This model exhibited the highest estimated log pointwise predictive density (elpd_loo) and the lowest Leave-One-Out Information Criterion (looic) among the options. These results closely mirror the findings from the SC component analysis, where 'Model 1: Full Fixed Effects' also emerged as the preferred model.
+
+#### Summary
+
+The congruence in results between the two components, SC and USC, underscores the consistency and reliability of our modeling approach. It reinforces the notion that simpler model structures, both in terms of random effects and fixed effects, effectively capture the essential characteristics of our data. Therefore, for both SC and USC, we have selected 'Model 1: Full Fixed Effects' as the optimal model, demonstrating superior predictive performance compared to more complex alternatives.
+
+
+#### Final Model
+
+The final model for predicting the negative component of State Self-Compassion is as follows:
+
+$$
+\begin{equation}
+\begin{aligned}
+znsc &\sim \text{Student-t}(\mu, \sigma, \nu) \\
+\mu &= \beta_{0} + \beta_{\text{dec\_moment}} \times \text{dec\_moment} + \beta_{\text{dec\_day}} \times \text{dec\_day} + \beta_{\text{dec\_person}} \times \text{dec\_person} + \\
+&\quad \beta_{\text{na\_moment}} \times \text{na\_moment} + \beta_{\text{na\_day}} \times \text{na\_day} + \beta_{\text{na\_person}} \times \text{na\_person} + \\
+&\quad \beta_{\text{context\_moment}} \times \text{context\_moment} + \beta_{\text{context\_day}} \times \text{context\_day} + \beta_{\text{context\_person}} \times \text{context\_person} + \\
+&\quad b_{\text{user\_id}}[j] + b_{\text{bysubj\_day}}[k] \\
+b_{\text{user\_id}}[j] &\sim \mathcal{N}(0, \Sigma_{\text{user\_id}}) \\
+b_{\text{bysubj\_day}}[k] &\sim \mathcal{N}(0, \sigma^2_{\text{bysubj\_day}}) \\
+\beta &\sim \text{priors1} \\
+\sigma &\sim \text{Half-Cauchy}(0, \text{scale}) \\
+\nu &\sim \text{Exponential}(\text{rate}) \\
+\\
+\text{Where:} & \\
+\Sigma_{\text{user\_id}} &= \text{Full covariance matrix for random effects within user\_id} \\
+\sigma^2_{\text{bysubj\_day}} &= \text{Var}(b_{\text{bysubj\_day}}[k])
+\end{aligned}
+\end{equation}
+$$
+
+The model was estimated using a Student's t-distribution with identity links for the mean (mu), scale (sigma), and degrees of freedom (nu). The analysis was based on 6741 observations, with the posterior distribution derived from 2000 post-warmup draws across two chains.
+
+#### Group-Level Effects
+
+- **By-Subject-Day Variability**: The standard deviation of the random intercepts for different days (`bysubj_day`) was estimated to be 0.02, suggesting minimal variability in the negative component of State Self-Compassion across days within subjects.
+- **By-User Variability**: The model revealed substantial between-person variability in the intercept (0.50), indicating differences in baseline levels of the negative component of State Self-Compassion among participants. The variability in the within-person components of negative affect (`na_moment`: 0.06, `na_day`: 0.15), context (`context_moment`: 0.02, `context_day`: 0.09), and decentering (`dec_moment`: 0.08, `dec_day`: 0.14) suggests individual differences in how these factors relate to self-compassion on a moment-to-moment and day-to-day basis.
+
+#### Population-Level Effects
+
+- **Decentering**: Momentary (β = -0.12), daily (β = -0.18), and person-level (β = -0.37) decentering showed negative associations with the negative component of State Self-Compassion, indicating that higher levels of decentering are associated with lower levels of self-criticism or negative self-judgment.
+- **Negative Affect**: Momentary (β = 0.13) and day-level (β = 0.17) negative affect were positively associated with the negative component, while person-level negative affect (β = 0.34) showed a stronger positive relationship. This suggests that both transient and enduring negative emotions contribute to increased self-criticism.
+- **Context Valence**: Momentary context valence showed a weak negative association (β = -0.02), while daily (β = 0.01) and person-level context valence (β = 0.04) had minimal or slightly positive associations, indicating that the immediate context's perceived negativity might slightly increase self-critical thoughts.
+
+#### Family Specific Parameters
+
+- The estimated scale parameter (σ = 0.35) and degrees of freedom (ν = 4.20) of the Student's t-distribution reflect the variability and the heaviness of the tails in the model residuals, respectively.
+
+#### Model Diagnostics
+
+The model diagnostics indicate satisfactory convergence with Rhat values close to 1 for all parameters. The Bulk_ESS and Tail_ESS values suggest adequate effective sample sizes for reliable estimation and inference.

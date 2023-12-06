@@ -1,0 +1,78 @@
+
+### Stan Model for Testing the Bipolar Continuum Hypothesis
+
+$$
+\begin{align*}
+\text{data} \{ \\
+& \text{int} <\text{lower}=0> N; \quad \text{// Total number of observations} \\
+& \text{int} <\text{lower}=0> P; \quad \text{// Number of participants} \\
+& \text{int} <\text{lower}=0> D; \quad \text{// Number of days} \\
+& \text{int} <\text{lower}=0> M; \quad \text{// Number of measurements per day per participant} \\
+& \text{array}[N] \text{int} <\text{lower}=1, \text{upper}=P> \text{participant}; \quad \text{// Participant index for each observation} \\
+& \text{array}[N] \text{int} <\text{lower}=1, \text{upper}=D> \text{day}; \quad \text{// Day index for each observation} \\
+& \text{array}[N] \text{int} <\text{lower}=1, \text{upper}=M> \text{measurement}; \quad \text{// Measurement index for each observation} \\
+& \text{array}[N] \text{real} \text{CS}; \quad \text{// Compassionate Self measures} \\
+& \text{array}[N] \text{real} \text{UCS}; \quad \text{// Uncompassionate Self measures} \\
+& \text{array}[N] \text{real} \text{neg\_affect}; \quad \text{// Negative Affect measures} \\
+& \text{array}[N] \text{real} \text{decentering}; \quad \text{// Decentering measures} \\
+& \text{array}[N] \text{real} \text{context\_eval}; \quad \text{// Context evaluation measures} \\
+\} \\
+\\
+\text{parameters} \{ \\
+& \text{real} \text{alpha\_ucs}; \quad \text{// Intercept for UCS} \\
+& \text{real} \text{beta\_cs}; \quad \text{// Overall effect of CS on UCS} \\
+& \text{array}[3] \text{real} \text{beta\_covariates}; \quad \text{// Coefficients for other covariates} \\
+\\
+& \text{// Random intercepts} \\
+& \text{vector}[P] \text{z\_participant}; \\
+& \text{vector}[D] \text{z\_day}; \\
+& \text{vector}[M] \text{z\_measurement}; \\
+\\
+& \text{// Random slopes for CS at the participant level} \\
+& \text{vector}[P] \text{z\_participant\_slope\_cs}; \\
+\\
+& \text{real} <\text{lower}=0> \text{sigma\_participant}; \quad \text{// SD of participant intercepts} \\
+& \text{real} <\text{lower}=0> \text{sigma\_day}; \quad \text{// SD of day intercepts} \\
+& \text{real} <\text{lower}=0> \text{sigma\_measurement}; \quad \text{// SD of measurement intercepts} \\
+& \text{real} <\text{lower}=0> \text{sigma\_participant\_slope\_cs}; \quad \text{// SD of participant slopes for CS} \\
+& \text{real} <\text{lower}=0> \text{sigma\_ucs}; \quad \text{// Error term for UCS model} \\
+& \text{real} <\text{lower}=0> \text{nu}; \quad \text{// Degrees of freedom for t-distribution} \\
+\} \\
+\\
+\text{model} \{ \\
+& \text{// Priors} \\
+& \text{alpha\_ucs} \sim \text{normal}(0, 1); \\
+& \text{beta\_cs} \sim \text{normal}(0, 1); \\
+& \text{beta\_covariates} \sim \text{normal}(0, 1); \\
+\\
+& \text{z\_participant} \sim \text{normal}(0, 1); \\
+& \text{z\_day} \sim \text{normal}(0, 1); \\
+& \text{z\_measurement} \sim \text{normal}(0, 1); \\
+& \text{z\_participant\_slope\_cs} \sim \text{normal}(0, 1); \\
+\\
+& \text{sigma\_participant} \sim \text{exponential}(1); \\
+& \text{sigma\_day} \sim \text{exponential}(1); \\
+& \text{sigma\_measurement} \sim \text{exponential}(1); \\
+& \text{sigma\_participant\_slope\_cs} \sim \text{exponential}(1); \\
+& \text{sigma\_ucs} \sim \text{exponential}(1); \\
+& \text{nu} \sim \text{gamma}(2, 0.1); \\
+\\
+& \text{// Likelihood for UCS using t-distribution} \\
+& \text{for} (n \text{ in } 1:N) \{ \\
+& \quad \text{UCS}[n] \sim \text{student\_t}( \\
+& \quad \quad \text{nu}, \\
+& \quad \quad \text{alpha\_ucs} + \\
+& \quad \quad (\text{beta\_cs} + \text{sigma\_participant\_slope\_cs} \times \text{z\_participant\_slope\_cs}[\text{participant}[n]]) \times \text{CS}[n] + \\
+& \quad \quad \text{beta\_covariates}[1] \times \text{neg\_affect}[n] + \\
+& \quad \quad \text{beta\_covariates}[2] \times \text{decentering}[n] + \\
+& \quad \quad \text{beta\_covariates}[3] \times \text{context\_eval}[n] + \\
+& \quad \quad \text{sigma\_participant} \times \text{z\_participant}[\text{participant}[n]] + \\
+& \quad \quad \text{sigma\_day} \times \text{z\_day}[\text{day}[n]] + \\
+& \quad \quad \text{sigma\_measurement} \times \text{z\_measurement}[\text{measurement}[n]], \\
+& \quad \quad \text{sigma\_ucs} \\
+& \quad ); \\
+& \} \\
+\}
+\end{align*}
+$$
+

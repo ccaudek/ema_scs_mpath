@@ -106,6 +106,9 @@ generate_plot_exam_self_comp <- function(
   library("tidyr")
   library("gridExtra")
   
+  color_scheme_set("brightblue")
+  theme_set(bayesplot::theme_default(base_family = "sans"))
+  
   fit1 <- readRDS(here::here(input_path_1))
   fit2 <- readRDS(here::here(input_path_2))
   

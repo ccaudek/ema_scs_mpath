@@ -5,7 +5,7 @@ description: "Test of the bipolar continuum hypothesis"
 author: "Corrado Caudek (corrado.caudek@unifi.it)"
 bibliography: bibliography.bib
 csl: apa.csl
-format: 
+format:
   html:
     code-line-numbers: true
     anchor-sections: true
@@ -17,60 +17,6 @@ toc: True
 date: last-modified
 date-format: iso
 ---
-
-# Introduction
-
-The construct of self-compassion, a central concept in contemporary psychology, has been the subject of much scholarly debate. Traditionally, researchers have grappled with whether self-compassion is best understood as a unitary construct, represented by a bipolar continuum ranging from uncompassionate self-responding (UCS) to compassionate self-responding (CS), or as a configuration of two partly independent components. This debate is vital as it shapes our understanding of self-compassion and its role in psychological well-being. 
-
-Building on this discussion, recent advancements in psychological research have emphasized the dynamic nature of psychological constructs, suggesting that they are not static or solely trait-based, but rather can be influenced by situational factors. This perspective is critical in the study of state self-compassion, an evolution of the original construct of self-compassion, which encompasses moment-to-moment variations in self-compassionate feelings and attitudes. The development of scales to measure state self-compassion (e.g., Raes et al., 2011) provides a tool to explore this dynamism.
-
-In our study, we aim to contribute to the ongoing discourse by examining how situational factors, such as negative affect, influence the UCS and CS components of state self-compassion. This approach is inspired by the shift in emotion regulation research, where the focus has moved from the frequency of using strategies to the context-dependent effectiveness of these strategies (Gross, 1998; Aldao et al., 2015). By investigating how different situational factors impact UCS and CS, we seek to provide empirical evidence to the theoretical debate on the nature of the self-compassion construct.
-
-Our hypothesis is twofold: If situational factors affect UCS and CS in parallel but opposing ways (i.e., an increase in UCS corresponds with a decrease in CS), this would lend support to the bipolar continuum model of self-compassion, as proposed by Neff (2003). This model posits that self-compassion is a singular, unified construct with varying degrees of expression. Alternatively, if situational factors differentially influence UCS and CS (for instance, if a factor impacts CS but leaves UCS unaffected, or vice versa), this would suggest that self-compassion comprises two distinct components, aligning with the perspectives of researchers like Muris et al. (2016), who argue for the duality of the construct.
-
-This exploration is crucial for a deeper understanding of self-compassion, as it not only contributes to theoretical knowledge but also has practical implications. Understanding the situational dynamics of self-compassion can enhance psychological interventions and promote well-being by identifying specific contexts in which self-compassionate or uncompassionate responses are more likely to be elicited. Such insights could be pivotal in developing more nuanced and effective therapeutic strategies that cater to individual differences and situational variables, ultimately fostering a more compassionate self-relationship in diverse life situations.
-
-## The State Self-Compassion Construct
-
-The concept of self-compassion, as defined by Kristin Neff, is indeed an interesting area to explore within the framework of psychological resilience. To address your question, it's important to first understand the distinct aspects of self-compassion and how they might fit into the resilience framework as proposed by Troy et al.
-
-1. **Self-Compassion as a Trait (Factor)**: Neff's original concept of self-compassion is often viewed as a trait-like quality. It involves being kind and understanding toward oneself in instances of pain or failure, rather than being harshly self-critical; recognizing that suffering and personal inadequacy is part of the shared human experience; and holding one’s painful thoughts and feelings in balanced awareness (mindfulness). This trait-like self-compassion aligns with the first conceptualization of resilience as a stable factor.
-
-2. **State Self-Compassion**: More recently, Neff has introduced the concept of "State Self-Compassion." This concept recognizes that self-compassion can vary over time and in different situations, rather than being a fixed trait. It's about how individuals might exhibit self-compassionate reactions to specific events or circumstances.
-
-Now, in terms of fitting this into the resilience framework:
-
-- **As a Process**: State self-compassion could be conceptualized as a process, in the sense that it involves active, moment-to-moment regulation of emotional responses to stress or adversity. This is in line with the idea of resilience as a process, where resilience is not just about having certain traits, but also about how individuals actively cope with and respond to challenges. In this view, state self-compassion is a dynamic and context-dependent process through which individuals navigate difficult experiences.
-
-- **As an Outcome**: Alternatively, state self-compassion could be seen as an outcome, particularly if we focus on the effects or results of being self-compassionate in specific situations. Here, the emphasis is on the beneficial outcomes (such as reduced anxiety, improved emotional well-being, etc.) that result from adopting a self-compassionate stance in response to personal struggles or failures.
-
-In reality, state self-compassion may not fit neatly into just one of these categories. It could be argued that it acts both as a process and as an outcome. As a process, it involves the active engagement of self-compassionate attitudes and behaviors in response to specific situations. As an outcome, it refers to the immediate and long-term benefits that arise from these self-compassionate responses.
-
-This dual conceptualization is not uncommon in psychological constructs, where a phenomenon can play a role in both the mechanisms of coping (process) and the effects of that coping (outcome). It may be most accurate to consider state self-compassion as a dynamic element within the broader resilience framework, influencing and being influenced by various factors and outcomes.
-
-## The Role of the Context
-
-The relationship between state self-compassion and contextual factors can be highlighted by observing how different types of events (e.g., minor vs. major stressors, personal failures, life changes) impact the self-compassion trajectory. For instance, individuals with higher trait self-compassion might show a quicker recovery in their state self-compassion following adversity, or they might not experience as significant a drop in the first place.
-
-
-## Decentering
-
-Il costrutto di "decentering" nella psicologia si riferisce alla capacità di osservare i propri pensieri ed emozioni come eventi mentali temporanei e oggettivi, piuttosto che come riflessi accurati della realtà o aspetti immutabili del sé. Questo concetto è spesso associato alla mindfulness e alla terapia cognitivo-comportamentale, in particolare nelle pratiche di mindfulness e meditazione.
-
-La relazione tra decentering e self-compassion è complessa e interconnessa. Entrambi i costrutti contribuiscono al benessere psicologico, ma lo fanno attraverso meccanismi leggermente diversi:
-
-1. **Riduzione dell'Identificazione con Pensieri Negativi**: Il decentering aiuta a ridurre l'identificazione con pensieri e sentimenti negativi, permettendo agli individui di osservarli senza giudicarli o reagire in modo automatico. Questo distacco può creare uno spazio in cui la self-compassion può emergere, poiché gli individui possono riconoscere le proprie esperienze difficili con una maggiore gentilezza e comprensione.
-
-2. **Gestione delle Emozioni Difficili**: La self-compassion, a sua volta, può facilitare il processo di decentering offrendo un approccio più gentile e accogliente verso le emozioni e i pensieri difficili. Quando gli individui sono in grado di trattare se stessi con compassione, possono trovare più facile osservare le proprie esperienze interne senza esserne sopraffatti.
-
-3. **Risposta a Fallimenti e Critiche**: La self-compassion consente di affrontare fallimenti, errori e autocritiche con un atteggiamento di gentilezza e comprensione, piuttosto che con giudizio o rimprovero. Questo approccio può facilitare il decentering, poiché gli individui apprendono a vedere tali esperienze come comuni a tutti gli esseri umani, piuttosto che come riflessioni del proprio valore personale.
-
-4. **Rafforzamento della Resilienza**: Entrambi contribuiscono alla resilienza psicologica. Il decentering aiuta a mantenere una prospettiva più equilibrata e obiettiva, mentre la self-compassion offre supporto emotivo e una risposta più positiva alle sfide.
-
-5. **Mindfulness come Collegamento**: La mindfulness è un fattore chiave che collega decentering e self-compassion. La pratica della mindfulness incoraggia sia il decentering sia la self-compassion, promuovendo un'osservazione non giudicante delle esperienze interne e una maggiore gentilezza verso se stessi.
-
-In sintesi, il decentering e la self-compassion sono entrambi importanti per il benessere psicologico e spesso si rafforzano a vicenda. La capacità di osservare i propri pensieri e sentimenti da una distanza (decentering) può facilitare un approccio più compassionevole verso se stessi, e viceversa, la self-compassion può rendere più facile l'adozione di una prospettiva decentered.
-
 
 ```{r}
 #| include = FALSE
@@ -86,441 +32,65 @@ suppressPackageStartupMessages({
   library("sjPlot")
   library("sjmisc")
   library("emmeans")
+  library("quarto")
 })
 ```
 
-## State Self-Compassion
+# Introduction
 
+{{< include sections/introduction.qmd >}}
 
-## Method
 
-### Task Design
+# Method
 
-## Results
+{{< include sections/method.qmd >}}
 
-### Compliance
 
-```{r}
-#| echo: false
-compliance_results <- readRDS(
-  here::here(
-    "data", "prep", "ema", "compliance_results.rds"
-  )
-)
-compliance_results
-```
+# Results
 
-### Reliability Analysis of State Self-Compassion Measures
+## Compliance
 
+{{< include sections/compliance.qmd >}}
 
-```{r}
-#| echo: false
-#| include: false
-ssc_reliabilities_results <- readRDS(
-  here::here(
-    "data", "prep", "ema", "ssc_reliabilities.rds"
-  )
-)
-```
-
-```{r}
-#| echo: false
-#| include: false
-# Positive State Self-Compassion
-ssc_reliabilities_results[[1]]
-```
 
-```{r}
-#| echo: false
-#| include: false
-# Negative State Self-Compassion
-ssc_reliabilities_results[[2]]
-```
+## Reliability Analysis of State Self-Compassion Measures
 
-In our study, we conducted a multilevel reliability analysis of the State Self-Compassion (SSC) scale, focusing on both its positive and negative components. Our analysis utilized the framework proposed by @lai2021composite to assess the measure's reliability comprehensively.
+{{< include sections/reliability.qmd >}}
 
-**SC Component of SSC:**
 
-- **Within-Subject Reliability ($\tilde{\omega}^w$):** This was calculated to be 0.626, indicating moderate consistency in responses across different measurement occasions. This level of reliability reflects the variability in individuals' self-compassionate responses over time.
-- **Between-Subject Reliability ($\tilde{\omega}^b$):** A higher reliability index of 0.820 was observed, highlighting the measure's effectiveness in distinguishing stable individual differences in self-compassion. 
-- **Composite Reliability ($\omega^{2L}$):** The overall positive score showed a composite reliability of 0.79, suggesting a reliable integration of both within and between-subject variabilities.
+## Impact of Exam Context on State Self-Compassion
 
-**USC Component of SSC:**
+{{< include sections/impact_of_exam_on_ssc.qmd >}}
 
-- **Within-Subject Reliability ($\tilde{\omega}^w$):** Slightly higher than the positive component, this was recorded at 0.68. 
-- **Between-Subject Reliability ($\tilde{\omega}^b$):** Markedly robust at 0.88, this index indicates strong individual differentiation in the negative component of SSC.
-- **Composite Reliability ($\omega^{2L}$):** The composite reliability for the negative component was 0.83, reinforcing the measure's overall reliability.
 
-The between-subject reliability indices for both components, particularly the negative one, surpass the benchmark of 0.8, suggesting the scale's effectiveness in capturing stable individual differences in SSC. The within-subject reliabilities, while lower, are reflective of SSC as a dynamic construct. These values capture the natural fluctuation in self-compassion levels due to changing circumstances and internal states, highlighting the scale's sensitivity to temporal variations within individuals. In summary, our reliability analysis confirms the SSC scale as a robust tool for both research and practice, capable of effectively capturing the nuances of self-compassion across different contexts and over time.
+### Impact of Exam Context on Negative Affect
 
+{{< include sections/impact_of_exam_on_neg_aff.qmd >}}
 
-### Impact of Exam Context on State Self-Compassion
 
-In examining the effect of an academic exam on students' State Self-Compassion (SSC), our Bayesian hierarchical model revealed robust contextual influences. Specifically, the model included random effects to account for variability across subjects, days, and within-day measurements, focusing on days immediately before (`exam_day_pre`) and after (`exam_day_post`) the exam.
+### Temporal Dynamics of State Self-Compassion: Contextual Influence of Negative Affect
 
-On the day preceding the exam, there was a notable decrease in the CS component (posterior estimate for `beta_pre` contrast coefficient: -0.293; 89% CI: [-0.508, -0.080]; $p(\beta)$ < 0 = 0.983). This suggests that the upcoming exam substantially lowered students' compassionate self-responses. Conversely, the UCS component showed an increase before the exam (posterior estimate for `beta_pre`: 0.661; 89% CI: [0.380, 0.947]; $p(\beta)$ > 0 = 1), indicating heightened self-criticism or reduced self-kindness in this stressful period. The day after the exam, we observed an increase in the CS component (posterior estimate: 0.228; 89% CI: [0.0187, 0.446]; $p(\beta)$ > 0 = 0.959) and a decrease in the UCS component (posterior estimate: -0.666; 89% CI: [-0.946, -0.392]; $p(\beta)$ < 0 = 1), suggesting a rebound in self-compassion following the stressor.
+{{< include sections/temp_dynamics_ssc_neg_aff.qmd >}}
 
-These results underline the dynamic nature of SSC in relation to situational stressors. The decrease in CS and increase in UCS components prior to the exam align with literature on the impact of stress on self-compassion. Interestingly, the post-exam period shows a reversal in these trends, indicating a recovery in self-compassion levels. This highlights the importance of temporal context in understanding the fluctuations in self-compassion among students. Overall, these insights are crucial for developing interventions aimed at enhancing resilience and self-compassion in academic settings, especially during periods of heightened stress.
 
+#### Granger Causality Test 
 
-```{r}
-#| echo: false
-#| include: false
-source(here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R"))
-```
+{{< include sections/granger_causality_test.qmd >}}
 
 
-```{r}
-#| echo: false
-#| include: false
-ci_89 <- summary_posterior_distribution(
-  "data/prep/ema/brms_fits/fit_mod_exam_sc_4.RDS",
-  "beta_pre"
-  )
-ci_89
+### Effects of Contextual Factors on SSC
 
-fit <- readRDS(here::here("data/prep/ema/brms_fits/fit_mod_exam_sc_4.RDS"))
-draws <- fit$draws(format="df")
-mean(draws$beta_pre < 0)
-```
+{{< include sections/impact_of_context3L_on_ssc.qmd >}}
 
-```{r}
-#| echo: false
-#| include: false
-ci_89 <- summary_posterior_distribution(
-  "data/prep/ema/brms_fits/fit_mod_exam_sc_4.RDS",
-  "beta_post"
-  )
-ci_89
-
-fit <- readRDS(here::here("data/prep/ema/brms_fits/fit_mod_exam_sc_4.RDS"))
-draws <- fit$draws(format="df")
-mean(draws$beta_post > 0)
-```
-
-```{r}
-#| echo: false
-#| include: false
-ci_89 <- summary_posterior_distribution(
-  "data/prep/ema/brms_fits/fit_mod_exam_usc_4.RDS",
-  "beta_pre"
-  )
-ci_89
-fit <- readRDS(here::here("data/prep/ema/brms_fits/fit_mod_exam_usc_4.RDS"))
-draws <- fit$draws(format="df")
-mean(draws$beta_pre > 0)
-```
-
-```{r}
-#| echo: false
-#| include: false
-ci_89 <- summary_posterior_distribution(
-  "data/prep/ema/brms_fits/fit_mod_exam_usc_4.RDS",
-  "beta_post"
-  )
-ci_89
-fit <- readRDS(here::here("data/prep/ema/brms_fits/fit_mod_exam_usc_4.RDS"))
-draws <- fit$draws(format="df")
-mean(draws$beta_post < 0)
-```
-
-
-
-### Negative Affect Variation Before and After the Exam
-
-First exam.
-
-```{r}
-# tar_load(list_params_first_exam_neg_aff_difference)
-# list_params_first_exam_neg_aff_difference
-```
-
-Second exam.
-
-```{r}
-# tar_load(list_params_second_exam_neg_aff_difference)
-# list_params_second_exam_neg_aff_difference
-```
-
-### Comparison Negative Affect Pre-exam / Post-exam and the Other Days
-
-Comparison between the negative affect either pre-exam and post-exam and the average negative affect in the other days.
-
-Comparison other days and pre-exam.
-
-```{r}
-# tar_load(list_params_no_exam_pre_neg_aff_difference)
-# list_params_no_exam_pre_neg_aff_difference
-```
-
-Comparison other days and post-exam.
-
-```{r}
-# tar_load(list_params_no_exam_post_neg_aff_difference)
-# list_params_no_exam_post_neg_aff_difference
-```
-
-
-### Models' Comparisons
-
-#### Negative Component of State Self-Compassion
-
-TODO: Check whether this is the correct model!
-
-The final model for predicting the negative component of State Self-Compassion is as follows:
-
-$$
-\begin{equation}
-\begin{aligned}
-znsc &\sim \text{Student-t}(\mu, \sigma, \nu) \\
-\mu &= \beta_{0} + \beta_{\text{dec\_moment}} \times \text{dec\_moment} + \beta_{\text{dec\_day}} \times \text{dec\_day} + \beta_{\text{dec\_person}} \times \text{dec\_person} + \\
-&\quad \beta_{\text{na\_moment}} \times \text{na\_moment} + \beta_{\text{na\_day}} \times \text{na\_day} + \beta_{\text{na\_person}} \times \text{na\_person} + \\
-&\quad \beta_{\text{context\_moment}} \times \text{context\_moment} + \beta_{\text{context\_day}} \times \text{context\_day} + \beta_{\text{context\_person}} \times \text{context\_person} + \\
-&\quad b_{\text{user\_id}}[j] + b_{\text{bysubj\_day}}[k] \\
-b_{\text{user\_id}}[j] &\sim \mathcal{N}(0, \Sigma_{\text{user\_id}}) \\
-b_{\text{bysubj\_day}}[k] &\sim \mathcal{N}(0, \sigma^2_{\text{bysubj\_day}}) \\
-\beta &\sim \text{priors1} \\
-\sigma &\sim \text{Half-Cauchy}(0, \text{scale}) \\
-\nu &\sim \text{Exponential}(\text{rate}) \\
-\\
-\text{Where:} & \\
-\Sigma_{\text{user\_id}} &= \text{Full covariance matrix for random effects within user\_id} \\
-\sigma^2_{\text{bysubj\_day}} &= \text{Var}(b_{\text{bysubj\_day}}[k])
-\end{aligned}
-\end{equation}
-$$
-
-### Results
-
-We employed a Bayesian multilevel model to predict the negative component of the State Self-Compassion scale, which was measured multiple times for each participant across various occasions. The model included momentary negative affect (na), the evaluation of momentary context valence (context), and momentary decentering (dec) as predictors. Each of these predictors was decomposed into three components: within-person, between-day, and between-person.
-
-#### Model Summary
-
-The model was estimated using a Student's t-distribution with identity links for the mean (mu), scale (sigma), and degrees of freedom (nu). The analysis was based on 6741 observations, with the posterior distribution derived from 2000 post-warmup draws across two chains.
-
-#### Group-Level Effects
-
-- **By-Subject-Day Variability**: The standard deviation of the random intercepts for different days (`bysubj_day`) was estimated to be 0.02, suggesting minimal variability in the negative component of State Self-Compassion across days within subjects.
-- **By-User Variability**: The model revealed substantial between-person variability in the intercept (0.50), indicating differences in baseline levels of the negative component of State Self-Compassion among participants. The variability in the within-person components of negative affect (`na_moment`: 0.06, `na_day`: 0.15), context (`context_moment`: 0.02, `context_day`: 0.09), and decentering (`dec_moment`: 0.08, `dec_day`: 0.14) suggests individual differences in how these factors relate to self-compassion on a moment-to-moment and day-to-day basis.
-
-#### Population-Level Effects
-
-- **Decentering**: Momentary (β = -0.12), daily (β = -0.18), and person-level (β = -0.37) decentering showed negative associations with the negative component of State Self-Compassion, indicating that higher levels of decentering are associated with lower levels of self-criticism or negative self-judgment.
-- **Negative Affect**: Momentary (β = 0.13) and day-level (β = 0.17) negative affect were positively associated with the negative component, while person-level negative affect (β = 0.34) showed a stronger positive relationship. This suggests that both transient and enduring negative emotions contribute to increased self-criticism.
-- **Context Valence**: Momentary context valence showed a weak negative association (β = -0.02), while daily (β = 0.01) and person-level context valence (β = 0.04) had minimal or slightly positive associations, indicating that the immediate context's perceived negativity might slightly increase self-critical thoughts.
-
-#### Family Specific Parameters
-
-- The estimated scale parameter (σ = 0.35) and degrees of freedom (ν = 4.20) of the Student's t-distribution reflect the variability and the heaviness of the tails in the model residuals, respectively.
-
-#### Model Diagnostics
-
-The model diagnostics indicate satisfactory convergence with Rhat values close to 1 for all parameters. The Bulk_ESS and Tail_ESS values suggest adequate effective sample sizes for reliable estimation and inference.
-
-#### Output of brm()
-
-`b_dec_moment`
-
-```{r}
-# tar_load(stats_coef_dec_moment)
-# stats_coef_dec_moment
-```
-
-`b_dec_day`
-
-```{r}
-# tar_load(stats_coef_dec_moment)
-# stats_coef_dec_day
-```
-
-`b_dec_person`
-
-```{r}
-# tar_load(stats_coef_dec_moment)
-# stats_coef_dec_person
-```
-
-
-### Random effects
-
-cor(dec_moment,dec_day) = 0.46: This is the correlation between the random effects for decentering at the moment level and the day level within the same individual. A positive correlation of 0.46 suggests that there is a moderate relationship between the variability in decentering across different days and within a single day for the same participant. In simpler terms, if a participant shows considerable variation in their decentering scores from day to day, they are also likely to show noticeable variation in decentering at different moments within the same day.
-
-cor(na_moment,na_day) = 0.52: This coefficient represents the correlation between the random effects for negative affect at the moment level and the day level within the same individual. Similarly to the previous coefficient, a positive correlation of 0.52 indicates a moderate to strong relationship. It means that participants who tend to vary a lot in their negative affect scores between days are also likely to exhibit significant variation within a single day.
-
-These correlations are important in understanding the dynamics of the psychological constructs you are studying (decentering and negative affect) in relation to time (both across days and within a single day). It suggests that there is a consistency in the way individuals vary in these constructs over time, both on a daily and momentary basis. 
-
-
-## Change in Negative Affect
-
-`delta_neg_aff` has been computed as the difference in neg_aff (negative affect) between successive time points within each day for each user. This means `delta_neg_aff` represents the change in negative affect from one measurement to the next on the same day.
-
-
-Given your additional details about how `delta_neg_aff` was computed and the nature of `time_window`, the interpretation of your model results should be slightly adjusted. Here's the refined interpretation:
-
-### Calculation of `delta_neg_aff`:
-- You've computed `delta_neg_aff` as the difference in `neg_aff` (negative affect) between successive time points within each day for each user. This means `delta_neg_aff` represents the change in negative affect from one measurement to the next on the same day.
-
-### Interpretation of Model Results with This Context:
-1. **Negative State Self-Compassion (nsc) Model**:
-   - **delta_neg_aff (Estimate: -0.03)**: A negative coefficient for `delta_neg_aff` suggests that when there is an increase in negative affect from one time point to the next within the same day, there is a corresponding decrease in the negative component of state self-compassion. This implies that as participants experience an increase in negative affect within a day, they tend to be less self-critical or negative towards themselves in that immediate time frame.
-
-2. **Positive State Self-Compassion (psc) Model**:
-   - **delta_neg_aff (Estimate: 0.04)**: A positive coefficient here indicates that an increase in negative affect from one time point to the next within the same day is associated with an increase in the positive component of state self-compassion. This suggests that participants respond to a short-term increase in negative affect (within a day) with more self-kindness and positive self-support.
-
-### Contextual Dependence:
-- These results support the idea that the application of state self-compassion strategies (both positive and negative) is responsive to changes in the immediate affective context, as indicated by intra-day fluctuations in negative affect. The opposing directions of these relationships for psc and nsc are particularly interesting, suggesting that increases in negative affect prompt a decrease in self-critical or negative self-compassion responses, while simultaneously encouraging more self-kindness and understanding.
-
-### Causality and Temporal Dynamics:
-- The analysis captures the immediate (short-term) response in self-compassion strategies to changes in negative affect within a day. It highlights the dynamic nature of self-compassion as a responsive mechanism to affective shifts.
-- Causality should be approached with caution due to the observational nature of the study.
-
-### Implications:
-- The findings suggest that individuals’ self-compassion responses are closely tied to their ongoing emotional experiences, adjusting rapidly to changes in negative affect over the course of a day.
-- This insight can inform interventions or therapeutic approaches that aim to cultivate adaptive self-compassion strategies in response to everyday emotional fluctuations.
-
-In summary, understanding that `delta_neg_aff` represents intra-day changes refines the interpretation to focus on how self-compassion components fluctuate as an immediate response to changes in affective states within the same day.
-
-### Additional Considerations:
-- **Autocorrelation (ar[1])**: The significant autocorrelation terms in both models indicate that there is a relationship between successive measurements within individuals, reinforcing the importance of considering the temporal dynamics in your data.
-- **Random Effects**: The significant random effects suggest considerable variability across individuals and days, highlighting the importance of accounting for these differences in your analysis.
-- **Causality Caution**: While these results suggest a relationship between changes in negative affect and self-compassion components, causal interpretations should be made cautiously. The observational nature of the study limits the ability to draw firm causal conclusions.
-
-### Next Steps:
-- You might explore further how specific contexts (like stressors or events) influence these dynamics.
-- Consider examining individual differences more closely, as the random effects suggest that the relationship between delta_neg_aff and self-compassion components varies across individuals.
-- Additional analyses or follow-up studies, potentially with experimental designs, could help to further elucidate these relationships and move closer to causal interpretations.
-
-Overall, your analysis provides compelling evidence that the utilization of self-compassion strategies is influenced by changes in the affective context, as measured by shifts in negative affect.
-
-## Granger Causality Test 
-
-### Overall Interpretation
-
-The results indicate that variations in negative affect (delta_neg_aff) can predict subsequent changes in both the positive and negative components of state self-compassion (psc and nsc). However, changes in state self-compassion (both psc and nsc) do not predict subsequent changes in negative affect.
-This pattern supports the hypothesis that it is the change in the affective context that modulates state self-compassion, rather than changes in state self-compassion determining the variation in the affective response.
-It's important to remember that Granger Causality Tests are about predictability, not true causation. While these results suggest a predictive relationship, they do not confirm a causal effect. This analysis  suggests that the affective state, as it evolves, is a significant factor influencing how individuals engage in self-compassion practices.
 
 ## Test of the Bipolar Continuum Hypothesis
 
-We used a hierarchical model designed to analyze data collected from multiple participants over several days, with each participant providing multiple measurements per day. The primary focus is on the relationship between Compassionate Self (CS) and Uncompassionate Self (UCS) scores, while accounting for participant-specific and day-specific variations, as well as variations in other covariates like negative affect, decentering, and context evaluation.
-
-$$
-\begin{align*}
-    \text{UCS}_{ijkm} &\sim t\left(\nu, \mu_{ijkm}, \sigma_{\text{UCS}}\right) \\
-    \mu_{ijkm} &= \alpha_{\text{UCS}} + \left(\beta_{\text{CS}} + b_{i}^{\text{participant}}\right) \times \text{CS}_{ijkm} + \boldsymbol{\beta}_{\text{cov}}^\top \mathbf{X}_{ijkm} \\
-    &\quad + u_{i}^{\text{participant}} + v_{j[i]}^{\text{day}} + w_{k[ij]}^{\text{measurement}} \\
-    \text{where} & \\
-    u_{i}^{\text{participant}} &\sim \mathcal{N}(0, \sigma_{\text{participant}}) \\
-    b_{i}^{\text{participant}} &\sim \mathcal{N}(0, \sigma_{\text{participant\_slope\_cs}}) \\
-    v_{j[i]}^{\text{day}} &\sim \mathcal{N}(0, \sigma_{\text{day}}) \\
-    w_{k[ij]}^{\text{measurement}} &\sim \mathcal{N}(0, \sigma_{\text{measurement}}) \\
-    \boldsymbol{\beta}_{\text{cov}} &\sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
-    \alpha_{\text{UCS}}, \beta_{\text{CS}} &\sim \mathcal{N}(0, 1) \\
-    \sigma_{\text{UCS}}, \sigma_{\text{participant}}, \sigma_{\text{day}}, \sigma_{\text{measurement}}, \sigma_{\text{participant\_slope\_cs}} &\sim \text{Exponential}(1) \\
-    \nu &\sim \text{Gamma}(2, 0.1)
-\end{align*}
-$$
-
-1. **Primary Equation (UCS Likelihood):** The UCS (Uncompassionate Self) score for each observation is modeled using a t-distribution. This choice accommodates potential heavy tails in the UCS score distribution. Each observation is indexed by participant $i$, day $j$, and measurement $k$, and the distribution is characterized by degrees of freedom $\nu$, a mean $\mu_{ijkm}$, and standard deviation $\sigma_{\text{UCS}}$.
-
-2. **Mean Equation ($\mu_{ijkm}$):** The mean UCS score, $\mu_{ijkm}$, is calculated as a linear combination of several components:
-   - A global intercept $\alpha_{\text{UCS}}$.
-   - The product of a coefficient $\beta_{\text{CS}}$ (representing the overall effect of the CS (Compassionate Self) score) and the specific CS score for that observation.
-   - The weighted sum of other covariates (negative affect, decentering, context evaluation), each multiplied by their respective coefficients $\boldsymbol{\beta}_{\text{cov}}$.
-   - Random intercepts for each participant $u_{i}^{\text{participant}}$, day $v_{j[i]}^{\text{day}}$, and measurement $w_{k[ij]}^{\text{measurement}}$, accounting for the hierarchical data structure.
-   - A random slope $b_{i}^{\text{participant}}$ for CS at the participant level, allowing the relationship between CS and UCS to vary across individuals.
-
-3. **Random Effects:** 
-   - Random intercepts for participants, days, and measurements (denoted as $u_{i}^{\text{participant}}$, $v_{j[i]}^{\text{day}}$, and $w_{k[ij]}^{\text{measurement}}$, respectively) are assumed to follow normal distributions with a mean of zero and specific standard deviations. These intercepts capture variability across the different levels of the hierarchical structure.
-   - Additionally, the model includes a random slope for the effect of CS ($b_{i}^{\text{participant}}$) at the participant level. This element allows the model to capture individual differences in how CS influences UCS.
-
-4. **Priors:** 
-   - The model assumes normal distributions with mean zero for coefficients and intercepts, reflecting a lack of prior bias towards specific values. The standard deviations of the random effects and the error term ($\sigma_{\text{UCS}}$, $\sigma_{\text{participant}}$, etc.) are modeled using exponential distributions. The degrees of freedom parameter $\nu$ for the t-distribution is drawn from a gamma distribution, suggesting flexibility in the tail behavior of the UCS scores.
-
-This statistical model is particularly suited for exploring the Bipolar Continuum Hypothesis proposed by Neff, which posits an inverse relationship between UCS and CS across individuals. By including random slopes for CS at the participant level, the model can assess how this relationship varies among individuals, providing insights into the nuanced nature of self-compassion and self-criticism. 
+{{< include sections/test_bip_cont_hyp.qmd >}}
 
 
 ## General Discussion
 
-bla bla
-
-
-### Stan Model for Testing the Bipolar Continuum Hypothesis
-
-$$
-\begin{align*}
-\text{data} \{ \\
-& \text{int} <\text{lower}=0> N; \quad \text{// Total number of observations} \\
-& \text{int} <\text{lower}=0> P; \quad \text{// Number of participants} \\
-& \text{int} <\text{lower}=0> D; \quad \text{// Number of days} \\
-& \text{int} <\text{lower}=0> M; \quad \text{// Number of measurements per day per participant} \\
-& \text{array}[N] \text{int} <\text{lower}=1, \text{upper}=P> \text{participant}; \quad \text{// Participant index for each observation} \\
-& \text{array}[N] \text{int} <\text{lower}=1, \text{upper}=D> \text{day}; \quad \text{// Day index for each observation} \\
-& \text{array}[N] \text{int} <\text{lower}=1, \text{upper}=M> \text{measurement}; \quad \text{// Measurement index for each observation} \\
-& \text{array}[N] \text{real} \text{CS}; \quad \text{// Compassionate Self measures} \\
-& \text{array}[N] \text{real} \text{UCS}; \quad \text{// Uncompassionate Self measures} \\
-& \text{array}[N] \text{real} \text{neg\_affect}; \quad \text{// Negative Affect measures} \\
-& \text{array}[N] \text{real} \text{decentering}; \quad \text{// Decentering measures} \\
-& \text{array}[N] \text{real} \text{context\_eval}; \quad \text{// Context evaluation measures} \\
-\} \\
-\\
-\text{parameters} \{ \\
-& \text{real} \text{alpha\_ucs}; \quad \text{// Intercept for UCS} \\
-& \text{real} \text{beta\_cs}; \quad \text{// Overall effect of CS on UCS} \\
-& \text{array}[3] \text{real} \text{beta\_covariates}; \quad \text{// Coefficients for other covariates} \\
-\\
-& \text{// Random intercepts} \\
-& \text{vector}[P] \text{z\_participant}; \\
-& \text{vector}[D] \text{z\_day}; \\
-& \text{vector}[M] \text{z\_measurement}; \\
-\\
-& \text{// Random slopes for CS at the participant level} \\
-& \text{vector}[P] \text{z\_participant\_slope\_cs}; \\
-\\
-& \text{real} <\text{lower}=0> \text{sigma\_participant}; \quad \text{// SD of participant intercepts} \\
-& \text{real} <\text{lower}=0> \text{sigma\_day}; \quad \text{// SD of day intercepts} \\
-& \text{real} <\text{lower}=0> \text{sigma\_measurement}; \quad \text{// SD of measurement intercepts} \\
-& \text{real} <\text{lower}=0> \text{sigma\_participant\_slope\_cs}; \quad \text{// SD of participant slopes for CS} \\
-& \text{real} <\text{lower}=0> \text{sigma\_ucs}; \quad \text{// Error term for UCS model} \\
-& \text{real} <\text{lower}=0> \text{nu}; \quad \text{// Degrees of freedom for t-distribution} \\
-\} \\
-\\
-\text{model} \{ \\
-& \text{// Priors} \\
-& \text{alpha\_ucs} \sim \text{normal}(0, 1); \\
-& \text{beta\_cs} \sim \text{normal}(0, 1); \\
-& \text{beta\_covariates} \sim \text{normal}(0, 1); \\
-\\
-& \text{z\_participant} \sim \text{normal}(0, 1); \\
-& \text{z\_day} \sim \text{normal}(0, 1); \\
-& \text{z\_measurement} \sim \text{normal}(0, 1); \\
-& \text{z\_participant\_slope\_cs} \sim \text{normal}(0, 1); \\
-\\
-& \text{sigma\_participant} \sim \text{exponential}(1); \\
-& \text{sigma\_day} \sim \text{exponential}(1); \\
-& \text{sigma\_measurement} \sim \text{exponential}(1); \\
-& \text{sigma\_participant\_slope\_cs} \sim \text{exponential}(1); \\
-& \text{sigma\_ucs} \sim \text{exponential}(1); \\
-& \text{nu} \sim \text{gamma}(2, 0.1); \\
-\\
-& \text{// Likelihood for UCS using t-distribution} \\
-& \text{for} (n \text{ in } 1:N) \{ \\
-& \quad \text{UCS}[n] \sim \text{student\_t}( \\
-& \quad \quad \text{nu}, \\
-& \quad \quad \text{alpha\_ucs} + \\
-& \quad \quad (\text{beta\_cs} + \text{sigma\_participant\_slope\_cs} \times \text{z\_participant\_slope\_cs}[\text{participant}[n]]) \times \text{CS}[n] + \\
-& \quad \quad \text{beta\_covariates}[1] \times \text{neg\_affect}[n] + \\
-& \quad \quad \text{beta\_covariates}[2] \times \text{decentering}[n] + \\
-& \quad \quad \text{beta\_covariates}[3] \times \text{context\_eval}[n] + \\
-& \quad \quad \text{sigma\_participant} \times \text{z\_participant}[\text{participant}[n]] + \\
-& \quad \quad \text{sigma\_day} \times \text{z\_day}[\text{day}[n]] + \\
-& \quad \quad \text{sigma\_measurement} \times \text{z\_measurement}[\text{measurement}[n]], \\
-& \quad \quad \text{sigma\_ucs} \\
-& \quad ); \\
-& \} \\
-\}
-\end{align*}
-$$
+{{< include sections/general_discussion.qmd >}}
 
 
 \newpage
@@ -532,76 +102,22 @@ $$
 
 # Appendix {.unnumbered}
 
+## Relation between Decentering and Self-compassion
+
+{{< include sections/apx_decentering.qmd >}}
+
+
 ## Effect of Exam on State Self-Compassion
 
-We used a hierarchical, multilevel model to analyze the effect of specific time points (pre and post-exam) on the CS and UCS components of State Self-Compassion, while accounting for the nested structure of the data.
+{{< include sections/apx_impact_of_exam_on_ssc.qmd >}}
 
-Given:
 
-$$
-\begin{itemize}
-    \item $N$: Total number of observations
-    \item $J$: Number of subjects
-    \item $D$: Number of days
-    \item $M$: Number of measurements per day
-    \item $psc$: Dependent variable (array of size $N$)
-    \item $exam\_day\_pre$: Indicator variable for pre-exam day (array of size $N$)
-    \item $exam\_day\_post$: Indicator variable for post-exam day (array of size $N$)
-\end{itemize}
-$$
+## Effects of Contextual Factors on SSC 
 
-The model is defined as follows:
+{{< include sections/apx_model_comparison.qmd >}}
 
-**Priors:**
+## Bipolar Continuum Hypothesis
 
-$$
-\begin{align*}
-    \alpha & \sim \text{Normal}(0, 2.5) \\
-    \alpha_j & \sim \text{Normal}(0, \sigma_j) \\
-    \alpha_d & \sim \text{Normal}(0, \sigma_d) \\
-    \alpha_m & \sim \text{Normal}(0, \sigma_m) \\
-    \beta_{pre}, \beta_{post} & \sim \text{Normal}(0, 1) \\
-    \beta_{j\_pre}, \beta_{j\_post} & \sim \text{Normal}(0, \sigma_{\beta_j}) \\
-    \sigma, \sigma_j, \sigma_d, \sigma_m, \sigma_{\beta_{j\_pre}}, \sigma_{\beta_{j\_post}} & \sim \text{Exponential}(1) \\
-    \text{skewness} & \sim \text{Normal}(0, 1)
-\end{align*}
-$$
-
-**Likelihood:**
-For each observation $n = 1, \ldots, N$:
-
-$$
-\begin{align*}
-    psc[n] & \sim \text{SkewNormal}\left(\mu_n, \sigma, \text{skewness}\right) \\
-    \text{where } \mu_n & = \alpha + \alpha_j[\text{subj}[n]] + \alpha_d[\text{day}[n]] + \alpha_m[\text{meas}[n]] \\
-    & \quad + (\beta_{pre} + \beta_{j\_pre}[\text{subj}[n]]) \times \text{exam\_day\_pre}[n] \\
-    & \quad + (\beta_{post} + \beta_{j\_post}[\text{subj}[n]]) \times \text{exam\_day\_post}[n]
-\end{align*}
-$$
-
-The model employs a skew normal distribution to accommodate potential asymmetry in the response variable.
-
-### Model Description:
-
-1. **Observational Unit and Data Structure:** The model is built for $N$ observations, collected from $J$ subjects across $D$ days, with each day comprising $M$ measurements. The dependent variable, `CS` or `UCS`, represents the psychological measure of interest, and the primary predictors are binary indicators for pre-exam (`exam_day_pre`) and post-exam (`exam_day_post`) days.
-
-2. **Random Effects Structure:** 
-   - **Subject-level Random Intercepts ($\alpha_j$):** These capture the subject-specific deviations from the overall mean, allowing for individual baseline differences in `CS` or `UCS`.
-   - **Day-level Random Intercepts ($\alpha_d$):** These account for day-to-day variability within subjects, capturing fluctuations in `CS` or `UCS` that might be attributed to daily factors.
-   - **Measurement-level Random Intercepts ($\alpha_m$):** These intercepts address the variation within the same day, considering the potential impact of the time of measurement on `CS` or `UCS`.
-
-3. **Random Slopes:** 
-   - **Subject-specific Slopes for Exam Days ($\beta_{j\_pre}$ and $\beta_{j\_post}$):** These slopes allow the effect of pre- and post-exam days to vary across subjects, acknowledging that the impact of these specific days on `CS` or `UCS` might differ among individuals.
-
-4. **Fixed Effects:** 
-   - **Global Intercept ($\alpha$):** This represents the overall mean level of `CS` or `UCS` across all observations when other predictors are at their reference levels.
-   - **Main Effects for Exam Days ($\beta_{pre}$ and $\beta_{post}$):** These coefficients estimate the average effect of pre- and post-exam days on `CS` or `UCS`, relative to non-exam days.
-
-5. **Skewness Parameter:** The inclusion of a skewness parameter in the skew normal distribution allows the model to capture potential asymmetry in the distribution of `CS` or `UCS`.
-
-6. **Priors:** The model employs non-informative priors for most parameters, assuming normal distributions for intercepts and slopes, and exponential distributions for standard deviations, ensuring a broad range of plausible values.
-
-7. **Likelihood:** 
-   - **Likelihood:** The response variable `CS` or `UCS` for each observation is modeled using a skew normal distribution, with mean and variance parameters constructed from the fixed and random effects, and the skewness parameter to capture asymmetry.
+{{< include sections/apx_bip_cont_hyp.qmd >}}
 
 

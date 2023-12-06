@@ -3,7 +3,7 @@
 
 rule get_data_mod_9_rnd_slopes_bip_cont_hyp:
     input:
-        "data/prep/ema/ema_data.rds",
+        config["ema_data"],
     output:
         "data/prep/ema/data_mod_9_rnd_slopes.rds",
     shell:

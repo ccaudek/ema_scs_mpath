@@ -1,0 +1,96 @@
+
+```{r}
+#| echo: false
+#| include: false
+delta_neg_aff_sc <- 
+  readRDS(here::here("data/prep/ema/brms_fits/fit_psc_delta_neg_aff.rds"))
+```
+
+```{r}
+#| echo: false
+#| include: false
+delta_neg_aff_usc <- 
+  readRDS(here::here("data/prep/ema/brms_fits/fit_nsc_delta_neg_aff.rds"))
+```
+
+```{r}
+#| echo: false
+#| include: false
+brms::posterior_interval(
+  delta_neg_aff_sc, 
+  variable = "b_delta_neg_aff", 
+  prob = 0.89
+)
+```
+
+```{r}
+#| echo: false
+#| include: false
+brms::posterior_interval(
+  delta_neg_aff_usc, 
+  variable = "b_delta_neg_aff", 
+  prob = 0.89
+)
+```
+
+We explored the temporal dynamics of State Self-Compassion (SSC), examining how fluctuations in negative affect influence its Compassionate (CS) and Uncompassionate (USC) components. We hypothesized that these components are dynamically affected by immediate affective states and their changes over time. To investigate this, we employed two Bayesian hierarchical models, each addressing one component of SSC and incorporating both current and preceding levels of negative affect.
+
+The models were formulated as follows: for the CS component, `sc ~ neg_aff + delta_neg_aff + time_window + (1 + neg_aff + delta_neg_aff | user_id) + (1 | bysubj_day) + (1 | bysubj_day:time_window) + ar(time = time_window, gr = user_id:bysubj_day, p = 1, cov = TRUE)`; and similarly for the USC component. Here, `neg_aff` represents the level of negative affect at the measurement time, while `delta_neg_aff` quantifies the change in negative affect from the previous to the current time point within the same day. The inclusion of these predictors allowed us to assess the 'carry-over' effect of negative affect on SSC.
+
+For the CS component, our model revealed a robust inverse relationship between negative affect and CS ($\beta$ = -0.42, $SE$ = 0.03; 89% CI: [-0.47, -0.36]). This suggests that higher negative affect at the time of measurement corresponded with lower levels of CS. An increase in negative affect relative to the previous measurement within the same day (β = 0.04, SE = 0.01; 89% CI: [0.02, 0.06]) was associated with a modest increase in CS, highlighting temporal adaptation in self-compassion. The model also indicated a moderate degree of temporal autocorrelation (ar[1] = 0.30), suggesting some stability in CS responses over short periods.
+
+Conversely, the USC component analysis showed that increased negative affect was associated with heightened USC ($\beta$ = 0.43, SE = 0.03). An increase in negative affect over time led to a slight decrease in USC ($\beta$ = -0.04, SE = 0.01; ; 89% CI: [-0.05, -0.02]), suggesting a different adaptive response compared to CS. The USC component also exhibited a stronger autoregressive effect (ar[1] = 0.34), indicating a more pronounced carry-over effect of affective states.
+
+These findings highlight the dynamic nature of SSC, where both CS and USC are influenced by the immediate affective context. The identified 'carry-over' effect of negative affect reinforces SSC's fluidity, where short-term affective shifts can significantly impact self-compassion expressions. The differential responses in CS and USC to temporal affective changes underscore the complex and nuanced interplay between affective states and self-compassion facets.
+
+--------------------------------------------------------------------------------
+
+NOTES:
+
+`delta_neg_aff` has been computed as the difference in neg_aff (negative affect) between successive time points within each day for each user. This means `delta_neg_aff` represents the change in negative affect from one measurement to the next on the same day.
+
+
+Given your additional details about how `delta_neg_aff` was computed and the nature of `time_window`, the interpretation of your model results should be slightly adjusted. Here's the refined interpretation:
+
+### Calculation of `delta_neg_aff`:
+- You've computed `delta_neg_aff` as the difference in `neg_aff` (negative affect) between successive time points within each day for each user. This means `delta_neg_aff` represents the change in negative affect from one measurement to the next on the same day.
+
+### Interpretation of Model Results with This Context:
+1. **Negative State Self-Compassion (nsc) Model**:
+   - **delta_neg_aff (Estimate: -0.03)**: A negative coefficient for `delta_neg_aff` suggests that when there is an increase in negative affect from one time point to the next within the same day, there is a corresponding decrease in the negative component of state self-compassion. This implies that as participants experience an increase in negative affect within a day, they tend to be less self-critical or negative towards themselves in that immediate time frame.
+
+2. **Positive State Self-Compassion (psc) Model**:
+   - **delta_neg_aff (Estimate: 0.04)**: A positive coefficient here indicates that an increase in negative affect from one time point to the next within the same day is associated with an increase in the positive component of state self-compassion. This suggests that participants respond to a short-term increase in negative affect (within a day) with more self-kindness and positive self-support.
+
+### Contextual Dependence:
+- These results support the idea that the application of state self-compassion strategies (both positive and negative) is responsive to changes in the immediate affective context, as indicated by intra-day fluctuations in negative affect. The opposing directions of these relationships for psc and nsc are particularly interesting, suggesting that increases in negative affect prompt a decrease in self-critical or negative self-compassion responses, while simultaneously encouraging more self-kindness and understanding.
+
+### Causality and Temporal Dynamics:
+- The analysis captures the immediate (short-term) response in self-compassion strategies to changes in negative affect within a day. It highlights the dynamic nature of self-compassion as a responsive mechanism to affective shifts.
+- Causality should be approached with caution due to the observational nature of the study.
+
+### Implications:
+- The findings suggest that individuals’ self-compassion responses are closely tied to their ongoing emotional experiences, adjusting rapidly to changes in negative affect over the course of a day.
+- This insight can inform interventions or therapeutic approaches that aim to cultivate adaptive self-compassion strategies in response to everyday emotional fluctuations.
+
+In summary, understanding that `delta_neg_aff` represents intra-day changes refines the interpretation to focus on how self-compassion components fluctuate as an immediate response to changes in affective states within the same day.
+
+### Additional Considerations:
+- **Autocorrelation (ar[1])**: The significant autocorrelation terms in both models indicate that there is a relationship between successive measurements within individuals, reinforcing the importance of considering the temporal dynamics in your data.
+- **Random Effects**: The significant random effects suggest considerable variability across individuals and days, highlighting the importance of accounting for these differences in your analysis.
+- **Causality Caution**: While these results suggest a relationship between changes in negative affect and self-compassion components, causal interpretations should be made cautiously. The observational nature of the study limits the ability to draw firm causal conclusions.
+
+### Next Steps:
+- You might explore further how specific contexts (like stressors or events) influence these dynamics.
+- Consider examining individual differences more closely, as the random effects suggest that the relationship between delta_neg_aff and self-compassion components varies across individuals.
+- Additional analyses or follow-up studies, potentially with experimental designs, could help to further elucidate these relationships and move closer to causal interpretations.
+
+Overall, your analysis provides compelling evidence that the utilization of self-compassion strategies is influenced by changes in the affective context, as measured by shifts in negative affect.
+
+### Overall Interpretation
+
+The results indicate that variations in negative affect (delta_neg_aff) can predict subsequent changes in both the positive and negative components of state self-compassion (psc and nsc). However, changes in state self-compassion (both psc and nsc) do not predict subsequent changes in negative affect.
+This pattern supports the hypothesis that it is the change in the affective context that modulates state self-compassion, rather than changes in state self-compassion determining the variation in the affective response.
+It's important to remember that Granger Causality Tests are about predictability, not true causation. While these results suggest a predictive relationship, they do not confirm a causal effect. This analysis  suggests that the affective state, as it evolves, is a significant factor influencing how individuals engage in self-compassion practices.
+
+

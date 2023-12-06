@@ -1,0 +1,70 @@
+
+We used a hierarchical, multilevel model to analyze the effect of specific time points (pre and post-exam) on the CS and UCS components of State Self-Compassion, while accounting for the nested structure of the data.
+
+Given:
+
+$$
+\begin{itemize}
+    \item $N$: Total number of observations
+    \item $J$: Number of subjects
+    \item $D$: Number of days
+    \item $M$: Number of measurements per day
+    \item $psc$: Dependent variable (array of size $N$)
+    \item $exam\_day\_pre$: Indicator variable for pre-exam day (array of size $N$)
+    \item $exam\_day\_post$: Indicator variable for post-exam day (array of size $N$)
+\end{itemize}
+$$
+
+The model is defined as follows:
+
+**Priors:**
+
+$$
+\begin{align*}
+    \alpha & \sim \text{Normal}(0, 2.5) \\
+    \alpha_j & \sim \text{Normal}(0, \sigma_j) \\
+    \alpha_d & \sim \text{Normal}(0, \sigma_d) \\
+    \alpha_m & \sim \text{Normal}(0, \sigma_m) \\
+    \beta_{pre}, \beta_{post} & \sim \text{Normal}(0, 1) \\
+    \beta_{j\_pre}, \beta_{j\_post} & \sim \text{Normal}(0, \sigma_{\beta_j}) \\
+    \sigma, \sigma_j, \sigma_d, \sigma_m, \sigma_{\beta_{j\_pre}}, \sigma_{\beta_{j\_post}} & \sim \text{Exponential}(1) \\
+    \text{skewness} & \sim \text{Normal}(0, 1)
+\end{align*}
+$$
+
+**Likelihood:**
+For each observation $n = 1, \ldots, N$:
+
+$$
+\begin{align*}
+    psc[n] & \sim \text{SkewNormal}\left(\mu_n, \sigma, \text{skewness}\right) \\
+    \text{where } \mu_n & = \alpha + \alpha_j[\text{subj}[n]] + \alpha_d[\text{day}[n]] + \alpha_m[\text{meas}[n]] \\
+    & \quad + (\beta_{pre} + \beta_{j\_pre}[\text{subj}[n]]) \times \text{exam\_day\_pre}[n] \\
+    & \quad + (\beta_{post} + \beta_{j\_post}[\text{subj}[n]]) \times \text{exam\_day\_post}[n]
+\end{align*}
+$$
+
+The model employs a skew normal distribution to accommodate potential asymmetry in the response variable.
+
+### Model Description:
+
+1. **Observational Unit and Data Structure:** The model is built for $N$ observations, collected from $J$ subjects across $D$ days, with each day comprising $M$ measurements. The dependent variable, `CS` or `UCS`, represents the psychological measure of interest, and the primary predictors are binary indicators for pre-exam (`exam_day_pre`) and post-exam (`exam_day_post`) days.
+
+2. **Random Effects Structure:** 
+   - **Subject-level Random Intercepts ($\alpha_j$):** These capture the subject-specific deviations from the overall mean, allowing for individual baseline differences in `CS` or `UCS`.
+   - **Day-level Random Intercepts ($\alpha_d$):** These account for day-to-day variability within subjects, capturing fluctuations in `CS` or `UCS` that might be attributed to daily factors.
+   - **Measurement-level Random Intercepts ($\alpha_m$):** These intercepts address the variation within the same day, considering the potential impact of the time of measurement on `CS` or `UCS`.
+
+3. **Random Slopes:** 
+   - **Subject-specific Slopes for Exam Days ($\beta_{j\_pre}$ and $\beta_{j\_post}$):** These slopes allow the effect of pre- and post-exam days to vary across subjects, acknowledging that the impact of these specific days on `CS` or `UCS` might differ among individuals.
+
+4. **Fixed Effects:** 
+   - **Global Intercept ($\alpha$):** This represents the overall mean level of `CS` or `UCS` across all observations when other predictors are at their reference levels.
+   - **Main Effects for Exam Days ($\beta_{pre}$ and $\beta_{post}$):** These coefficients estimate the average effect of pre- and post-exam days on `CS` or `UCS`, relative to non-exam days.
+
+5. **Skewness Parameter:** The inclusion of a skewness parameter in the skew normal distribution allows the model to capture potential asymmetry in the distribution of `CS` or `UCS`.
+
+6. **Priors:** The model employs non-informative priors for most parameters, assuming normal distributions for intercepts and slopes, and exponential distributions for standard deviations, ensuring a broad range of plausible values.
+
+7. **Likelihood:** 
+   - **Likelihood:** The response variable `CS` or `UCS` for each observation is modeled using a skew normal distribution, with mean and variance parameters constructed from the fixed and random effects, and the skewness parameter to capture asymmetry.

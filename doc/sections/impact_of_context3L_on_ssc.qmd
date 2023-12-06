@@ -1,0 +1,68 @@
+
+Next, we examined the influence of three contextual factors -- negative affect, decentering, and subjective evaluations of recent events (context) -- on both the State Self-Compassion (SC) and Unstate Self-Compassion (USC) components. To investigate these effects comprehensively, we applied three distinct centering techniques: *Person Centering*, *Day Centering*, and *Moment Centering*.
+
+- **Person Centering** ({{varname}}_Person): This method accounted for individual differences by computing the mean of {{varname}} for each person across all days and moments, revealing how their experiences deviated from the group average.
+
+- **Day Centering** ({{varname}}_Day): Focusing on {{varname}} variations within each day, we centered the data by calculating the daily mean across all moments. This allowed us to explore how daily fluctuations in {{varname}} related to the outcomes.
+
+- **Moment Centering** ({{varname}}_Moment): This approach honed in on within-day variations, measuring {{varname}} deviations from the daily mean at each moment. It provided insights into the immediate impact of {{varname}} within daily contexts.
+
+These centering techniques facilitated the consideration of individual, daily, and momentary variations in negative affect, decentering, and context evaluations. We employed a Bayesian multilevel model to predict the CS and UCS components of State Self-Compassion across participants, days, and moments within a day. The model incorporated the three contextual factors, each decomposed into its within-person, between-day, and between-person components. Various model iterations emphasized the significance of these components and different random-effect structures in contributing to model fit (Table 1).
+
+
+```{r}
+#| echo: false
+#| include: false
+loo_psc_rand_eff_mod_comp <-
+  readRDS(here::here("data/prep/ema/brms_fits/loo_psc_fixed_eff_mod_comp.rds"))
+loo_psc_rand_eff_mod_comp
+```
+
+#### SC Component
+
+Focusing on population-level effects, the model applied to the SC component of SSC revealed the following associations (for more detailed information, see Supplementary Information):
+
+- **Decentering**: Momentary (β = -0.12), daily (β = -0.18), and person-level (β = -0.37) decentering demonstrated negative relationships with the negative component of State Self-Compassion. This suggests that higher levels of decentering are linked to lower self-criticism or negative self-judgment.
+
+- **Negative Affect**: Momentary (β = 0.13) and day-level (β = 0.17) negative affect exhibited positive associations with the negative component, while person-level negative affect (β = 0.34) showed a stronger positive relationship. This indicates that both transient and enduring negative emotions contribute to increased self-criticism.
+
+- **Context Valence**: Momentary context valence showed a weak negative association (β = -0.02), while daily (β = 0.01) and person-level context valence (β = 0.04) had minimal or slightly positive associations. This suggests that immediate context's perceived negativity might slightly increase self-critical thoughts.
+
+#### USC Component 
+
+
+
+TODO:
+
+
+#### Output of brm()
+
+`b_dec_moment`
+
+```{r}
+# tar_load(stats_coef_dec_moment)
+# stats_coef_dec_moment
+```
+
+`b_dec_day`
+
+```{r}
+# tar_load(stats_coef_dec_moment)
+# stats_coef_dec_day
+```
+
+`b_dec_person`
+
+```{r}
+# tar_load(stats_coef_dec_moment)
+# stats_coef_dec_person
+```
+
+### Random effects
+
+cor(dec_moment,dec_day) = 0.46: This is the correlation between the random effects for decentering at the moment level and the day level within the same individual. A positive correlation of 0.46 suggests that there is a moderate relationship between the variability in decentering across different days and within a single day for the same participant. In simpler terms, if a participant shows considerable variation in their decentering scores from day to day, they are also likely to show noticeable variation in decentering at different moments within the same day.
+
+cor(na_moment,na_day) = 0.52: This coefficient represents the correlation between the random effects for negative affect at the moment level and the day level within the same individual. Similarly to the previous coefficient, a positive correlation of 0.52 indicates a moderate to strong relationship. It means that participants who tend to vary a lot in their negative affect scores between days are also likely to exhibit significant variation within a single day.
+
+These correlations are important in understanding the dynamics of the psychological constructs you are studying (decentering and negative affect) in relation to time (both across days and within a single day). It suggests that there is a consistency in the way individuals vary in these constructs over time, both on a daily and momentary basis. 
+

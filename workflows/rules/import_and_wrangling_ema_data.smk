@@ -31,7 +31,7 @@ rule remove_wrong_days:
     input:
         "data/prep/ema/mpath_ema_data_clean.rds",
     output:
-        "data/prep/ema/ema_data.rds",
+        config["ema_data"],
     shell:
         """
         Rscript -e 'source("workflows/scripts/ema/functions/funs_ema_mpath.R");

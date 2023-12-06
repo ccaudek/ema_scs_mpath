@@ -1,14 +1,14 @@
 
-rule get_ema_data_exam_day:
+rule get_ema_data_first_exam_day:
     input:
-        data=config["ema_data"],  # "data/prep/ema/ema_data.rds",  
+        data=config["ema_data"],
         script="workflows/scripts/ema/functions/funs_neg_aff_exam.R",
     params:
         exam_type="first_exam",
     output:
         "data/prep/ema/data_first_exam.rds",
     log:
-        "logs/get_ema_data_exam_day.log",
+        "logs/get_ema_data_first_exam_day.log",
     shell:
         """
         Rscript -e 'source("{input.script}");
@@ -23,9 +23,43 @@ rule compute_exam_effects_on_neg_aff_first_exam:
     params:
         exam_type="first_exam",
     output:
-        "data/prep/ema/res_neg_aff_on_first_exam.rds",
+        protected("data/prep/ema/res_neg_aff_on_first_exam.rds"),
     log:
         "logs/compute_exam_effects_on_neg_aff_first_exam.log",
+    shell:
+        """
+        Rscript -e 'source("{input.script}");
+        compute_exam_effects_on_neg_aff("{input.data}", "{params.exam_type}", "{output}")' &> {log}
+        """
+
+
+rule get_ema_data_second_exam_day:
+    input:
+        data=config["ema_data"],
+        script="workflows/scripts/ema/functions/funs_neg_aff_exam.R",
+    params:
+        exam_type="second_exam",
+    output:
+        "data/prep/ema/data_second_exam.rds",
+    log:
+        "logs/get_ema_data_second_exam_day.log",
+    shell:
+        """
+        Rscript -e 'source("{input.script}");
+        process_exam_data("{input.data}", "{params.exam_type}", "{output}")' &> {log}
+        """
+
+
+rule compute_exam_effects_on_neg_aff_second_exam:
+    input:
+        data="data/prep/ema/data_second_exam.rds",
+        script="workflows/scripts/ema/functions/funs_neg_aff_exam.R",
+    params:
+        exam_type="second_exam",
+    output:
+        protected("data/prep/ema/res_neg_aff_on_second_exam.rds"),
+    log:
+        "logs/compute_exam_effects_on_neg_aff_second_exam.log",
     shell:
         """
         Rscript -e 'source("{input.script}");

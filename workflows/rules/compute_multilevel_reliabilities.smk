@@ -4,7 +4,7 @@
 # Get State Self-Compassion data for both piel and mpath projects
 rule get_state_self_comp_piel_mpath:
     input:
-        "data/prep/ema/ema_data.rds",
+        config["ema_data"],
     output:
         "data/prep/ema/combined_piel_mpath_ema_data.rds",
     shell:

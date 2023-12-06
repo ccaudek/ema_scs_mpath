@@ -4,7 +4,7 @@
 # CS component of State Self-Compassion.
 rule fit_psc_delta_neg_aff_model:
     input:
-        data_path="data/prep/ema/ema_data.rds",
+        data_path=config["ema_data"],
     params:
         dependent_var="psc",
     output:
@@ -19,7 +19,7 @@ rule fit_psc_delta_neg_aff_model:
 # UCS component of State Self-Compassion.
 rule fit_nsc_delta_neg_aff_model:
     input:
-        data_path="data/prep/ema/ema_data.rds",
+        data_path=config["ema_data"],
     params:
         dependent_var="nsc",
     output:

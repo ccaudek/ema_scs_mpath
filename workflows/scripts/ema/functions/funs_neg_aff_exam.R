@@ -53,7 +53,7 @@ process_exam_data <- function(input_path, exam_type, output_path) {
 #' the exam.
 #' 
 #' @param data The data frame returned by the function process_exam_data()
-#' @param exam_type Either "first_exam" or "secon_exam"
+#' @param exam_type Either "first_exam" or "second_exam"
 #' @return A list:
 #' (1) the regression coefficient for the difference between the pre and the
 #' post negative affect (negative numbers indicate that negative affect has
@@ -66,6 +66,7 @@ process_exam_data <- function(input_path, exam_type, output_path) {
 # input_path <- "data/prep/ema/data_first_exam.rds"
 # exam_type <- "first_exam"
 # exam_type <- "second_exam"
+# output_path <- "data/prep/ema/res_neg_aff_on_first_exam.rds"
 
 compute_exam_effects_on_neg_aff <- function(
     input_path, exam_type, output_path) {
@@ -107,18 +108,20 @@ compute_exam_effects_on_neg_aff <- function(
     stop("Invalid exam type specified.")
   }
   
+  d <- exam_data
+  d$neg_aff <- as.vector(scale(d$neg_aff))
+  
   # Fit the Bayesian model
   model <- brm(
     formula = model_formula,
-    data = exam_data,
+    data = d,
     family = asym_laplace(),
     prior = c(
-      set_prior("normal(0, 200)", class = "b"),
-      set_prior("normal(0, 100)", class = "sigma"),
+      set_prior("normal(0, 2.5)", class = "b"),
+      set_prior("normal(0, 1)", class = "sigma"),
       set_prior("normal(0, 0.2)", class = "quantile")
     ),
-    control = list(adapt_delta = 0.99),
-    iter = 5000,
+    # control = list(adapt_delta = 0.99),
     backend = "cmdstanr",
     chains = 3,
     cores = 6,
@@ -126,7 +129,8 @@ compute_exam_effects_on_neg_aff <- function(
     silent = 2
   )
   
-  saveRDS(compute_effects_internal(model), output_path)
+  res <- compute_effects_internal(model)
+  saveRDS(res, output_path)
 }
 
 
@@ -169,7 +173,7 @@ compute_effect_size <- function(brms_model, effect_name) {
 #' Compute credibility interval for the effect size.
 #' @example effect_size_ci <- compute_effect_size_ci(m1, "exam_daypost")
 #' 
-compute_effect_size_ci <- function(brms_model, effect_name, probs = c(0.025, 0.975)) {
+compute_effect_size_ci <- function(brms_model, effect_name, probs = c(0.055, 0.945)) {
   # Estrai i campioni posteriori usando as_draws_df
   posterior_samples <- as_draws_df(brms_model)
   

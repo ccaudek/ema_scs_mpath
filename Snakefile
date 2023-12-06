@@ -41,13 +41,14 @@ rule all:
         # Effect of exam day on Negative Affect
         "data/prep/ema/data_first_exam.rds",
         "data/prep/ema/res_neg_aff_on_first_exam.rds",
+        "data/prep/ema/res_neg_aff_on_second_exam.rds",
         # Effect of exam day on State Self-Compassion
         # "data/prep/ema/stan_data_exam_state_self_comp.rds",
         # "data/prep/ema/brms_fits/fit_mod_exam_sc_4.RDS",
         # "data/prep/ema/brms_fits/fit_mod_exam_usc_4.RDS",
-        # "data/prep/ema/brms_fits/plot_mod_exam_ssc.pdf",
+        # "doc/figures/plot_mod_exam_ssc.pdf",
         # Report
-        # "doc/ema_ssc_report.html",
+        "doc/ema_ssc_report.html",
 
 
 ##### Modules #####

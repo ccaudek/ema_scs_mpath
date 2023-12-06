@@ -3,7 +3,7 @@
 
 rule get_compliance:
     input:
-        "data/prep/ema/ema_data.rds",
+        config["ema_data"],
     output:
         "data/prep/ema/compliance_results.rds",
     shell:

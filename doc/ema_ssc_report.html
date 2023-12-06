@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Corrado Caudek (corrado.caudek@unifi.it)">
+<meta name="dcterms.date" content="2023-12-06">
+<meta name="description" content="Test of the bipolar continuum hypothesis">
+
+<title>EMA State Self Compassion Project</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="ema_ssc_report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ema_ssc_report_files/libs/quarto-html/quarto.js"></script>
+<script src="ema_ssc_report_files/libs/quarto-html/popper.min.js"></script>
+<script src="ema_ssc_report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ema_ssc_report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ema_ssc_report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ema_ssc_report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ema_ssc_report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ema_ssc_report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ema_ssc_report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">EMA State Self Compassion Project</h1>
+                  <div>
+        <div class="description">
+          Test of the bipolar continuum hypothesis
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Corrado Caudek (corrado.caudek@unifi.it) </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">2023-12-06</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#the-state-self-compassion-construct" id="toc-the-state-self-compassion-construct" class="nav-link" data-scroll-target="#the-state-self-compassion-construct">The State Self-Compassion Construct</a></li>
+  <li><a href="#the-role-of-the-context" id="toc-the-role-of-the-context" class="nav-link" data-scroll-target="#the-role-of-the-context">The Role of the Context</a></li>
+  <li><a href="#state-self-compassion" id="toc-state-self-compassion" class="nav-link" data-scroll-target="#state-self-compassion">State Self-Compassion</a></li>
+  </ul></li>
+  <li><a href="#method" id="toc-method" class="nav-link" data-scroll-target="#method">Method</a>
+  <ul class="collapse">
+  <li><a href="#measures" id="toc-measures" class="nav-link" data-scroll-target="#measures">Measures</a></li>
+  <li><a href="#task-design" id="toc-task-design" class="nav-link" data-scroll-target="#task-design">Task Design</a></li>
+  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#compliance" id="toc-compliance" class="nav-link" data-scroll-target="#compliance">Compliance</a></li>
+  <li><a href="#reliability-analysis-of-state-self-compassion-measures" id="toc-reliability-analysis-of-state-self-compassion-measures" class="nav-link" data-scroll-target="#reliability-analysis-of-state-self-compassion-measures">Reliability Analysis of State Self-Compassion Measures</a></li>
+  <li><a href="#impact-of-exam-context-on-state-self-compassion" id="toc-impact-of-exam-context-on-state-self-compassion" class="nav-link" data-scroll-target="#impact-of-exam-context-on-state-self-compassion">Impact of Exam Context on State Self-Compassion</a>
+  <ul class="collapse">
+  <li><a href="#impact-of-exam-context-on-negative-affect" id="toc-impact-of-exam-context-on-negative-affect" class="nav-link" data-scroll-target="#impact-of-exam-context-on-negative-affect">Impact of Exam Context on Negative Affect</a></li>
+  <li><a href="#temporal-dynamics-of-state-self-compassion-contextual-influence-of-negative-affect" id="toc-temporal-dynamics-of-state-self-compassion-contextual-influence-of-negative-affect" class="nav-link" data-scroll-target="#temporal-dynamics-of-state-self-compassion-contextual-influence-of-negative-affect">Temporal Dynamics of State Self-Compassion: Contextual Influence of Negative Affect</a></li>
+  <li><a href="#calculation-of-delta_neg_aff" id="toc-calculation-of-delta_neg_aff" class="nav-link" data-scroll-target="#calculation-of-delta_neg_aff">Calculation of <code>delta_neg_aff</code>:</a></li>
+  <li><a href="#interpretation-of-model-results-with-this-context" id="toc-interpretation-of-model-results-with-this-context" class="nav-link" data-scroll-target="#interpretation-of-model-results-with-this-context">Interpretation of Model Results with This Context:</a></li>
+  <li><a href="#contextual-dependence" id="toc-contextual-dependence" class="nav-link" data-scroll-target="#contextual-dependence">Contextual Dependence:</a></li>
+  <li><a href="#causality-and-temporal-dynamics" id="toc-causality-and-temporal-dynamics" class="nav-link" data-scroll-target="#causality-and-temporal-dynamics">Causality and Temporal Dynamics:</a></li>
+  <li><a href="#implications" id="toc-implications" class="nav-link" data-scroll-target="#implications">Implications:</a></li>
+  <li><a href="#additional-considerations" id="toc-additional-considerations" class="nav-link" data-scroll-target="#additional-considerations">Additional Considerations:</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps:</a></li>
+  <li><a href="#overall-interpretation" id="toc-overall-interpretation" class="nav-link" data-scroll-target="#overall-interpretation">Overall Interpretation</a></li>
+  <li><a href="#effects-of-contextual-factors-on-ssc" id="toc-effects-of-contextual-factors-on-ssc" class="nav-link" data-scroll-target="#effects-of-contextual-factors-on-ssc">Effects of Contextual Factors on SSC</a></li>
+  <li><a href="#random-effects" id="toc-random-effects" class="nav-link" data-scroll-target="#random-effects">Random effects</a></li>
+  </ul></li>
+  <li><a href="#test-of-the-bipolar-continuum-hypothesis" id="toc-test-of-the-bipolar-continuum-hypothesis" class="nav-link" data-scroll-target="#test-of-the-bipolar-continuum-hypothesis">Test of the Bipolar Continuum Hypothesis</a></li>
+  <li><a href="#general-discussion" id="toc-general-discussion" class="nav-link" data-scroll-target="#general-discussion">General Discussion</a></li>
+  <li><a href="#the-state-self-compassion-construct-1" id="toc-the-state-self-compassion-construct-1" class="nav-link" data-scroll-target="#the-state-self-compassion-construct-1">The State Self-Compassion Construct</a></li>
+  <li><a href="#the-role-of-the-context-1" id="toc-the-role-of-the-context-1" class="nav-link" data-scroll-target="#the-role-of-the-context-1">The Role of the Context</a></li>
+  <li><a href="#state-self-compassion-1" id="toc-state-self-compassion-1" class="nav-link" data-scroll-target="#state-self-compassion-1">State Self-Compassion</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix</a>
+  <ul class="collapse">
+  <li><a href="#relation-between-decentering-and-self-compassion" id="toc-relation-between-decentering-and-self-compassion" class="nav-link" data-scroll-target="#relation-between-decentering-and-self-compassion">Relation between Decentering and Self-compassion</a></li>
+  <li><a href="#effect-of-exam-on-state-self-compassion" id="toc-effect-of-exam-on-state-self-compassion" class="nav-link" data-scroll-target="#effect-of-exam-on-state-self-compassion">Effect of Exam on State Self-Compassion</a>
+  <ul class="collapse">
+  <li><a href="#model-description" id="toc-model-description" class="nav-link" data-scroll-target="#model-description">Model Description:</a></li>
+  </ul></li>
+  <li><a href="#effects-of-contextual-factors-on-ssc-1" id="toc-effects-of-contextual-factors-on-ssc-1" class="nav-link" data-scroll-target="#effects-of-contextual-factors-on-ssc-1">Effects of Contextual Factors on SSC</a>
+  <ul class="collapse">
+  <li><a href="#model-comparison-for-sc" id="toc-model-comparison-for-sc" class="nav-link" data-scroll-target="#model-comparison-for-sc">Model Comparison for SC</a></li>
+  <li><a href="#model-comparison-for-usc" id="toc-model-comparison-for-usc" class="nav-link" data-scroll-target="#model-comparison-for-usc">Model Comparison for USC</a></li>
+  </ul></li>
+  <li><a href="#bipolar-continuum-hypothesis" id="toc-bipolar-continuum-hypothesis" class="nav-link" data-scroll-target="#bipolar-continuum-hypothesis">Bipolar Continuum Hypothesis</a>
+  <ul class="collapse">
+  <li><a href="#stan-model-for-testing-the-bipolar-continuum-hypothesis" id="toc-stan-model-for-testing-the-bipolar-continuum-hypothesis" class="nav-link" data-scroll-target="#stan-model-for-testing-the-bipolar-continuum-hypothesis">Stan Model for Testing the Bipolar Continuum Hypothesis</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The construct of self-compassion, a central concept in contemporary psychology, has been the subject of much scholarly debate. Traditionally, researchers have grappled with whether self-compassion is best understood as a unitary construct, represented by a bipolar continuum ranging from uncompassionate self-responding (UCS) to compassionate self-responding (CS), or as a configuration of two partly independent components. This debate is vital as it shapes our understanding of self-compassion and its role in psychological well-being.</p>
+<p>Building on this discussion, recent advancements in psychological research have emphasized the dynamic nature of psychological constructs, suggesting that they are not static or solely trait-based, but rather can be influenced by situational factors. This perspective is critical in the study of state self-compassion, an evolution of the original construct of self-compassion, which encompasses moment-to-moment variations in self-compassionate feelings and attitudes. The development of scales to measure state self-compassion (e.g., Raes et al., 2011) provides a tool to explore this dynamism.</p>
+<p>In our study, we aim to contribute to the ongoing discourse by examining how situational factors, such as negative affect, influence the UCS and CS components of state self-compassion. This approach is inspired by the shift in emotion regulation research, where the focus has moved from the frequency of using strategies to the context-dependent effectiveness of these strategies (Gross, 1998; Aldao et al., 2015). By investigating how different situational factors impact UCS and CS, we seek to provide empirical evidence to the theoretical debate on the nature of the self-compassion construct.</p>
+<p>Our hypothesis is twofold: If situational factors affect UCS and CS in parallel but opposing ways (i.e., an increase in UCS corresponds with a decrease in CS), this would lend support to the bipolar continuum model of self-compassion, as proposed by Neff (2003). This model posits that self-compassion is a singular, unified construct with varying degrees of expression. Alternatively, if situational factors differentially influence UCS and CS (for instance, if a factor impacts CS but leaves UCS unaffected, or vice versa), this would suggest that self-compassion comprises two distinct components, aligning with the perspectives of researchers like Muris et al.&nbsp;(2016), who argue for the duality of the construct.</p>
+<p>This exploration is crucial for a deeper understanding of self-compassion, as it not only contributes to theoretical knowledge but also has practical implications. Understanding the situational dynamics of self-compassion can enhance psychological interventions and promote well-being by identifying specific contexts in which self-compassionate or uncompassionate responses are more likely to be elicited. Such insights could be pivotal in developing more nuanced and effective therapeutic strategies that cater to individual differences and situational variables, ultimately fostering a more compassionate self-relationship in diverse life situations.</p>
+<section id="the-state-self-compassion-construct" class="level2">
+<h2 class="anchored" data-anchor-id="the-state-self-compassion-construct">The State Self-Compassion Construct</h2>
+<p>The concept of self-compassion, as defined by Kristin Neff, is indeed an interesting area to explore within the framework of psychological resilience. To address your question, it’s important to first understand the distinct aspects of self-compassion and how they might fit into the resilience framework as proposed by Troy et al.</p>
+<ol type="1">
+<li><p><strong>Self-Compassion as a Trait (Factor)</strong>: Neff’s original concept of self-compassion is often viewed as a trait-like quality. It involves being kind and understanding toward oneself in instances of pain or failure, rather than being harshly self-critical; recognizing that suffering and personal inadequacy is part of the shared human experience; and holding one’s painful thoughts and feelings in balanced awareness (mindfulness). This trait-like self-compassion aligns with the first conceptualization of resilience as a stable factor.</p></li>
+<li><p><strong>State Self-Compassion</strong>: More recently, Neff has introduced the concept of “State Self-Compassion.” This concept recognizes that self-compassion can vary over time and in different situations, rather than being a fixed trait. It’s about how individuals might exhibit self-compassionate reactions to specific events or circumstances.</p></li>
+</ol>
+<p>Now, in terms of fitting this into the resilience framework:</p>
+<ul>
+<li><p><strong>As a Process</strong>: State self-compassion could be conceptualized as a process, in the sense that it involves active, moment-to-moment regulation of emotional responses to stress or adversity. This is in line with the idea of resilience as a process, where resilience is not just about having certain traits, but also about how individuals actively cope with and respond to challenges. In this view, state self-compassion is a dynamic and context-dependent process through which individuals navigate difficult experiences.</p></li>
+<li><p><strong>As an Outcome</strong>: Alternatively, state self-compassion could be seen as an outcome, particularly if we focus on the effects or results of being self-compassionate in specific situations. Here, the emphasis is on the beneficial outcomes (such as reduced anxiety, improved emotional well-being, etc.) that result from adopting a self-compassionate stance in response to personal struggles or failures.</p></li>
+</ul>
+<p>In reality, state self-compassion may not fit neatly into just one of these categories. It could be argued that it acts both as a process and as an outcome. As a process, it involves the active engagement of self-compassionate attitudes and behaviors in response to specific situations. As an outcome, it refers to the immediate and long-term benefits that arise from these self-compassionate responses.</p>
+<p>This dual conceptualization is not uncommon in psychological constructs, where a phenomenon can play a role in both the mechanisms of coping (process) and the effects of that coping (outcome). It may be most accurate to consider state self-compassion as a dynamic element within the broader resilience framework, influencing and being influenced by various factors and outcomes.</p>
+</section>
+<section id="the-role-of-the-context" class="level2">
+<h2 class="anchored" data-anchor-id="the-role-of-the-context">The Role of the Context</h2>
+<p>The relationship between state self-compassion and contextual factors can be highlighted by observing how different types of events (e.g., minor vs.&nbsp;major stressors, personal failures, life changes) impact the self-compassion trajectory. For instance, individuals with higher trait self-compassion might show a quicker recovery in their state self-compassion following adversity, or they might not experience as significant a drop in the first place.</p>
+</section>
+<section id="state-self-compassion" class="level2">
+<h2 class="anchored" data-anchor-id="state-self-compassion">State Self-Compassion</h2>
+</section>
+</section>
+<section id="method" class="level1">
+<h1>Method</h1>
+<section id="measures" class="level2">
+<h2 class="anchored" data-anchor-id="measures">Measures</h2>
+<p><em>Decentering</em> is a core construct encompassing three metacognitive processes: meta-awareness, disidentification from internal experiences, and reduced reactivity to thought content <span class="citation" data-cites="bernstein2019metacognitive">(<a href="#ref-bernstein2019metacognitive" role="doc-biblioref">Bernstein et al., 2019</a>)</span>. Its significance in mindfulness-based interventions (MBIs) research has persisted for more than two decades, owing to its therapeutic role in Mindfulness-Based Cognitive Therapy and its proposed role as a mediating mechanism across various MBIs. Decentering and self-compassion are both vital for psychological well-being and often mutually reinforce each other. The ability to observe one’s thoughts and feelings from a distance (decentering) can facilitate a more compassionate approach to oneself, and conversely, self-compassion can make adopting a decentered perspective more accessible (see SI). In the present study, decentering was measured with the ?? scale.</p>
+</section>
+<section id="task-design" class="level2">
+<h2 class="anchored" data-anchor-id="task-design">Task Design</h2>
+</section>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<section id="compliance" class="level2">
+<h2 class="anchored" data-anchor-id="compliance">Compliance</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>$compliance_rate
+[1] 0.8224852
+
+$compliance_notification_frequeny_per_day
+[1] 0.7236905</code></pre>
+</div>
+</div>
+</section>
+<section id="reliability-analysis-of-state-self-compassion-measures" class="level2">
+<h2 class="anchored" data-anchor-id="reliability-analysis-of-state-self-compassion-measures">Reliability Analysis of State Self-Compassion Measures</h2>
+<p>We conducted a multilevel reliability analysis of the State Self-Compassion (SSC) scale, focusing on both its positive and negative components, by using the framework proposed by <span class="citation" data-cites="lai2021composite">Lai (<a href="#ref-lai2021composite" role="doc-biblioref">2021</a>)</span>. For the <em>SC Component of SSC</em>, the Within-Subject Reliability (<span class="math inline">\(\tilde{\omega}^w\)</span>) was equal to 0.626, indicating moderate consistency in responses across different measurement occasions. This level of reliability reflects the variability in individuals’ self-compassionate responses over time. A higher reliability index of 0.820 was observed for the Between-Subject Reliability (<span class="math inline">\(\tilde{\omega}^b\)</span>), highlighting the measure’s effectiveness in distinguishing stable individual differences in self-compassion. Finally, the overall Composite Reliability (<span class="math inline">\(\omega^{2L}\)</span>) was 0.79, suggesting a reliable integration of both within and between-subject variabilities.</p>
+<p>For the <em>USC Component of SSC</em>, slightly higher than the positive component, the Within-Subject Reliability (<span class="math inline">\(\tilde{\omega}^w\)</span>) was equal to 0.68. Markedly robust at 0.88, the Between-Subject Reliability (<span class="math inline">\(\tilde{\omega}^b\)</span>) indicates strong individual differentiation in the negative component of SSC. Finally, the Composite Reliability (<span class="math inline">\(\omega^{2L}\)</span>) for the negative component was 0.83, reinforcing the measure’s overall reliability.</p>
+<p>In summary, the between-subject reliability indices for both components, particularly the negative one, surpass the benchmark of 0.8, suggesting the scale’s effectiveness in capturing stable individual differences in SSC. The within-subject reliabilities, while lower, are reflective of SSC as a dynamic construct. These values capture the natural fluctuation in self-compassion levels due to changing circumstances and internal states, highlighting the scale’s sensitivity to temporal variations within individuals.</p>
+</section>
+<section id="impact-of-exam-context-on-state-self-compassion" class="level2">
+<h2 class="anchored" data-anchor-id="impact-of-exam-context-on-state-self-compassion">Impact of Exam Context on State Self-Compassion</h2>
+<p>In examining the effect of an academic exam on students’ State Self-Compassion (SSC), our Bayesian hierarchical model revealed robust contextual influences. Specifically, the model included random effects to account for variability across subjects, days, and within-day measurements, focusing on days immediately before (<code>exam_day_pre</code>) and after (<code>exam_day_post</code>) the exam.</p>
+<p>On the day preceding the exam, there was a notable decrease in the CS component (posterior estimate for <code>beta_pre</code> contrast coefficient: -0.293; 89% CI: [-0.508, -0.080]; <span class="math inline">\(p(\beta)\)</span> &lt; 0 = 0.983). This suggests that the upcoming exam substantially lowered students’ compassionate self-responses. Conversely, the UCS component showed an increase before the exam (posterior estimate for <code>beta_pre</code>: 0.661; 89% CI: [0.380, 0.947]; <span class="math inline">\(p(\beta)\)</span> &gt; 0 = 1), indicating heightened self-criticism or reduced self-kindness in this stressful period. The day after the exam, we observed an increase in the CS component (posterior estimate: 0.228; 89% CI: [0.0187, 0.446]; <span class="math inline">\(p(\beta)\)</span> &gt; 0 = 0.959) and a decrease in the UCS component (posterior estimate: -0.666; 89% CI: [-0.946, -0.392]; <span class="math inline">\(p(\beta)\)</span> &lt; 0 = 1), suggesting a rebound in self-compassion following the stressor.</p>
+<p>These results underline the dynamic nature of SSC in relation to situational stressors. The decrease in CS and increase in UCS components prior to the exam align with literature on the impact of stress on self-compassion. Interestingly, the post-exam period shows a reversal in these trends, indicating a recovery in self-compassion levels. This highlights the importance of temporal context in understanding the fluctuations in self-compassion among students. Overall, these insights are crucial for developing interventions aimed at enhancing resilience and self-compassion in academic settings, especially during periods of heightened stress.</p>
+<section id="impact-of-exam-context-on-negative-affect" class="level3">
+<h3 class="anchored" data-anchor-id="impact-of-exam-context-on-negative-affect">Impact of Exam Context on Negative Affect</h3>
+<p>We also found a large effect of academic examinations on students’ negative affect. Specifically, we observed a pronounced decrease in negative affect from the day before to the day after the exams. This pattern was consistent across two separate examinations. For the first exam, we found a substantial standardized decrease in negative affect on the day following the exam, relative to the day prior. The magnitude of this decrease was -0.92 (Standard Error, <span class="math inline">\(SE = 0.10\)</span>), translating to a Cohen’s <span class="math inline">\(d\)</span> value of -0.98, with an 89% CI of [-1.23, -0.78]. A parallel trend was observed for the second exam, where the standardized decrease in negative affect mirrored that of the first exam, being -0.39 (<span class="math inline">\(SE = 0.08\)</span>). This yielded a Cohen’s <span class="math inline">\(d\)</span> value of -0.54, with the 89% CI of [-0.75, -0.36].</p>
+</section>
+<section id="temporal-dynamics-of-state-self-compassion-contextual-influence-of-negative-affect" class="level3">
+<h3 class="anchored" data-anchor-id="temporal-dynamics-of-state-self-compassion-contextual-influence-of-negative-affect">Temporal Dynamics of State Self-Compassion: Contextual Influence of Negative Affect</h3>
+<p>We explored the temporal dynamics of State Self-Compassion (SSC), examining how fluctuations in negative affect influence its Compassionate (CS) and Uncompassionate (USC) components. We hypothesized that these components are dynamically affected by immediate affective states and their changes over time. To investigate this, we employed two Bayesian hierarchical models, each addressing one component of SSC and incorporating both current and preceding levels of negative affect.</p>
+<p>The models were formulated as follows: for the CS component, <code>sc ~ neg_aff + delta_neg_aff + time_window + (1 + neg_aff + delta_neg_aff | user_id) + (1 | bysubj_day) + (1 | bysubj_day:time_window) + ar(time = time_window, gr = user_id:bysubj_day, p = 1, cov = TRUE)</code>; and similarly for the USC component. Here, <code>neg_aff</code> represents the level of negative affect at the measurement time, while <code>delta_neg_aff</code> quantifies the change in negative affect from the previous to the current time point within the same day. The inclusion of these predictors allowed us to assess the ‘carry-over’ effect of negative affect on SSC.</p>
+<p>For the CS component, our model revealed a robust inverse relationship between negative affect and CS (<span class="math inline">\(\beta\)</span> = -0.42, <span class="math inline">\(SE\)</span> = 0.03; 89% CI: [-0.47, -0.36]). This suggests that higher negative affect at the time of measurement corresponded with lower levels of CS. An increase in negative affect relative to the previous measurement within the same day (β = 0.04, SE = 0.01; 89% CI: [0.02, 0.06]) was associated with a modest increase in CS, highlighting temporal adaptation in self-compassion. The model also indicated a moderate degree of temporal autocorrelation (ar[1] = 0.30), suggesting some stability in CS responses over short periods.</p>
+<p>Conversely, the USC component analysis showed that increased negative affect was associated with heightened USC (<span class="math inline">\(\beta\)</span> = 0.43, SE = 0.03). An increase in negative affect over time led to a slight decrease in USC (<span class="math inline">\(\beta\)</span> = -0.04, SE = 0.01; ; 89% CI: [-0.05, -0.02]), suggesting a different adaptive response compared to CS. The USC component also exhibited a stronger autoregressive effect (ar[1] = 0.34), indicating a more pronounced carry-over effect of affective states.</p>
+<p>These findings highlight the dynamic nature of SSC, where both CS and USC are influenced by the immediate affective context. The identified ‘carry-over’ effect of negative affect reinforces SSC’s fluidity, where short-term affective shifts can significantly impact self-compassion expressions. The differential responses in CS and USC to temporal affective changes underscore the complex and nuanced interplay between affective states and self-compassion facets.</p>
+<hr>
+<p>NOTES:</p>
+<p><code>delta_neg_aff</code> has been computed as the difference in neg_aff (negative affect) between successive time points within each day for each user. This means <code>delta_neg_aff</code> represents the change in negative affect from one measurement to the next on the same day.</p>
+<p>Given your additional details about how <code>delta_neg_aff</code> was computed and the nature of <code>time_window</code>, the interpretation of your model results should be slightly adjusted. Here’s the refined interpretation:</p>
+</section>
+<section id="calculation-of-delta_neg_aff" class="level3">
+<h3 class="anchored" data-anchor-id="calculation-of-delta_neg_aff">Calculation of <code>delta_neg_aff</code>:</h3>
+<ul>
+<li>You’ve computed <code>delta_neg_aff</code> as the difference in <code>neg_aff</code> (negative affect) between successive time points within each day for each user. This means <code>delta_neg_aff</code> represents the change in negative affect from one measurement to the next on the same day.</li>
+</ul>
+</section>
+<section id="interpretation-of-model-results-with-this-context" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-of-model-results-with-this-context">Interpretation of Model Results with This Context:</h3>
+<ol type="1">
+<li><strong>Negative State Self-Compassion (nsc) Model</strong>:
+<ul>
+<li><strong>delta_neg_aff (Estimate: -0.03)</strong>: A negative coefficient for <code>delta_neg_aff</code> suggests that when there is an increase in negative affect from one time point to the next within the same day, there is a corresponding decrease in the negative component of state self-compassion. This implies that as participants experience an increase in negative affect within a day, they tend to be less self-critical or negative towards themselves in that immediate time frame.</li>
+</ul></li>
+<li><strong>Positive State Self-Compassion (psc) Model</strong>:
+<ul>
+<li><strong>delta_neg_aff (Estimate: 0.04)</strong>: A positive coefficient here indicates that an increase in negative affect from one time point to the next within the same day is associated with an increase in the positive component of state self-compassion. This suggests that participants respond to a short-term increase in negative affect (within a day) with more self-kindness and positive self-support.</li>
+</ul></li>
+</ol>
+</section>
+<section id="contextual-dependence" class="level3">
+<h3 class="anchored" data-anchor-id="contextual-dependence">Contextual Dependence:</h3>
+<ul>
+<li>These results support the idea that the application of state self-compassion strategies (both positive and negative) is responsive to changes in the immediate affective context, as indicated by intra-day fluctuations in negative affect. The opposing directions of these relationships for psc and nsc are particularly interesting, suggesting that increases in negative affect prompt a decrease in self-critical or negative self-compassion responses, while simultaneously encouraging more self-kindness and understanding.</li>
+</ul>
+</section>
+<section id="causality-and-temporal-dynamics" class="level3">
+<h3 class="anchored" data-anchor-id="causality-and-temporal-dynamics">Causality and Temporal Dynamics:</h3>
+<ul>
+<li>The analysis captures the immediate (short-term) response in self-compassion strategies to changes in negative affect within a day. It highlights the dynamic nature of self-compassion as a responsive mechanism to affective shifts.</li>
+<li>Causality should be approached with caution due to the observational nature of the study.</li>
+</ul>
+</section>
+<section id="implications" class="level3">
+<h3 class="anchored" data-anchor-id="implications">Implications:</h3>
+<ul>
+<li>The findings suggest that individuals’ self-compassion responses are closely tied to their ongoing emotional experiences, adjusting rapidly to changes in negative affect over the course of a day.</li>
+<li>This insight can inform interventions or therapeutic approaches that aim to cultivate adaptive self-compassion strategies in response to everyday emotional fluctuations.</li>
+</ul>
+<p>In summary, understanding that <code>delta_neg_aff</code> represents intra-day changes refines the interpretation to focus on how self-compassion components fluctuate as an immediate response to changes in affective states within the same day.</p>
+</section>
+<section id="additional-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="additional-considerations">Additional Considerations:</h3>
+<ul>
+<li><strong>Autocorrelation (ar[1])</strong>: The significant autocorrelation terms in both models indicate that there is a relationship between successive measurements within individuals, reinforcing the importance of considering the temporal dynamics in your data.</li>
+<li><strong>Random Effects</strong>: The significant random effects suggest considerable variability across individuals and days, highlighting the importance of accounting for these differences in your analysis.</li>
+<li><strong>Causality Caution</strong>: While these results suggest a relationship between changes in negative affect and self-compassion components, causal interpretations should be made cautiously. The observational nature of the study limits the ability to draw firm causal conclusions.</li>
+</ul>
+</section>
+<section id="next-steps" class="level3">
+<h3 class="anchored" data-anchor-id="next-steps">Next Steps:</h3>
+<ul>
+<li>You might explore further how specific contexts (like stressors or events) influence these dynamics.</li>
+<li>Consider examining individual differences more closely, as the random effects suggest that the relationship between delta_neg_aff and self-compassion components varies across individuals.</li>
+<li>Additional analyses or follow-up studies, potentially with experimental designs, could help to further elucidate these relationships and move closer to causal interpretations.</li>
+</ul>
+<p>Overall, your analysis provides compelling evidence that the utilization of self-compassion strategies is influenced by changes in the affective context, as measured by shifts in negative affect.</p>
+</section>
+<section id="overall-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="overall-interpretation">Overall Interpretation</h3>
+<p>The results indicate that variations in negative affect (delta_neg_aff) can predict subsequent changes in both the positive and negative components of state self-compassion (psc and nsc). However, changes in state self-compassion (both psc and nsc) do not predict subsequent changes in negative affect. This pattern supports the hypothesis that it is the change in the affective context that modulates state self-compassion, rather than changes in state self-compassion determining the variation in the affective response. It’s important to remember that Granger Causality Tests are about predictability, not true causation. While these results suggest a predictive relationship, they do not confirm a causal effect. This analysis suggests that the affective state, as it evolves, is a significant factor influencing how individuals engage in self-compassion practices.</p>
+<section id="granger-causality-test" class="level4">
+<h4 class="anchored" data-anchor-id="granger-causality-test">Granger Causality Test</h4>
+<p>TODO</p>
+</section>
+</section>
+<section id="effects-of-contextual-factors-on-ssc" class="level3">
+<h3 class="anchored" data-anchor-id="effects-of-contextual-factors-on-ssc">Effects of Contextual Factors on SSC</h3>
+<p>Next, we examined the influence of three contextual factors – negative affect, decentering, and subjective evaluations of recent events (context) – on both the State Self-Compassion (SC) and Unstate Self-Compassion (USC) components. To investigate these effects comprehensively, we applied three distinct centering techniques: <em>Person Centering</em>, <em>Day Centering</em>, and <em>Moment Centering</em>.</p>
+<ul>
+<li><p><strong>Person Centering</strong> ({{varname}}_Person): This method accounted for individual differences by computing the mean of {{varname}} for each person across all days and moments, revealing how their experiences deviated from the group average.</p></li>
+<li><p><strong>Day Centering</strong> ({{varname}}_Day): Focusing on {{varname}} variations within each day, we centered the data by calculating the daily mean across all moments. This allowed us to explore how daily fluctuations in {{varname}} related to the outcomes.</p></li>
+<li><p><strong>Moment Centering</strong> ({{varname}}_Moment): This approach honed in on within-day variations, measuring {{varname}} deviations from the daily mean at each moment. It provided insights into the immediate impact of {{varname}} within daily contexts.</p></li>
+</ul>
+<p>These centering techniques facilitated the consideration of individual, daily, and momentary variations in negative affect, decentering, and context evaluations. We employed a Bayesian multilevel model to predict the CS and UCS components of State Self-Compassion across participants, days, and moments within a day. The model incorporated the three contextual factors, each decomposed into its within-person, between-day, and between-person components. Various model iterations emphasized the significance of these components and different random-effect structures in contributing to model fit (Table 1).</p>
+<section id="sc-component" class="level4">
+<h4 class="anchored" data-anchor-id="sc-component">SC Component</h4>
+<p>Focusing on population-level effects, the model applied to the SC component of SSC revealed the following associations (for more detailed information, see Supplementary Information):</p>
+<ul>
+<li><p><strong>Decentering</strong>: Momentary (β = -0.12), daily (β = -0.18), and person-level (β = -0.37) decentering demonstrated negative relationships with the negative component of State Self-Compassion. This suggests that higher levels of decentering are linked to lower self-criticism or negative self-judgment.</p></li>
+<li><p><strong>Negative Affect</strong>: Momentary (β = 0.13) and day-level (β = 0.17) negative affect exhibited positive associations with the negative component, while person-level negative affect (β = 0.34) showed a stronger positive relationship. This indicates that both transient and enduring negative emotions contribute to increased self-criticism.</p></li>
+<li><p><strong>Context Valence</strong>: Momentary context valence showed a weak negative association (β = -0.02), while daily (β = 0.01) and person-level context valence (β = 0.04) had minimal or slightly positive associations. This suggests that immediate context’s perceived negativity might slightly increase self-critical thoughts.</p></li>
+</ul>
+</section>
+<section id="usc-component" class="level4">
+<h4 class="anchored" data-anchor-id="usc-component">USC Component</h4>
+<p>TODO:</p>
+</section>
+<section id="output-of-brm" class="level4">
+<h4 class="anchored" data-anchor-id="output-of-brm">Output of brm()</h4>
+<p><code>b_dec_moment</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># tar_load(stats_coef_dec_moment)</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># stats_coef_dec_moment</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>b_dec_day</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># tar_load(stats_coef_dec_moment)</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># stats_coef_dec_day</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>b_dec_person</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># tar_load(stats_coef_dec_moment)</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># stats_coef_dec_person</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="random-effects" class="level3">
+<h3 class="anchored" data-anchor-id="random-effects">Random effects</h3>
+<p>cor(dec_moment,dec_day) = 0.46: This is the correlation between the random effects for decentering at the moment level and the day level within the same individual. A positive correlation of 0.46 suggests that there is a moderate relationship between the variability in decentering across different days and within a single day for the same participant. In simpler terms, if a participant shows considerable variation in their decentering scores from day to day, they are also likely to show noticeable variation in decentering at different moments within the same day.</p>
+<p>cor(na_moment,na_day) = 0.52: This coefficient represents the correlation between the random effects for negative affect at the moment level and the day level within the same individual. Similarly to the previous coefficient, a positive correlation of 0.52 indicates a moderate to strong relationship. It means that participants who tend to vary a lot in their negative affect scores between days are also likely to exhibit significant variation within a single day.</p>
+<p>These correlations are important in understanding the dynamics of the psychological constructs you are studying (decentering and negative affect) in relation to time (both across days and within a single day). It suggests that there is a consistency in the way individuals vary in these constructs over time, both on a daily and momentary basis.</p>
+</section>
+</section>
+<section id="test-of-the-bipolar-continuum-hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="test-of-the-bipolar-continuum-hypothesis">Test of the Bipolar Continuum Hypothesis</h2>
+<p>We used a hierarchical model designed to analyze data collected from multiple participants over several days, with each participant providing multiple measurements per day. The primary focus is on the relationship between Compassionate Self (CS) and Uncompassionate Self (UCS) scores, while accounting for participant-specific and day-specific variations, as well as variations in other covariates like negative affect, decentering, and context evaluation.</p>
+<p><span class="math display">\[
+\begin{align*}
+    \text{UCS}_{ijkm} &amp;\sim t\left(\nu, \mu_{ijkm}, \sigma_{\text{UCS}}\right) \\
+    \mu_{ijkm} &amp;= \alpha_{\text{UCS}} + \left(\beta_{\text{CS}} + b_{i}^{\text{participant}}\right) \times \text{CS}_{ijkm} + \boldsymbol{\beta}_{\text{cov}}^\top \mathbf{X}_{ijkm} \\
+    &amp;\quad + u_{i}^{\text{participant}} + v_{j[i]}^{\text{day}} + w_{k[ij]}^{\text{measurement}} \\
+    \text{where} &amp; \\
+    u_{i}^{\text{participant}} &amp;\sim \mathcal{N}(0, \sigma_{\text{participant}}) \\
+    b_{i}^{\text{participant}} &amp;\sim \mathcal{N}(0, \sigma_{\text{participant\_slope\_cs}}) \\
+    v_{j[i]}^{\text{day}} &amp;\sim \mathcal{N}(0, \sigma_{\text{day}}) \\
+    w_{k[ij]}^{\text{measurement}} &amp;\sim \mathcal{N}(0, \sigma_{\text{measurement}}) \\
+    \boldsymbol{\beta}_{\text{cov}} &amp;\sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
+    \alpha_{\text{UCS}}, \beta_{\text{CS}} &amp;\sim \mathcal{N}(0, 1) \\
+    \sigma_{\text{UCS}}, \sigma_{\text{participant}}, \sigma_{\text{day}}, \sigma_{\text{measurement}}, \sigma_{\text{participant\_slope\_cs}} &amp;\sim \text{Exponential}(1) \\
+    \nu &amp;\sim \text{Gamma}(2, 0.1)
+\end{align*}
+\]</span></p>
+<ol type="1">
+<li><p><strong>Primary Equation (UCS Likelihood):</strong> The UCS (Uncompassionate Self) score for each observation is modeled using a t-distribution. This choice accommodates potential heavy tails in the UCS score distribution. Each observation is indexed by participant <span class="math inline">\(i\)</span>, day <span class="math inline">\(j\)</span>, and measurement <span class="math inline">\(k\)</span>, and the distribution is characterized by degrees of freedom <span class="math inline">\(\nu\)</span>, a mean <span class="math inline">\(\mu_{ijkm}\)</span>, and standard deviation <span class="math inline">\(\sigma_{\text{UCS}}\)</span>.</p></li>
+<li><p><strong>Mean Equation (<span class="math inline">\(\mu_{ijkm}\)</span>):</strong> The mean UCS score, <span class="math inline">\(\mu_{ijkm}\)</span>, is calculated as a linear combination of several components:</p>
+<ul>
+<li>A global intercept <span class="math inline">\(\alpha_{\text{UCS}}\)</span>.</li>
+<li>The product of a coefficient <span class="math inline">\(\beta_{\text{CS}}\)</span> (representing the overall effect of the CS (Compassionate Self) score) and the specific CS score for that observation.</li>
+<li>The weighted sum of other covariates (negative affect, decentering, context evaluation), each multiplied by their respective coefficients <span class="math inline">\(\boldsymbol{\beta}_{\text{cov}}\)</span>.</li>
+<li>Random intercepts for each participant <span class="math inline">\(u_{i}^{\text{participant}}\)</span>, day <span class="math inline">\(v_{j[i]}^{\text{day}}\)</span>, and measurement <span class="math inline">\(w_{k[ij]}^{\text{measurement}}\)</span>, accounting for the hierarchical data structure.</li>
+<li>A random slope <span class="math inline">\(b_{i}^{\text{participant}}\)</span> for CS at the participant level, allowing the relationship between CS and UCS to vary across individuals.</li>
+</ul></li>
+<li><p><strong>Random Effects:</strong></p>
+<ul>
+<li>Random intercepts for participants, days, and measurements (denoted as <span class="math inline">\(u_{i}^{\text{participant}}\)</span>, <span class="math inline">\(v_{j[i]}^{\text{day}}\)</span>, and <span class="math inline">\(w_{k[ij]}^{\text{measurement}}\)</span>, respectively) are assumed to follow normal distributions with a mean of zero and specific standard deviations. These intercepts capture variability across the different levels of the hierarchical structure.</li>
+<li>Additionally, the model includes a random slope for the effect of CS (<span class="math inline">\(b_{i}^{\text{participant}}\)</span>) at the participant level. This element allows the model to capture individual differences in how CS influences UCS.</li>
+</ul></li>
+<li><p><strong>Priors:</strong></p>
+<ul>
+<li>The model assumes normal distributions with mean zero for coefficients and intercepts, reflecting a lack of prior bias towards specific values. The standard deviations of the random effects and the error term (<span class="math inline">\(\sigma_{\text{UCS}}\)</span>, <span class="math inline">\(\sigma_{\text{participant}}\)</span>, etc.) are modeled using exponential distributions. The degrees of freedom parameter <span class="math inline">\(\nu\)</span> for the t-distribution is drawn from a gamma distribution, suggesting flexibility in the tail behavior of the UCS scores.</li>
+</ul></li>
+</ol>
+<p>This statistical model is particularly suited for exploring the Bipolar Continuum Hypothesis proposed by Neff, which posits an inverse relationship between UCS and CS across individuals. By including random slopes for CS at the participant level, the model can assess how this relationship varies among individuals, providing insights into the nuanced nature of self-compassion and self-criticism.</p>
+</section>
+<section id="general-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="general-discussion">General Discussion</h2>
+<p>The construct of self-compassion, a central concept in contemporary psychology, has been the subject of much scholarly debate. Traditionally, researchers have grappled with whether self-compassion is best understood as a unitary construct, represented by a bipolar continuum ranging from uncompassionate self-responding (UCS) to compassionate self-responding (CS), or as a configuration of two partly independent components. This debate is vital as it shapes our understanding of self-compassion and its role in psychological well-being.</p>
+<p>Building on this discussion, recent advancements in psychological research have emphasized the dynamic nature of psychological constructs, suggesting that they are not static or solely trait-based, but rather can be influenced by situational factors. This perspective is critical in the study of state self-compassion, an evolution of the original construct of self-compassion, which encompasses moment-to-moment variations in self-compassionate feelings and attitudes. The development of scales to measure state self-compassion (e.g., Raes et al., 2011) provides a tool to explore this dynamism.</p>
+<p>In our study, we aim to contribute to the ongoing discourse by examining how situational factors, such as negative affect, influence the UCS and CS components of state self-compassion. This approach is inspired by the shift in emotion regulation research, where the focus has moved from the frequency of using strategies to the context-dependent effectiveness of these strategies (Gross, 1998; Aldao et al., 2015). By investigating how different situational factors impact UCS and CS, we seek to provide empirical evidence to the theoretical debate on the nature of the self-compassion construct.</p>
+<p>Our hypothesis is twofold: If situational factors affect UCS and CS in parallel but opposing ways (i.e., an increase in UCS corresponds with a decrease in CS), this would lend support to the bipolar continuum model of self-compassion, as proposed by Neff (2003). This model posits that self-compassion is a singular, unified construct with varying degrees of expression. Alternatively, if situational factors differentially influence UCS and CS (for instance, if a factor impacts CS but leaves UCS unaffected, or vice versa), this would suggest that self-compassion comprises two distinct components, aligning with the perspectives of researchers like Muris et al.&nbsp;(2016), who argue for the duality of the construct.</p>
+<p>This exploration is crucial for a deeper understanding of self-compassion, as it not only contributes to theoretical knowledge but also has practical implications. Understanding the situational dynamics of self-compassion can enhance psychological interventions and promote well-being by identifying specific contexts in which self-compassionate or uncompassionate responses are more likely to be elicited. Such insights could be pivotal in developing more nuanced and effective therapeutic strategies that cater to individual differences and situational variables, ultimately fostering a more compassionate self-relationship in diverse life situations.</p>
+</section>
+<section id="the-state-self-compassion-construct-1" class="level2">
+<h2 class="anchored" data-anchor-id="the-state-self-compassion-construct-1">The State Self-Compassion Construct</h2>
+<p>The concept of self-compassion, as defined by Kristin Neff, is indeed an interesting area to explore within the framework of psychological resilience. To address your question, it’s important to first understand the distinct aspects of self-compassion and how they might fit into the resilience framework as proposed by Troy et al.</p>
+<ol type="1">
+<li><p><strong>Self-Compassion as a Trait (Factor)</strong>: Neff’s original concept of self-compassion is often viewed as a trait-like quality. It involves being kind and understanding toward oneself in instances of pain or failure, rather than being harshly self-critical; recognizing that suffering and personal inadequacy is part of the shared human experience; and holding one’s painful thoughts and feelings in balanced awareness (mindfulness). This trait-like self-compassion aligns with the first conceptualization of resilience as a stable factor.</p></li>
+<li><p><strong>State Self-Compassion</strong>: More recently, Neff has introduced the concept of “State Self-Compassion.” This concept recognizes that self-compassion can vary over time and in different situations, rather than being a fixed trait. It’s about how individuals might exhibit self-compassionate reactions to specific events or circumstances.</p></li>
+</ol>
+<p>Now, in terms of fitting this into the resilience framework:</p>
+<ul>
+<li><p><strong>As a Process</strong>: State self-compassion could be conceptualized as a process, in the sense that it involves active, moment-to-moment regulation of emotional responses to stress or adversity. This is in line with the idea of resilience as a process, where resilience is not just about having certain traits, but also about how individuals actively cope with and respond to challenges. In this view, state self-compassion is a dynamic and context-dependent process through which individuals navigate difficult experiences.</p></li>
+<li><p><strong>As an Outcome</strong>: Alternatively, state self-compassion could be seen as an outcome, particularly if we focus on the effects or results of being self-compassionate in specific situations. Here, the emphasis is on the beneficial outcomes (such as reduced anxiety, improved emotional well-being, etc.) that result from adopting a self-compassionate stance in response to personal struggles or failures.</p></li>
+</ul>
+<p>In reality, state self-compassion may not fit neatly into just one of these categories. It could be argued that it acts both as a process and as an outcome. As a process, it involves the active engagement of self-compassionate attitudes and behaviors in response to specific situations. As an outcome, it refers to the immediate and long-term benefits that arise from these self-compassionate responses.</p>
+<p>This dual conceptualization is not uncommon in psychological constructs, where a phenomenon can play a role in both the mechanisms of coping (process) and the effects of that coping (outcome). It may be most accurate to consider state self-compassion as a dynamic element within the broader resilience framework, influencing and being influenced by various factors and outcomes.</p>
+</section>
+<section id="the-role-of-the-context-1" class="level2">
+<h2 class="anchored" data-anchor-id="the-role-of-the-context-1">The Role of the Context</h2>
+<p>The relationship between state self-compassion and contextual factors can be highlighted by observing how different types of events (e.g., minor vs.&nbsp;major stressors, personal failures, life changes) impact the self-compassion trajectory. For instance, individuals with higher trait self-compassion might show a quicker recovery in their state self-compassion following adversity, or they might not experience as significant a drop in the first place.</p>
+</section>
+<section id="state-self-compassion-1" class="level2">
+<h2 class="anchored" data-anchor-id="state-self-compassion-1">State Self-Compassion</h2>
+<div style="page-break-after: always;"></div>
+</section>
+</section>
+<section id="references" class="level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-bernstein2019metacognitive" class="csl-entry" role="listitem">
+Bernstein, A., Hadash, Y., &amp; Fresco, D. M. (2019). Metacognitive processes model of decentering: Emerging methods and insights. <em>Current Opinion in Psychology</em>, <em>28</em>, 245–251.
+</div>
+<div id="ref-lai2021composite" class="csl-entry" role="listitem">
+Lai, M. H. (2021). Composite reliability of multilevel data: It’s about observed scores and construct meanings. <em>Psychological Methods</em>, <em>26</em>(1), 90–102.
+</div>
+</div>
+</section>
+<section id="appendix" class="level1 unnumbered">
+<h1 class="unnumbered">Appendix</h1>
+<section id="relation-between-decentering-and-self-compassion" class="level2">
+<h2 class="anchored" data-anchor-id="relation-between-decentering-and-self-compassion">Relation between Decentering and Self-compassion</h2>
+<p><em>Decentering</em> and <em>self-compassion</em> are related constructs. Both constructs contribute to psychological well-being through slightly different mechanisms. Decentering aids in diminishing identification with negative thoughts and feelings, enabling individuals to observe them without judgment or automatic reactions. This detachment can create space for self-compassion to emerge, as individuals can acknowledge their challenging experiences with greater kindness and understanding. Self-compassion, in turn, can facilitate the decentering process by offering a gentler and more welcoming approach to difficult emotions and thoughts. When individuals can treat themselves with compassion, they may find it easier to observe their internal experiences without being overwhelmed. Self-compassion allows individuals to confront failures, mistakes, and self-criticism with kindness and understanding rather than judgment or reproach. This approach can facilitate decentering, as individuals learn to view such experiences as common to all humans, rather than reflections of their personal worth. Both decentering and self-compassion contribute to psychological resilience. Decentering helps maintain a more balanced and objective perspective, while self-compassion provides emotional support and a more positive response to challenges. Mindfulness plays a key role in connecting decentering and self-compassion. Mindfulness practice encourages both decentering and self-compassion by promoting non-judgmental observation of internal experiences and greater self-kindness.</p>
+</section>
+<section id="effect-of-exam-on-state-self-compassion" class="level2">
+<h2 class="anchored" data-anchor-id="effect-of-exam-on-state-self-compassion">Effect of Exam on State Self-Compassion</h2>
+<p>We used a hierarchical, multilevel model to analyze the effect of specific time points (pre and post-exam) on the CS and UCS components of State Self-Compassion, while accounting for the nested structure of the data.</p>
+<p>Given:</p>
+<p><span class="math display">\[
+\begin{itemize}
+    \item $N$: Total number of observations
+    \item $J$: Number of subjects
+    \item $D$: Number of days
+    \item $M$: Number of measurements per day
+    \item $psc$: Dependent variable (array of size $N$)
+    \item $exam\_day\_pre$: Indicator variable for pre-exam day (array of size $N$)
+    \item $exam\_day\_post$: Indicator variable for post-exam day (array of size $N$)
+\end{itemize}
+\]</span></p>
+<p>The model is defined as follows:</p>
+<p><strong>Priors:</strong></p>
+<p><span class="math display">\[
+\begin{align*}
+    \alpha &amp; \sim \text{Normal}(0, 2.5) \\
+    \alpha_j &amp; \sim \text{Normal}(0, \sigma_j) \\
+    \alpha_d &amp; \sim \text{Normal}(0, \sigma_d) \\
+    \alpha_m &amp; \sim \text{Normal}(0, \sigma_m) \\
+    \beta_{pre}, \beta_{post} &amp; \sim \text{Normal}(0, 1) \\
+    \beta_{j\_pre}, \beta_{j\_post} &amp; \sim \text{Normal}(0, \sigma_{\beta_j}) \\
+    \sigma, \sigma_j, \sigma_d, \sigma_m, \sigma_{\beta_{j\_pre}}, \sigma_{\beta_{j\_post}} &amp; \sim \text{Exponential}(1) \\
+    \text{skewness} &amp; \sim \text{Normal}(0, 1)
+\end{align*}
+\]</span></p>
+<p><strong>Likelihood:</strong> For each observation <span class="math inline">\(n = 1, \ldots, N\)</span>:</p>
+<p><span class="math display">\[
+\begin{align*}
+    psc[n] &amp; \sim \text{SkewNormal}\left(\mu_n, \sigma, \text{skewness}\right) \\
+    \text{where } \mu_n &amp; = \alpha + \alpha_j[\text{subj}[n]] + \alpha_d[\text{day}[n]] + \alpha_m[\text{meas}[n]] \\
+    &amp; \quad + (\beta_{pre} + \beta_{j\_pre}[\text{subj}[n]]) \times \text{exam\_day\_pre}[n] \\
+    &amp; \quad + (\beta_{post} + \beta_{j\_post}[\text{subj}[n]]) \times \text{exam\_day\_post}[n]
+\end{align*}
+\]</span></p>
+<p>The model employs a skew normal distribution to accommodate potential asymmetry in the response variable.</p>
+<section id="model-description" class="level3">
+<h3 class="anchored" data-anchor-id="model-description">Model Description:</h3>
+<ol type="1">
+<li><p><strong>Observational Unit and Data Structure:</strong> The model is built for <span class="math inline">\(N\)</span> observations, collected from <span class="math inline">\(J\)</span> subjects across <span class="math inline">\(D\)</span> days, with each day comprising <span class="math inline">\(M\)</span> measurements. The dependent variable, <code>CS</code> or <code>UCS</code>, represents the psychological measure of interest, and the primary predictors are binary indicators for pre-exam (<code>exam_day_pre</code>) and post-exam (<code>exam_day_post</code>) days.</p></li>
+<li><p><strong>Random Effects Structure:</strong></p>
+<ul>
+<li><strong>Subject-level Random Intercepts (<span class="math inline">\(\alpha_j\)</span>):</strong> These capture the subject-specific deviations from the overall mean, allowing for individual baseline differences in <code>CS</code> or <code>UCS</code>.</li>
+<li><strong>Day-level Random Intercepts (<span class="math inline">\(\alpha_d\)</span>):</strong> These account for day-to-day variability within subjects, capturing fluctuations in <code>CS</code> or <code>UCS</code> that might be attributed to daily factors.</li>
+<li><strong>Measurement-level Random Intercepts (<span class="math inline">\(\alpha_m\)</span>):</strong> These intercepts address the variation within the same day, considering the potential impact of the time of measurement on <code>CS</code> or <code>UCS</code>.</li>
+</ul></li>
+<li><p><strong>Random Slopes:</strong></p>
+<ul>
+<li><strong>Subject-specific Slopes for Exam Days (<span class="math inline">\(\beta_{j\_pre}\)</span> and <span class="math inline">\(\beta_{j\_post}\)</span>):</strong> These slopes allow the effect of pre- and post-exam days to vary across subjects, acknowledging that the impact of these specific days on <code>CS</code> or <code>UCS</code> might differ among individuals.</li>
+</ul></li>
+<li><p><strong>Fixed Effects:</strong></p>
+<ul>
+<li><strong>Global Intercept (<span class="math inline">\(\alpha\)</span>):</strong> This represents the overall mean level of <code>CS</code> or <code>UCS</code> across all observations when other predictors are at their reference levels.</li>
+<li><strong>Main Effects for Exam Days (<span class="math inline">\(\beta_{pre}\)</span> and <span class="math inline">\(\beta_{post}\)</span>):</strong> These coefficients estimate the average effect of pre- and post-exam days on <code>CS</code> or <code>UCS</code>, relative to non-exam days.</li>
+</ul></li>
+<li><p><strong>Skewness Parameter:</strong> The inclusion of a skewness parameter in the skew normal distribution allows the model to capture potential asymmetry in the distribution of <code>CS</code> or <code>UCS</code>.</p></li>
+<li><p><strong>Priors:</strong> The model employs non-informative priors for most parameters, assuming normal distributions for intercepts and slopes, and exponential distributions for standard deviations, ensuring a broad range of plausible values.</p></li>
+<li><p><strong>Likelihood:</strong></p>
+<ul>
+<li><strong>Likelihood:</strong> The response variable <code>CS</code> or <code>UCS</code> for each observation is modeled using a skew normal distribution, with mean and variance parameters constructed from the fixed and random effects, and the skewness parameter to capture asymmetry.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="effects-of-contextual-factors-on-ssc-1" class="level2">
+<h2 class="anchored" data-anchor-id="effects-of-contextual-factors-on-ssc-1">Effects of Contextual Factors on SSC</h2>
+<p>In our analysis, we conducted a model selection process aimed at identifying the most appropriate random-effect and fixed-effect structures tailored to our dataset. Our approach commenced by exploring the full fixed-effect structure and proceeded with a systematic comparison of models featuring varying degrees of random-effect complexity. Once we determined the optimal random-effect structure, we turned our attention to assessing models with different fixed-effects configurations. To facilitate this thorough model comparison, we harnessed the Leave-One-Out (LOO) method, a robust Bayesian model selection technique implemented within Stan.</p>
+<section id="model-comparison-for-sc" class="level3">
+<h3 class="anchored" data-anchor-id="model-comparison-for-sc">Model Comparison for SC</h3>
+<section id="random-effects-1" class="level4">
+<h4 class="anchored" data-anchor-id="random-effects-1">Random-Effects</h4>
+<table class="table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>elpd_diff</th>
+<th>se_diff</th>
+<th>elpd_loo</th>
+<th>se_elpd_loo</th>
+<th>p_loo</th>
+<th>se_p_loo</th>
+<th>looic</th>
+<th>se_looic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model 1: Basic Model</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-4819.217</td>
+<td>82.577</td>
+<td>1730.978</td>
+<td>19.539</td>
+<td>9638.434</td>
+<td>165.154</td>
+</tr>
+<tr class="even">
+<td>Model 2: Add Random Effect for user_id</td>
+<td>-0.649</td>
+<td>1.475</td>
+<td>-4819.867</td>
+<td>82.642</td>
+<td>1722.286</td>
+<td>19.540</td>
+<td>9639.733</td>
+<td>165.283</td>
+</tr>
+<tr class="odd">
+<td>Model 3: Add Random Effects for user_id and user_id:day</td>
+<td>-55.874</td>
+<td>14.086</td>
+<td>-4875.092</td>
+<td>81.771</td>
+<td>1650.029</td>
+<td>19.084</td>
+<td>9750.183</td>
+<td>163.542</td>
+</tr>
+<tr class="even">
+<td>Model 4: Add Random Slopes for na_moment, na_day on user_id</td>
+<td>-277.645</td>
+<td>30.437</td>
+<td>-5096.862</td>
+<td>79.420</td>
+<td>1482.200</td>
+<td>17.144</td>
+<td>10193.724</td>
+<td>158.839</td>
+</tr>
+<tr class="odd">
+<td>Model 5: Add Random Slopes for na_moment, na_day, dec_moment, dec_day on user_id</td>
+<td>-789.645</td>
+<td>48.574</td>
+<td>-5608.862</td>
+<td>72.487</td>
+<td>196.065</td>
+<td>3.228</td>
+<td>11217.724</td>
+<td>144.973</td>
+</tr>
+<tr class="even">
+<td>Model 6: Complex Random Effects Structure</td>
+<td>-3072.142</td>
+<td>80.856</td>
+<td>-7891.359</td>
+<td>56.662</td>
+<td>12.095</td>
+<td>0.248</td>
+<td>15782.718</td>
+<td>113.324</td>
+</tr>
+</tbody>
+</table>
+<p>The model comparison, utilizing the LOO method, clearly suggests that there is no valid justification for employing a random-effect structure more complex than participant-level clustering. In other words, the simpler approach of clustering at the participant level provides an adequate representation for our data, as evidenced by the minimal improvements gained from more intricate random-effect structures.</p>
+</section>
+<section id="fixed-effects" class="level4">
+<h4 class="anchored" data-anchor-id="fixed-effects">Fixed-Effects</h4>
+<table class="table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>elpd_diff</th>
+<th>se_diff</th>
+<th>elpd_loo</th>
+<th>se_elpd_loo</th>
+<th>p_loo</th>
+<th>se_p_loo</th>
+<th>looic</th>
+<th>se_looic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model 1: Full Fixed Effects</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-5608.300</td>
+<td>72.496</td>
+<td>195.102</td>
+<td>3.201</td>
+<td>11216.600</td>
+<td>144.992</td>
+</tr>
+<tr class="even">
+<td>Model 2: With na and dec</td>
+<td>-24.710</td>
+<td>8.090</td>
+<td>-5633.009</td>
+<td>72.604</td>
+<td>192.525</td>
+<td>3.151</td>
+<td>11266.020</td>
+<td>145.209</td>
+</tr>
+<tr class="odd">
+<td>Model 3: With na and con</td>
+<td>-221.866</td>
+<td>23.337</td>
+<td>-5830.166</td>
+<td>73.906</td>
+<td>196.570</td>
+<td>3.201</td>
+<td>11660.330</td>
+<td>147.812</td>
+</tr>
+<tr class="even">
+<td>Model 4: With dec and con</td>
+<td>-250.379</td>
+<td>25.097</td>
+<td>-5858.679</td>
+<td>74.197</td>
+<td>195.126</td>
+<td>3.187</td>
+<td>11717.360</td>
+<td>148.393</td>
+</tr>
+<tr class="odd">
+<td>Model 5: Only na</td>
+<td>-309.078</td>
+<td>28.153</td>
+<td>-5917.377</td>
+<td>72.581</td>
+<td>193.198</td>
+<td>3.169</td>
+<td>11834.750</td>
+<td>145.163</td>
+</tr>
+<tr class="even">
+<td>Model 6: Only dec</td>
+<td>-483.329</td>
+<td>34.132</td>
+<td>-6091.628</td>
+<td>72.610</td>
+<td>189.759</td>
+<td>3.082</td>
+<td>12183.260</td>
+<td>145.221</td>
+</tr>
+<tr class="odd">
+<td>Model 7: Only con</td>
+<td>-845.252</td>
+<td>47.407</td>
+<td>-6453.552</td>
+<td>77.215</td>
+<td>197.078</td>
+<td>3.056</td>
+<td>12907.100</td>
+<td>154.430</td>
+</tr>
+</tbody>
+</table>
+<p>Based on the model comparison using the LOO method, the best-fitting model among the options is “Model 1: Full Fixed Effects.” It exhibits the highest estimated log pointwise predictive density (elpd_loo) and the lowest Leave-One-Out Information Criterion (looic), suggesting superior predictive performance compared to the other models.</p>
+</section>
+</section>
+<section id="model-comparison-for-usc" class="level3">
+<h3 class="anchored" data-anchor-id="model-comparison-for-usc">Model Comparison for USC</h3>
+<p>In parallel with our analysis of the SC component, we conducted a comprehensive model comparison for the USC component. This comparison aimed to identify the most appropriate random-effect and fixed-effect structures for our dataset, similar to the approach taken for the SC component.</p>
+<section id="random-effects-2" class="level4">
+<h4 class="anchored" data-anchor-id="random-effects-2">Random-Effects</h4>
+<table class="table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>elpd_diff</th>
+<th>se_diff</th>
+<th>elpd_loo</th>
+<th>se_elpd_loo</th>
+<th>p_loo</th>
+<th>se_p_loo</th>
+<th>looic</th>
+<th>se_looic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model 1: Basic Model</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-4092.916</td>
+<td>79.001</td>
+<td>1811.519</td>
+<td>21.200</td>
+<td>8185.833</td>
+<td>158.003</td>
+</tr>
+<tr class="even">
+<td>Model 2: Add Random Effect for user_id</td>
+<td>-1.624</td>
+<td>1.621</td>
+<td>-4094.540</td>
+<td>79.052</td>
+<td>1864.359</td>
+<td>21.518</td>
+<td>8189.080</td>
+<td>158.105</td>
+</tr>
+<tr class="odd">
+<td>Model 3: Add Random Effects for user_id and user_id:day</td>
+<td>-100.703</td>
+<td>19.063</td>
+<td>-4193.619</td>
+<td>77.890</td>
+<td>1649.191</td>
+<td>19.389</td>
+<td>8387.239</td>
+<td>155.780</td>
+</tr>
+<tr class="even">
+<td>Model 4: Add Random Slopes for na_moment, na_day on user_id</td>
+<td>-244.965</td>
+<td>29.465</td>
+<td>-4337.881</td>
+<td>76.222</td>
+<td>1554.806</td>
+<td>18.697</td>
+<td>8675.762</td>
+<td>152.445</td>
+</tr>
+<tr class="odd">
+<td>Model 5: Add Random Slopes for na_moment, na_day, dec_moment, dec_day on user_id</td>
+<td>-909.650</td>
+<td>48.747</td>
+<td>-5002.566</td>
+<td>70.572</td>
+<td>186.517</td>
+<td>3.028</td>
+<td>10005.133</td>
+<td>141.145</td>
+</tr>
+<tr class="even">
+<td>Model 6: Complex Random Effects Structure</td>
+<td>-2907.030</td>
+<td>79.747</td>
+<td>-6999.946</td>
+<td>61.168</td>
+<td>12.202</td>
+<td>0.264</td>
+<td>13999.893</td>
+<td>122.337</td>
+</tr>
+</tbody>
+</table>
+<p>Our evaluation of random-effect structures using the LOO method yielded results consistent with those observed for the SC component. The model comparison for USC indicates that there is no compelling justification for employing a random-effect structure more complex than clustering at the participant level. This echoes the findings from the SC component analysis, where participant-level clustering proved sufficient to adequately represent our data. In both cases, more intricate random-effect structures did not significantly improve model performance.</p>
+</section>
+<section id="fixed-effects-1" class="level4">
+<h4 class="anchored" data-anchor-id="fixed-effects-1">Fixed-Effects</h4>
+<table class="table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>elpd_diff</th>
+<th>se_diff</th>
+<th>elpd_loo</th>
+<th>se_elpd_loo</th>
+<th>p_loo</th>
+<th>se_p_loo</th>
+<th>looic</th>
+<th>se_looic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model 1: Full Fixed Effects</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-5002.381</td>
+<td>70.542</td>
+<td>186.440</td>
+<td>3.029</td>
+<td>10004.760</td>
+<td>141.083</td>
+</tr>
+<tr class="even">
+<td>Model 2: With na and dec</td>
+<td>-3.461</td>
+<td>3.778</td>
+<td>-5005.842</td>
+<td>70.675</td>
+<td>184.227</td>
+<td>2.976</td>
+<td>10011.680</td>
+<td>141.350</td>
+</tr>
+<tr class="odd">
+<td>Model 3: With na and con</td>
+<td>-376.733</td>
+<td>30.536</td>
+<td>-5379.114</td>
+<td>68.721</td>
+<td>184.424</td>
+<td>3.304</td>
+<td>10758.230</td>
+<td>137.441</td>
+</tr>
+<tr class="even">
+<td>Model 4: With dec and con</td>
+<td>-481.263</td>
+<td>34.243</td>
+<td>-5483.644</td>
+<td>68.580</td>
+<td>184.144</td>
+<td>3.485</td>
+<td>10967.290</td>
+<td>137.159</td>
+</tr>
+<tr class="odd">
+<td>Model 5: Only na</td>
+<td>-594.546</td>
+<td>37.181</td>
+<td>-5596.927</td>
+<td>70.916</td>
+<td>182.813</td>
+<td>2.809</td>
+<td>11193.850</td>
+<td>141.831</td>
+</tr>
+<tr class="even">
+<td>Model 6: Only dec</td>
+<td>-602.642</td>
+<td>37.497</td>
+<td>-5605.023</td>
+<td>71.067</td>
+<td>181.365</td>
+<td>2.789</td>
+<td>11210.050</td>
+<td>142.134</td>
+</tr>
+<tr class="odd">
+<td>Model 7: Only con</td>
+<td>-1492.409</td>
+<td>58.479</td>
+<td>-6494.791</td>
+<td>71.655</td>
+<td>186.471</td>
+<td>2.894</td>
+<td>12989.580</td>
+<td>143.309</td>
+</tr>
+</tbody>
+</table>
+<p>When considering fixed-effect structures for the USC component, our analysis identified ‘Model 1: Full Fixed Effects’ as the best-fitting model. This model exhibited the highest estimated log pointwise predictive density (elpd_loo) and the lowest Leave-One-Out Information Criterion (looic) among the options. These results closely mirror the findings from the SC component analysis, where ‘Model 1: Full Fixed Effects’ also emerged as the preferred model.</p>
+</section>
+<section id="summary" class="level4">
+<h4 class="anchored" data-anchor-id="summary">Summary</h4>
+<p>The congruence in results between the two components, SC and USC, underscores the consistency and reliability of our modeling approach. It reinforces the notion that simpler model structures, both in terms of random effects and fixed effects, effectively capture the essential characteristics of our data. Therefore, for both SC and USC, we have selected ‘Model 1: Full Fixed Effects’ as the optimal model, demonstrating superior predictive performance compared to more complex alternatives.</p>
+</section>
+<section id="final-model" class="level4">
+<h4 class="anchored" data-anchor-id="final-model">Final Model</h4>
+<p>The final model for predicting the negative component of State Self-Compassion is as follows:</p>
+<p><span class="math display">\[
+\begin{equation}
+\begin{aligned}
+znsc &amp;\sim \text{Student-t}(\mu, \sigma, \nu) \\
+\mu &amp;= \beta_{0} + \beta_{\text{dec\_moment}} \times \text{dec\_moment} + \beta_{\text{dec\_day}} \times \text{dec\_day} + \beta_{\text{dec\_person}} \times \text{dec\_person} + \\
+&amp;\quad \beta_{\text{na\_moment}} \times \text{na\_moment} + \beta_{\text{na\_day}} \times \text{na\_day} + \beta_{\text{na\_person}} \times \text{na\_person} + \\
+&amp;\quad \beta_{\text{context\_moment}} \times \text{context\_moment} + \beta_{\text{context\_day}} \times \text{context\_day} + \beta_{\text{context\_person}} \times \text{context\_person} + \\
+&amp;\quad b_{\text{user\_id}}[j] + b_{\text{bysubj\_day}}[k] \\
+b_{\text{user\_id}}[j] &amp;\sim \mathcal{N}(0, \Sigma_{\text{user\_id}}) \\
+b_{\text{bysubj\_day}}[k] &amp;\sim \mathcal{N}(0, \sigma^2_{\text{bysubj\_day}}) \\
+\beta &amp;\sim \text{priors1} \\
+\sigma &amp;\sim \text{Half-Cauchy}(0, \text{scale}) \\
+\nu &amp;\sim \text{Exponential}(\text{rate}) \\
+\\
+\text{Where:} &amp; \\
+\Sigma_{\text{user\_id}} &amp;= \text{Full covariance matrix for random effects within user\_id} \\
+\sigma^2_{\text{bysubj\_day}} &amp;= \text{Var}(b_{\text{bysubj\_day}}[k])
+\end{aligned}
+\end{equation}
+\]</span></p>
+<p>The model was estimated using a Student’s t-distribution with identity links for the mean (mu), scale (sigma), and degrees of freedom (nu). The analysis was based on 6741 observations, with the posterior distribution derived from 2000 post-warmup draws across two chains.</p>
+</section>
+<section id="group-level-effects" class="level4">
+<h4 class="anchored" data-anchor-id="group-level-effects">Group-Level Effects</h4>
+<ul>
+<li><strong>By-Subject-Day Variability</strong>: The standard deviation of the random intercepts for different days (<code>bysubj_day</code>) was estimated to be 0.02, suggesting minimal variability in the negative component of State Self-Compassion across days within subjects.</li>
+<li><strong>By-User Variability</strong>: The model revealed substantial between-person variability in the intercept (0.50), indicating differences in baseline levels of the negative component of State Self-Compassion among participants. The variability in the within-person components of negative affect (<code>na_moment</code>: 0.06, <code>na_day</code>: 0.15), context (<code>context_moment</code>: 0.02, <code>context_day</code>: 0.09), and decentering (<code>dec_moment</code>: 0.08, <code>dec_day</code>: 0.14) suggests individual differences in how these factors relate to self-compassion on a moment-to-moment and day-to-day basis.</li>
+</ul>
+</section>
+<section id="population-level-effects" class="level4">
+<h4 class="anchored" data-anchor-id="population-level-effects">Population-Level Effects</h4>
+<ul>
+<li><strong>Decentering</strong>: Momentary (β = -0.12), daily (β = -0.18), and person-level (β = -0.37) decentering showed negative associations with the negative component of State Self-Compassion, indicating that higher levels of decentering are associated with lower levels of self-criticism or negative self-judgment.</li>
+<li><strong>Negative Affect</strong>: Momentary (β = 0.13) and day-level (β = 0.17) negative affect were positively associated with the negative component, while person-level negative affect (β = 0.34) showed a stronger positive relationship. This suggests that both transient and enduring negative emotions contribute to increased self-criticism.</li>
+<li><strong>Context Valence</strong>: Momentary context valence showed a weak negative association (β = -0.02), while daily (β = 0.01) and person-level context valence (β = 0.04) had minimal or slightly positive associations, indicating that the immediate context’s perceived negativity might slightly increase self-critical thoughts.</li>
+</ul>
+</section>
+<section id="family-specific-parameters" class="level4">
+<h4 class="anchored" data-anchor-id="family-specific-parameters">Family Specific Parameters</h4>
+<ul>
+<li>The estimated scale parameter (σ = 0.35) and degrees of freedom (ν = 4.20) of the Student’s t-distribution reflect the variability and the heaviness of the tails in the model residuals, respectively.</li>
+</ul>
+</section>
+<section id="model-diagnostics" class="level4">
+<h4 class="anchored" data-anchor-id="model-diagnostics">Model Diagnostics</h4>
+<p>The model diagnostics indicate satisfactory convergence with Rhat values close to 1 for all parameters. The Bulk_ESS and Tail_ESS values suggest adequate effective sample sizes for reliable estimation and inference.</p>
+</section>
+</section>
+</section>
+<section id="bipolar-continuum-hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="bipolar-continuum-hypothesis">Bipolar Continuum Hypothesis</h2>
+<section id="stan-model-for-testing-the-bipolar-continuum-hypothesis" class="level3">
+<h3 class="anchored" data-anchor-id="stan-model-for-testing-the-bipolar-continuum-hypothesis">Stan Model for Testing the Bipolar Continuum Hypothesis</h3>
+<p><span class="math display">\[
+\begin{align*}
+\text{data} \{ \\
+&amp; \text{int} &lt;\text{lower}=0&gt; N; \quad \text{// Total number of observations} \\
+&amp; \text{int} &lt;\text{lower}=0&gt; P; \quad \text{// Number of participants} \\
+&amp; \text{int} &lt;\text{lower}=0&gt; D; \quad \text{// Number of days} \\
+&amp; \text{int} &lt;\text{lower}=0&gt; M; \quad \text{// Number of measurements per day per participant} \\
+&amp; \text{array}[N] \text{int} &lt;\text{lower}=1, \text{upper}=P&gt; \text{participant}; \quad \text{// Participant index for each observation} \\
+&amp; \text{array}[N] \text{int} &lt;\text{lower}=1, \text{upper}=D&gt; \text{day}; \quad \text{// Day index for each observation} \\
+&amp; \text{array}[N] \text{int} &lt;\text{lower}=1, \text{upper}=M&gt; \text{measurement}; \quad \text{// Measurement index for each observation} \\
+&amp; \text{array}[N] \text{real} \text{CS}; \quad \text{// Compassionate Self measures} \\
+&amp; \text{array}[N] \text{real} \text{UCS}; \quad \text{// Uncompassionate Self measures} \\
+&amp; \text{array}[N] \text{real} \text{neg\_affect}; \quad \text{// Negative Affect measures} \\
+&amp; \text{array}[N] \text{real} \text{decentering}; \quad \text{// Decentering measures} \\
+&amp; \text{array}[N] \text{real} \text{context\_eval}; \quad \text{// Context evaluation measures} \\
+\} \\
+\\
+\text{parameters} \{ \\
+&amp; \text{real} \text{alpha\_ucs}; \quad \text{// Intercept for UCS} \\
+&amp; \text{real} \text{beta\_cs}; \quad \text{// Overall effect of CS on UCS} \\
+&amp; \text{array}[3] \text{real} \text{beta\_covariates}; \quad \text{// Coefficients for other covariates} \\
+\\
+&amp; \text{// Random intercepts} \\
+&amp; \text{vector}[P] \text{z\_participant}; \\
+&amp; \text{vector}[D] \text{z\_day}; \\
+&amp; \text{vector}[M] \text{z\_measurement}; \\
+\\
+&amp; \text{// Random slopes for CS at the participant level} \\
+&amp; \text{vector}[P] \text{z\_participant\_slope\_cs}; \\
+\\
+&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_participant}; \quad \text{// SD of participant intercepts} \\
+&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_day}; \quad \text{// SD of day intercepts} \\
+&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_measurement}; \quad \text{// SD of measurement intercepts} \\
+&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_participant\_slope\_cs}; \quad \text{// SD of participant slopes for CS} \\
+&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_ucs}; \quad \text{// Error term for UCS model} \\
+&amp; \text{real} &lt;\text{lower}=0&gt; \text{nu}; \quad \text{// Degrees of freedom for t-distribution} \\
+\} \\
+\\
+\text{model} \{ \\
+&amp; \text{// Priors} \\
+&amp; \text{alpha\_ucs} \sim \text{normal}(0, 1); \\
+&amp; \text{beta\_cs} \sim \text{normal}(0, 1); \\
+&amp; \text{beta\_covariates} \sim \text{normal}(0, 1); \\
+\\
+&amp; \text{z\_participant} \sim \text{normal}(0, 1); \\
+&amp; \text{z\_day} \sim \text{normal}(0, 1); \\
+&amp; \text{z\_measurement} \sim \text{normal}(0, 1); \\
+&amp; \text{z\_participant\_slope\_cs} \sim \text{normal}(0, 1); \\
+\\
+&amp; \text{sigma\_participant} \sim \text{exponential}(1); \\
+&amp; \text{sigma\_day} \sim \text{exponential}(1); \\
+&amp; \text{sigma\_measurement} \sim \text{exponential}(1); \\
+&amp; \text{sigma\_participant\_slope\_cs} \sim \text{exponential}(1); \\
+&amp; \text{sigma\_ucs} \sim \text{exponential}(1); \\
+&amp; \text{nu} \sim \text{gamma}(2, 0.1); \\
+\\
+&amp; \text{// Likelihood for UCS using t-distribution} \\
+&amp; \text{for} (n \text{ in } 1:N) \{ \\
+&amp; \quad \text{UCS}[n] \sim \text{student\_t}( \\
+&amp; \quad \quad \text{nu}, \\
+&amp; \quad \quad \text{alpha\_ucs} + \\
+&amp; \quad \quad (\text{beta\_cs} + \text{sigma\_participant\_slope\_cs} \times \text{z\_participant\_slope\_cs}[\text{participant}[n]]) \times \text{CS}[n] + \\
+&amp; \quad \quad \text{beta\_covariates}[1] \times \text{neg\_affect}[n] + \\
+&amp; \quad \quad \text{beta\_covariates}[2] \times \text{decentering}[n] + \\
+&amp; \quad \quad \text{beta\_covariates}[3] \times \text{context\_eval}[n] + \\
+&amp; \quad \quad \text{sigma\_participant} \times \text{z\_participant}[\text{participant}[n]] + \\
+&amp; \quad \quad \text{sigma\_day} \times \text{z\_day}[\text{day}[n]] + \\
+&amp; \quad \quad \text{sigma\_measurement} \times \text{z\_measurement}[\text{measurement}[n]], \\
+&amp; \quad \quad \text{sigma\_ucs} \\
+&amp; \quad ); \\
+&amp; \} \\
+\}
+\end{align*}
+\]</span></p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="ema_ssc_report_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
