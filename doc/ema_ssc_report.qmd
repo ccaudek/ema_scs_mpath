@@ -96,6 +96,8 @@ suppressPackageStartupMessages({
 
 ### Task Design
 
+## Results
+
 ### Compliance
 
 ```{r}
@@ -108,11 +110,12 @@ compliance_results <- readRDS(
 compliance_results
 ```
 
-### Multilevel Reilabilities
+### Reliability Analysis of State Self-Compassion Measures
 
 
 ```{r}
 #| echo: false
+#| include: false
 ssc_reliabilities_results <- readRDS(
   here::here(
     "data", "prep", "ema", "ssc_reliabilities.rds"
@@ -120,56 +123,107 @@ ssc_reliabilities_results <- readRDS(
 )
 ```
 
-#### Positive State Self-Compassion
-
 ```{r}
 #| echo: false
+#| include: false
+# Positive State Self-Compassion
 ssc_reliabilities_results[[1]]
 ```
 
-#### Negative State Self-Compassion
-
 ```{r}
 #| echo: false
+#| include: false
+# Negative State Self-Compassion
 ssc_reliabilities_results[[2]]
 ```
 
-In our multilevel analysis of State Self-Compassion, we observed significant 
-reliability indices for both the positive and negative components. Focusing 
-first on the positive aspect, the within-subject reliability 
-($\tilde{\omega}^w$) was recorded at 0.626. This figure indicates a 
-moderate level of consistency in individual responses across various 
-measurement instances. In contrast, the between-subject reliability 
-($\tilde{\omega}^b$), crucial for differentiating between individuals, was 
-found to be 0.820. This higher value underscores the measure's effectiveness 
-in capturing stable individual differences in self-compassion.
-Moreover, the composite reliability of the overall positive score 
-($\omega^{2L}$), which integrates both within and between subject 
-variabilities, was calculated to be 0.79. This aligns with the framework 
-proposed by @lai2021composite and confirms the measure's reliability in a 
-comprehensive manner.
+In our study, we conducted a multilevel reliability analysis of the State Self-Compassion (SSC) scale, focusing on both its positive and negative components. Our analysis utilized the framework proposed by @lai2021composite to assess the measure's reliability comprehensively.
 
-Turning to the negative component of State Self-Compassion, the 
-within-subject reliability ($\tilde{\omega}^w$) was slightly higher at 
-0.68, while the between-subject reliability ($\tilde{\omega}^b$) further 
-increased to 0.88. The composite reliability for the overall negative 
-component score ($\omega^{2L}$) was determined to be 0.83. These values, 
-particularly the between-subject reliabilities exceeding the anticipated 
-benchmark of approximately 0.8, emphasize the robustness of the measure.
-The lower within-subject reliabilities for both components, while perhaps 
-initially surprising, are understandable upon closer examination. These 
-values reflect not only measurement error but also the inherent variability 
-of State Self-Compassion as a dynamic construct, influenced by changing 
-circumstances and internal states. Therefore, the lower within-subject 
-reliabilities underscore the measure's sensitivity to these temporal changes 
-within individuals.
+**SC Component of SSC:**
 
-In summary, the multilevel reliabilities of the State Self-Compassion measure, 
-with robust between-subject reliability and lower, yet insightful, 
-within-subject reliability, demonstrate its overall soundness and 
-applicability in the present study. The composite reliability figures further 
-confirm the measure's effectiveness in comprehensively capturing the 
-construct of State Self-Compassion across different levels of analysis.
+- **Within-Subject Reliability ($\tilde{\omega}^w$):** This was calculated to be 0.626, indicating moderate consistency in responses across different measurement occasions. This level of reliability reflects the variability in individuals' self-compassionate responses over time.
+- **Between-Subject Reliability ($\tilde{\omega}^b$):** A higher reliability index of 0.820 was observed, highlighting the measure's effectiveness in distinguishing stable individual differences in self-compassion. 
+- **Composite Reliability ($\omega^{2L}$):** The overall positive score showed a composite reliability of 0.79, suggesting a reliable integration of both within and between-subject variabilities.
+
+**USC Component of SSC:**
+
+- **Within-Subject Reliability ($\tilde{\omega}^w$):** Slightly higher than the positive component, this was recorded at 0.68. 
+- **Between-Subject Reliability ($\tilde{\omega}^b$):** Markedly robust at 0.88, this index indicates strong individual differentiation in the negative component of SSC.
+- **Composite Reliability ($\omega^{2L}$):** The composite reliability for the negative component was 0.83, reinforcing the measure's overall reliability.
+
+The between-subject reliability indices for both components, particularly the negative one, surpass the benchmark of 0.8, suggesting the scale's effectiveness in capturing stable individual differences in SSC. The within-subject reliabilities, while lower, are reflective of SSC as a dynamic construct. These values capture the natural fluctuation in self-compassion levels due to changing circumstances and internal states, highlighting the scale's sensitivity to temporal variations within individuals. In summary, our reliability analysis confirms the SSC scale as a robust tool for both research and practice, capable of effectively capturing the nuances of self-compassion across different contexts and over time.
+
+
+### Impact of Exam Context on State Self-Compassion
+
+In examining the effect of an academic exam on students' State Self-Compassion (SSC), our Bayesian hierarchical model revealed robust contextual influences. Specifically, the model included random effects to account for variability across subjects, days, and within-day measurements, focusing on days immediately before (`exam_day_pre`) and after (`exam_day_post`) the exam.
+
+On the day preceding the exam, there was a notable decrease in the CS component (posterior estimate for `beta_pre` contrast coefficient: -0.293; 89% CI: [-0.508, -0.080]; $p(\beta)$ < 0 = 0.983). This suggests that the upcoming exam substantially lowered students' compassionate self-responses. Conversely, the UCS component showed an increase before the exam (posterior estimate for `beta_pre`: 0.661; 89% CI: [0.380, 0.947]; $p(\beta)$ > 0 = 1), indicating heightened self-criticism or reduced self-kindness in this stressful period. The day after the exam, we observed an increase in the CS component (posterior estimate: 0.228; 89% CI: [0.0187, 0.446]; $p(\beta)$ > 0 = 0.959) and a decrease in the UCS component (posterior estimate: -0.666; 89% CI: [-0.946, -0.392]; $p(\beta)$ < 0 = 1), suggesting a rebound in self-compassion following the stressor.
+
+These results underline the dynamic nature of SSC in relation to situational stressors. The decrease in CS and increase in UCS components prior to the exam align with literature on the impact of stress on self-compassion. Interestingly, the post-exam period shows a reversal in these trends, indicating a recovery in self-compassion levels. This highlights the importance of temporal context in understanding the fluctuations in self-compassion among students. Overall, these insights are crucial for developing interventions aimed at enhancing resilience and self-compassion in academic settings, especially during periods of heightened stress.
+
+
+```{r}
+#| echo: false
+#| include: false
+source(here::here("workflows", "scripts", "ema", "functions", "funs_ema_mpath.R"))
+```
+
+
+```{r}
+#| echo: false
+#| include: false
+ci_89 <- summary_posterior_distribution(
+  "data/prep/ema/brms_fits/fit_mod_exam_sc_4.RDS",
+  "beta_pre"
+  )
+ci_89
+
+fit <- readRDS(here::here("data/prep/ema/brms_fits/fit_mod_exam_sc_4.RDS"))
+draws <- fit$draws(format="df")
+mean(draws$beta_pre < 0)
+```
+
+```{r}
+#| echo: false
+#| include: false
+ci_89 <- summary_posterior_distribution(
+  "data/prep/ema/brms_fits/fit_mod_exam_sc_4.RDS",
+  "beta_post"
+  )
+ci_89
+
+fit <- readRDS(here::here("data/prep/ema/brms_fits/fit_mod_exam_sc_4.RDS"))
+draws <- fit$draws(format="df")
+mean(draws$beta_post > 0)
+```
+
+```{r}
+#| echo: false
+#| include: false
+ci_89 <- summary_posterior_distribution(
+  "data/prep/ema/brms_fits/fit_mod_exam_usc_4.RDS",
+  "beta_pre"
+  )
+ci_89
+fit <- readRDS(here::here("data/prep/ema/brms_fits/fit_mod_exam_usc_4.RDS"))
+draws <- fit$draws(format="df")
+mean(draws$beta_pre > 0)
+```
+
+```{r}
+#| echo: false
+#| include: false
+ci_89 <- summary_posterior_distribution(
+  "data/prep/ema/brms_fits/fit_mod_exam_usc_4.RDS",
+  "beta_post"
+  )
+ci_89
+fit <- readRDS(here::here("data/prep/ema/brms_fits/fit_mod_exam_usc_4.RDS"))
+draws <- fit$draws(format="df")
+mean(draws$beta_post < 0)
+```
+
 
 
 ### Negative Affect Variation Before and After the Exam
@@ -346,10 +400,208 @@ The results indicate that variations in negative affect (delta_neg_aff) can pred
 This pattern supports the hypothesis that it is the change in the affective context that modulates state self-compassion, rather than changes in state self-compassion determining the variation in the affective response.
 It's important to remember that Granger Causality Tests are about predictability, not true causation. While these results suggest a predictive relationship, they do not confirm a causal effect. This analysis  suggests that the affective state, as it evolves, is a significant factor influencing how individuals engage in self-compassion practices.
 
+## Test of the Bipolar Continuum Hypothesis
+
+We used a hierarchical model designed to analyze data collected from multiple participants over several days, with each participant providing multiple measurements per day. The primary focus is on the relationship between Compassionate Self (CS) and Uncompassionate Self (UCS) scores, while accounting for participant-specific and day-specific variations, as well as variations in other covariates like negative affect, decentering, and context evaluation.
+
+$$
+\begin{align*}
+    \text{UCS}_{ijkm} &\sim t\left(\nu, \mu_{ijkm}, \sigma_{\text{UCS}}\right) \\
+    \mu_{ijkm} &= \alpha_{\text{UCS}} + \left(\beta_{\text{CS}} + b_{i}^{\text{participant}}\right) \times \text{CS}_{ijkm} + \boldsymbol{\beta}_{\text{cov}}^\top \mathbf{X}_{ijkm} \\
+    &\quad + u_{i}^{\text{participant}} + v_{j[i]}^{\text{day}} + w_{k[ij]}^{\text{measurement}} \\
+    \text{where} & \\
+    u_{i}^{\text{participant}} &\sim \mathcal{N}(0, \sigma_{\text{participant}}) \\
+    b_{i}^{\text{participant}} &\sim \mathcal{N}(0, \sigma_{\text{participant\_slope\_cs}}) \\
+    v_{j[i]}^{\text{day}} &\sim \mathcal{N}(0, \sigma_{\text{day}}) \\
+    w_{k[ij]}^{\text{measurement}} &\sim \mathcal{N}(0, \sigma_{\text{measurement}}) \\
+    \boldsymbol{\beta}_{\text{cov}} &\sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
+    \alpha_{\text{UCS}}, \beta_{\text{CS}} &\sim \mathcal{N}(0, 1) \\
+    \sigma_{\text{UCS}}, \sigma_{\text{participant}}, \sigma_{\text{day}}, \sigma_{\text{measurement}}, \sigma_{\text{participant\_slope\_cs}} &\sim \text{Exponential}(1) \\
+    \nu &\sim \text{Gamma}(2, 0.1)
+\end{align*}
+$$
+
+1. **Primary Equation (UCS Likelihood):** The UCS (Uncompassionate Self) score for each observation is modeled using a t-distribution. This choice accommodates potential heavy tails in the UCS score distribution. Each observation is indexed by participant $i$, day $j$, and measurement $k$, and the distribution is characterized by degrees of freedom $\nu$, a mean $\mu_{ijkm}$, and standard deviation $\sigma_{\text{UCS}}$.
+
+2. **Mean Equation ($\mu_{ijkm}$):** The mean UCS score, $\mu_{ijkm}$, is calculated as a linear combination of several components:
+   - A global intercept $\alpha_{\text{UCS}}$.
+   - The product of a coefficient $\beta_{\text{CS}}$ (representing the overall effect of the CS (Compassionate Self) score) and the specific CS score for that observation.
+   - The weighted sum of other covariates (negative affect, decentering, context evaluation), each multiplied by their respective coefficients $\boldsymbol{\beta}_{\text{cov}}$.
+   - Random intercepts for each participant $u_{i}^{\text{participant}}$, day $v_{j[i]}^{\text{day}}$, and measurement $w_{k[ij]}^{\text{measurement}}$, accounting for the hierarchical data structure.
+   - A random slope $b_{i}^{\text{participant}}$ for CS at the participant level, allowing the relationship between CS and UCS to vary across individuals.
+
+3. **Random Effects:** 
+   - Random intercepts for participants, days, and measurements (denoted as $u_{i}^{\text{participant}}$, $v_{j[i]}^{\text{day}}$, and $w_{k[ij]}^{\text{measurement}}$, respectively) are assumed to follow normal distributions with a mean of zero and specific standard deviations. These intercepts capture variability across the different levels of the hierarchical structure.
+   - Additionally, the model includes a random slope for the effect of CS ($b_{i}^{\text{participant}}$) at the participant level. This element allows the model to capture individual differences in how CS influences UCS.
+
+4. **Priors:** 
+   - The model assumes normal distributions with mean zero for coefficients and intercepts, reflecting a lack of prior bias towards specific values. The standard deviations of the random effects and the error term ($\sigma_{\text{UCS}}$, $\sigma_{\text{participant}}$, etc.) are modeled using exponential distributions. The degrees of freedom parameter $\nu$ for the t-distribution is drawn from a gamma distribution, suggesting flexibility in the tail behavior of the UCS scores.
+
+This statistical model is particularly suited for exploring the Bipolar Continuum Hypothesis proposed by Neff, which posits an inverse relationship between UCS and CS across individuals. By including random slopes for CS at the participant level, the model can assess how this relationship varies among individuals, providing insights into the nuanced nature of self-compassion and self-criticism. 
+
+
 ## General Discussion
 
 bla bla
 
+
+### Stan Model for Testing the Bipolar Continuum Hypothesis
+
+$$
+\begin{align*}
+\text{data} \{ \\
+& \text{int} <\text{lower}=0> N; \quad \text{// Total number of observations} \\
+& \text{int} <\text{lower}=0> P; \quad \text{// Number of participants} \\
+& \text{int} <\text{lower}=0> D; \quad \text{// Number of days} \\
+& \text{int} <\text{lower}=0> M; \quad \text{// Number of measurements per day per participant} \\
+& \text{array}[N] \text{int} <\text{lower}=1, \text{upper}=P> \text{participant}; \quad \text{// Participant index for each observation} \\
+& \text{array}[N] \text{int} <\text{lower}=1, \text{upper}=D> \text{day}; \quad \text{// Day index for each observation} \\
+& \text{array}[N] \text{int} <\text{lower}=1, \text{upper}=M> \text{measurement}; \quad \text{// Measurement index for each observation} \\
+& \text{array}[N] \text{real} \text{CS}; \quad \text{// Compassionate Self measures} \\
+& \text{array}[N] \text{real} \text{UCS}; \quad \text{// Uncompassionate Self measures} \\
+& \text{array}[N] \text{real} \text{neg\_affect}; \quad \text{// Negative Affect measures} \\
+& \text{array}[N] \text{real} \text{decentering}; \quad \text{// Decentering measures} \\
+& \text{array}[N] \text{real} \text{context\_eval}; \quad \text{// Context evaluation measures} \\
+\} \\
+\\
+\text{parameters} \{ \\
+& \text{real} \text{alpha\_ucs}; \quad \text{// Intercept for UCS} \\
+& \text{real} \text{beta\_cs}; \quad \text{// Overall effect of CS on UCS} \\
+& \text{array}[3] \text{real} \text{beta\_covariates}; \quad \text{// Coefficients for other covariates} \\
+\\
+& \text{// Random intercepts} \\
+& \text{vector}[P] \text{z\_participant}; \\
+& \text{vector}[D] \text{z\_day}; \\
+& \text{vector}[M] \text{z\_measurement}; \\
+\\
+& \text{// Random slopes for CS at the participant level} \\
+& \text{vector}[P] \text{z\_participant\_slope\_cs}; \\
+\\
+& \text{real} <\text{lower}=0> \text{sigma\_participant}; \quad \text{// SD of participant intercepts} \\
+& \text{real} <\text{lower}=0> \text{sigma\_day}; \quad \text{// SD of day intercepts} \\
+& \text{real} <\text{lower}=0> \text{sigma\_measurement}; \quad \text{// SD of measurement intercepts} \\
+& \text{real} <\text{lower}=0> \text{sigma\_participant\_slope\_cs}; \quad \text{// SD of participant slopes for CS} \\
+& \text{real} <\text{lower}=0> \text{sigma\_ucs}; \quad \text{// Error term for UCS model} \\
+& \text{real} <\text{lower}=0> \text{nu}; \quad \text{// Degrees of freedom for t-distribution} \\
+\} \\
+\\
+\text{model} \{ \\
+& \text{// Priors} \\
+& \text{alpha\_ucs} \sim \text{normal}(0, 1); \\
+& \text{beta\_cs} \sim \text{normal}(0, 1); \\
+& \text{beta\_covariates} \sim \text{normal}(0, 1); \\
+\\
+& \text{z\_participant} \sim \text{normal}(0, 1); \\
+& \text{z\_day} \sim \text{normal}(0, 1); \\
+& \text{z\_measurement} \sim \text{normal}(0, 1); \\
+& \text{z\_participant\_slope\_cs} \sim \text{normal}(0, 1); \\
+\\
+& \text{sigma\_participant} \sim \text{exponential}(1); \\
+& \text{sigma\_day} \sim \text{exponential}(1); \\
+& \text{sigma\_measurement} \sim \text{exponential}(1); \\
+& \text{sigma\_participant\_slope\_cs} \sim \text{exponential}(1); \\
+& \text{sigma\_ucs} \sim \text{exponential}(1); \\
+& \text{nu} \sim \text{gamma}(2, 0.1); \\
+\\
+& \text{// Likelihood for UCS using t-distribution} \\
+& \text{for} (n \text{ in } 1:N) \{ \\
+& \quad \text{UCS}[n] \sim \text{student\_t}( \\
+& \quad \quad \text{nu}, \\
+& \quad \quad \text{alpha\_ucs} + \\
+& \quad \quad (\text{beta\_cs} + \text{sigma\_participant\_slope\_cs} \times \text{z\_participant\_slope\_cs}[\text{participant}[n]]) \times \text{CS}[n] + \\
+& \quad \quad \text{beta\_covariates}[1] \times \text{neg\_affect}[n] + \\
+& \quad \quad \text{beta\_covariates}[2] \times \text{decentering}[n] + \\
+& \quad \quad \text{beta\_covariates}[3] \times \text{context\_eval}[n] + \\
+& \quad \quad \text{sigma\_participant} \times \text{z\_participant}[\text{participant}[n]] + \\
+& \quad \quad \text{sigma\_day} \times \text{z\_day}[\text{day}[n]] + \\
+& \quad \quad \text{sigma\_measurement} \times \text{z\_measurement}[\text{measurement}[n]], \\
+& \quad \quad \text{sigma\_ucs} \\
+& \quad ); \\
+& \} \\
+\}
+\end{align*}
+$$
+
+
 \newpage
-## References
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+# Appendix {.unnumbered}
+
+## Effect of Exam on State Self-Compassion
+
+We used a hierarchical, multilevel model to analyze the effect of specific time points (pre and post-exam) on the CS and UCS components of State Self-Compassion, while accounting for the nested structure of the data.
+
+Given:
+
+$$
+\begin{itemize}
+    \item $N$: Total number of observations
+    \item $J$: Number of subjects
+    \item $D$: Number of days
+    \item $M$: Number of measurements per day
+    \item $psc$: Dependent variable (array of size $N$)
+    \item $exam\_day\_pre$: Indicator variable for pre-exam day (array of size $N$)
+    \item $exam\_day\_post$: Indicator variable for post-exam day (array of size $N$)
+\end{itemize}
+$$
+
+The model is defined as follows:
+
+**Priors:**
+
+$$
+\begin{align*}
+    \alpha & \sim \text{Normal}(0, 2.5) \\
+    \alpha_j & \sim \text{Normal}(0, \sigma_j) \\
+    \alpha_d & \sim \text{Normal}(0, \sigma_d) \\
+    \alpha_m & \sim \text{Normal}(0, \sigma_m) \\
+    \beta_{pre}, \beta_{post} & \sim \text{Normal}(0, 1) \\
+    \beta_{j\_pre}, \beta_{j\_post} & \sim \text{Normal}(0, \sigma_{\beta_j}) \\
+    \sigma, \sigma_j, \sigma_d, \sigma_m, \sigma_{\beta_{j\_pre}}, \sigma_{\beta_{j\_post}} & \sim \text{Exponential}(1) \\
+    \text{skewness} & \sim \text{Normal}(0, 1)
+\end{align*}
+$$
+
+**Likelihood:**
+For each observation $n = 1, \ldots, N$:
+
+$$
+\begin{align*}
+    psc[n] & \sim \text{SkewNormal}\left(\mu_n, \sigma, \text{skewness}\right) \\
+    \text{where } \mu_n & = \alpha + \alpha_j[\text{subj}[n]] + \alpha_d[\text{day}[n]] + \alpha_m[\text{meas}[n]] \\
+    & \quad + (\beta_{pre} + \beta_{j\_pre}[\text{subj}[n]]) \times \text{exam\_day\_pre}[n] \\
+    & \quad + (\beta_{post} + \beta_{j\_post}[\text{subj}[n]]) \times \text{exam\_day\_post}[n]
+\end{align*}
+$$
+
+The model employs a skew normal distribution to accommodate potential asymmetry in the response variable.
+
+### Model Description:
+
+1. **Observational Unit and Data Structure:** The model is built for $N$ observations, collected from $J$ subjects across $D$ days, with each day comprising $M$ measurements. The dependent variable, `CS` or `UCS`, represents the psychological measure of interest, and the primary predictors are binary indicators for pre-exam (`exam_day_pre`) and post-exam (`exam_day_post`) days.
+
+2. **Random Effects Structure:** 
+   - **Subject-level Random Intercepts ($\alpha_j$):** These capture the subject-specific deviations from the overall mean, allowing for individual baseline differences in `CS` or `UCS`.
+   - **Day-level Random Intercepts ($\alpha_d$):** These account for day-to-day variability within subjects, capturing fluctuations in `CS` or `UCS` that might be attributed to daily factors.
+   - **Measurement-level Random Intercepts ($\alpha_m$):** These intercepts address the variation within the same day, considering the potential impact of the time of measurement on `CS` or `UCS`.
+
+3. **Random Slopes:** 
+   - **Subject-specific Slopes for Exam Days ($\beta_{j\_pre}$ and $\beta_{j\_post}$):** These slopes allow the effect of pre- and post-exam days to vary across subjects, acknowledging that the impact of these specific days on `CS` or `UCS` might differ among individuals.
+
+4. **Fixed Effects:** 
+   - **Global Intercept ($\alpha$):** This represents the overall mean level of `CS` or `UCS` across all observations when other predictors are at their reference levels.
+   - **Main Effects for Exam Days ($\beta_{pre}$ and $\beta_{post}$):** These coefficients estimate the average effect of pre- and post-exam days on `CS` or `UCS`, relative to non-exam days.
+
+5. **Skewness Parameter:** The inclusion of a skewness parameter in the skew normal distribution allows the model to capture potential asymmetry in the distribution of `CS` or `UCS`.
+
+6. **Priors:** The model employs non-informative priors for most parameters, assuming normal distributions for intercepts and slopes, and exponential distributions for standard deviations, ensuring a broad range of plausible values.
+
+7. **Likelihood:** 
+   - **Likelihood:** The response variable `CS` or `UCS` for each observation is modeled using a skew normal distribution, with mean and variance parameters constructed from the fixed and random effects, and the skewness parameter to capture asymmetry.
+
 

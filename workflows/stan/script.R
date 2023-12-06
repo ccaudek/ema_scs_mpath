@@ -14,11 +14,7 @@ library("dplyr")
 options(pillar.neg=FALSE)
 library("gridExtra")
 library("ggdist")
-SEED <- 48927 # set random seed for reproducability
-
-
-
-
+SEED <- 48927 # set random seed for reproducibility
 
 
 d <- readRDS(here("data", "prep", "ema", "data_for_model_comparisons.rds"))
@@ -262,6 +258,10 @@ ppc_dens_overlay(y, y_rep[1:200, ])
 
 # Now model 9 ------------------------------------------------------------------
 
+# Model 9 is a hierarchical version of Model 8: For every subject, it uses the 
+# data off all days, with 5 measurements for each day.
+
+# Data preparation. 
 # Convert 'user_id' and 'day' to numeric indices
 d$user_id_numeric <- as.numeric(as.factor(d$user_id))
 d$day_numeric <- as.numeric(as.factor(d$day))
@@ -288,7 +288,7 @@ stan_data <- list(
 str(stan_data)
 
 # Compile the Stan model
-stan_file <- 'model_9.stan'  # Adjust the path if your Stan file is in a different folder
+stan_file <- 'model_9_t.stan'  # Adjust the path if your Stan file is in a different folder
 
 # Sample from the posterior 
 mod <- cmdstan_model(stan_file)
@@ -302,8 +302,64 @@ fit <- mod$sample(
   seed = SEED
 )
 
+
+# Model 9 with random intercept for moment -------------------------------------
+
+# Convert 'user_id', 'day', and 'moment' to numeric indices
+d$user_id_numeric <- as.numeric(as.factor(d$user_id))
+d$day_numeric <- as.numeric(as.factor(d$day))
+d$moment_numeric <- as.numeric(as.factor(d$moment))
+
+# Get the number of unique participants, days, and measurements
+P <- length(unique(d$user_id_numeric))
+D <- length(unique(d$day_numeric))
+M <- length(unique(d$moment_numeric))  # Assuming this is 5 as per your description
+
+# Create a unique index for each observation combining participant, day, and measurement
+d$pd_index <- as.numeric(factor(paste(d$user_id_numeric, d$day_numeric, d$moment_numeric, sep = "_")))
+
+# Prepare the list for Stan
+stan_data <- list(
+  N = nrow(d),
+  P = P,
+  D = D,
+  M = M,
+  participant = d$user_id_numeric,
+  day = d$day_numeric,
+  measurement = d$moment_numeric,
+  CS = d$state_cs,
+  UCS = d$state_ucs,
+  neg_affect = d$na_moment,
+  decentering = d$dec_moment,
+  context_eval = d$con_moment
+)
+
+# Print the structure of the stan_data to confirm
+str(stan_data)
+
+# Compile the Stan model
+stan_file <- 'model_9_rnd_slopes.stan'  
+mod <- cmdstan_model(stan_file)
+
+# Sample from the posterior 
+fit <- mod$sample(
+  data = stan_data,
+  chains = 4,
+  parallel_chains = 4,
+  iter_warmup = 1000,
+  iter_sampling = 1000,
+  adapt_delta = 0.95,  
+  max_treedepth = 12, 
+  seed = SEED
+)
+
+
+# Post-processing ----
+
+fit$diagnostic_summary()
+
 # Check the summary of the model fit
-fit$summary()
+# fit$summary()
 
 # Plot a histogram of the posterior draws with bayesplot 
 draws <- fit$draws(format="df")
@@ -314,7 +370,8 @@ draws |>
   stat_dotsinterval() 
 
 params <- c(
-  "beta_cs", # "alpha_ucs", 
+  # "alpha_ucs", 
+  "beta_cs",
   "beta_covariates[1]", "beta_covariates[2]", "beta_covariates[3]",
   "sigma_ucs"
 )
@@ -330,7 +387,6 @@ stanfit <- rstan::read_stan_csv(fit$output_files())
 # In order to use the PPC functions from the bayesplot package we need a 
 # vector y of outcome values
 y <- stan_data$UCS
-
 # and a matrix yrep of draws from the posterior predictive distribution
 y_rep <- as.matrix(stanfit, pars = "pred_UCS")
 # dim(y_rep)
@@ -362,66 +418,202 @@ mcmc_neff(eff_ratio)
 fit_draws <- fit$draws() # extract the posterior draws
 mcmc_acf(fit_draws, pars = params)
 
-rstan::traceplot(stanfit, pars = "beta_cs")
+# Trace plots
+mcmc_trace(fit_draws, pars = c("beta_cs"))
+mcmc_trace(
+  fit_draws, 
+  pars = c("beta_covariates[1]", "beta_covariates[2]", "beta_covariates[3]")
+)
+mcmc_trace(fit_draws, pars = c("sigma_ucs"))
 
+mcmc_trace(fit_draws, pars = c("sigma_participant_slope_cs"))
+
+loo(fit$draws("log_lik"))
+
+saveRDS(
+  fit, 
+  here::here(
+    "data", "prep", "ema", "brms_fits", "mod_9_rnd_slopes.RDS"
+  )
+)
 
 # fatto fino a qui! ------------------------------------------------------------
 
 
+d |> 
+  group_by(exam_day) |> 
+  summarize(
+    nsc = mean(nsc, na.rm = TRUE, trim = 0.1),
+    psc = mean(psc, na.rm = TRUE, trim = 0.1)
+  )
 
 
 
+# fit_combined <- brm(
+#   bf(nsc ~ exam_day + (1 + exam_day | user_id)) + 
+#     bf(psc ~ exam_day + (1 + exam_day | user_id)) +
+#     set_rescor(TRUE),  # To estimate the residual correlation between nsc and psc
+#   data = d,
+#   family = student(), 
+#   prior = c(
+#     prior(normal(0, 2.5), class = "b"),
+#     prior(normal(0, 2.5), class = "Intercept")
+#   ),
+#   control = list(adapt_delta = 0.95, max_treedepth = 12),
+#   seed = SEED
+# )
+
+fit_nsc <- brm(
+  nsc ~ exam_day + (1 + exam_day | user_id/bysubj_day),
+  data = d,
+  family = gaussian(),
+  prior = c(
+    prior(normal(0, 2.5), class = "b"),
+    prior(normal(0, 2.5), class = "Intercept")
+  ),
+  control = list(adapt_delta = 0.95, max_treedepth = 12),
+  seed = SEED
+)
+pp_check(fit_nsc)
+summary(fit_nsc)
+
+fit_psc <- brm(
+  psc ~ exam_day + (1 + exam_day | user_id/bysubj_day),
+  data = d,
+  family = student(),
+  prior = c(
+    prior(normal(0, 2.5), class = "b"),
+    prior(normal(0, 2.5), class = "Intercept")
+  ),
+  control = list(adapt_delta = 0.95, max_treedepth = 12),
+  seed = SEED
+)
+pp_check(fit_psc)
+summary(fit_psc)
 
 
+# exam cmdstan ----------------
+
+# Create numeric indices for categorical variables if not already done
+d$user_id_numeric <- as.numeric(as.factor(d$user_id))
+d$day_numeric <- as.numeric(as.factor(d$day))
+d$moment_numeric <- as.numeric(as.factor(d$time_window))  # Assuming time_window is the moment
+d$exam_day_numeric <- as.numeric(as.factor(d$exam_day))
+
+# Calculate the number of unique participants, days, and measurements
+P <- length(unique(d$user_id_numeric))
+D <- length(unique(d$day_numeric))
+M <- length(unique(d$moment_numeric))
+
+# Organize the data into arrays
+CS <- d$CS
+UCS <- d$UCS
+neg_affect <- d$na_moment
+decentering <- d$dec_moment
+context_eval <- d$con_moment
+
+d$exam_day_numeric <- as.numeric(as.factor(d$exam_day))
+
+# measurement = as.numeric(as.factor(d$time_window)), # d$moment_numeric,
+# CS = CS,
+# UCS = UCS,
+# neg_affect = neg_affect,
+# decentering = decentering,
+# context_eval = context_eval,
+
+# Prepare the list for Stan
+
+user_id_numeric <- as.numeric(as.factor(d$user_id))
+day_numeric <- as.numeric(as.factor(d$bysubj_day))
+moment_numeric <- as.numeric(as.factor(d$time_window))
+exam_day_pre <- ifelse(d$exam_day == "pre", 1, 0)
+exam_day_post <- ifelse(d$exam_day == "post", 1, 0)
+
+stan_data <- list(
+  N = nrow(d),
+  J = length(unique(user_id_numeric)),
+  D = length(unique(day_numeric)),
+  M = length(unique(moment_numeric)),
+  subj = user_id_numeric,
+  day = day_numeric,
+  meas = moment_numeric,
+  psc = d$psc,
+  nsc = d$nsc,
+  exam_day_pre = exam_day_pre,
+  exam_day_post = exam_day_post
+)
+str(stan_data)
+
+# Compile the Stan model
+stan_file <- here::here(
+  "workflows", "stan", "exam_sc_4.stan"
+)
+mod <- cmdstan_model(stan_file)
+
+# Sample from the posterior 
+fit <- mod$sample(
+  data = stan_data,
+  chains = 4,
+  parallel_chains = 4,
+  iter_warmup = 1000,
+  iter_sampling = 1000,
+  adapt_delta = 0.95,  
+  max_treedepth = 12, 
+  seed = SEED
+)
 
 
+fit <- readRDS(here::here("data", "prep", "ema", "brms_fits", "fit_mod_exam_sc_4.RDS"))
 
+# Extract posterior samples
+# posterior_samples <- fit$draws()
+# dim(posterior_samples)
 
+# Extract beta coefficients (check the exact name in your model output)
+# beta_pre_samples <- posterior_samples[,, "beta_pre"]
 
+# Plot a histogram of the posterior draws with bayesplot 
+draws <- fit$draws(format="df")
+mcmc_hist(draws, pars="beta_pre") 
+beta_pre_neg <- mean(draws$beta_pre < 0)
+beta_pre_neg
 
+mcmc_hist(draws, pars="beta_post") 
+beta_post_pos <- mean(draws$beta_post > 0)
+beta_post_pos
 
-
-
-
-#########################
-
-
-fit_draws <- fit$draws() # extract the posterior draws
-mcmc_trace(fit_draws, pars = c("beta_cs"))
-# mcmc_trace(fit_draws, pars = c("beta_cs[1]", "beta_cs[2]", "beta_cs[3]"))
-# mcmc_trace(fit_draws, pars = c("sigma_cs"))
-
-
-
-rhats <- rhat(fit, pars = parameters)
-mcmc_rhat(rhats)
-
-eff_ratio <- neff_ratio(fit, pars = parameters)
-eff_ratio
-mcmc_neff(eff_ratio)
-
-mcmc_acf(fit_draws, pars = parameters)
-
-y <- stan_data$UCS
-
-stanfit <- read_stan_csv(fit$output_files())
-# extract the fitted values
-y_rep <- extract(stanfit)[["pred_UCS"]]
-ppc_dens_overlay(y = y, yrep = y_rep[1:100, ])
-
-y_rep <- extract(stanfit)[["y_rep_UCS"]]
-ppc_dens_overlay(y = y, yrep = y_rep[1:100, ])
-
+# Posterior predictive checks
+y <- stan_data$nsc
 stanfit <- rstan::read_stan_csv(fit$output_files())
+y_rep <- as.matrix(stanfit, pars = "y_rep")
+ppc_dens_overlay(y, y_rep[1:200, ]) + xlim(c(-30, 30))
 
-list_of_draws <- extract(stanfit)
-print(names(list_of_draws))
+loo(fit$draws("log_lik"))
+
+
+params <- c("beta_pre", "beta_post")
+
+temps <- fit$draws(format = "df") |>
+  as_tibble() |>
+  select(all_of(params))
+
+mcmc_areas(temps) + xlab('')
+
+names(mod$variables()$parameters)
+
+fit$summary(names(mod$variables()$parameters))
+
+fit$summary(c("beta_pre", "beta_post"))
+
+
+# eof ---
 
 
 
-rstan::traceplot(stanfit, pars = "b")
 
-mcmc_hist(fit$draws("b"))
+
+
+
 
 # Extract posterior samples
 posterior_samples <- as.data.frame(extract(stanfit))
@@ -460,7 +652,7 @@ str(fit$sampler_diagnostics())
 # this is a draws_df object from the posterior package
 str(fit$sampler_diagnostics(format = "df"))
 
-fit$diagnostic_summary()
+
 
 stanfit <- rstan::read_stan_csv(fit$output_files())
 
@@ -477,87 +669,6 @@ library(rstan)
 library(bayesplot)
 
 # Assuming stanfit is the object obtained from rstan::read_stan_csv(fit$output_files())
-# Extract posterior samples
-posterior_samples <- as.data.frame(extract(stanfit))
-
-# Summary for 'a' and 'b'
-summary(posterior_samples[c("a", "b")])
 
 
-
-
-
-
-
-
-
-
-
-
-# Extract observed data
-observed_CS <- stan_data$CS
-observed_UCS <- stan_data$UCS
-
-# Extract posterior predictive samples
-posterior_samples <- extract(stanfit)
-predicted_CS <- posterior_samples$pred_CS
-predicted_UCS <- posterior_samples$pred_UCS
-
-# Ensure the predicted data is in the correct format (matrix)
-# If predicted_CS and predicted_UCS are not matrices, convert them
-if (!is.matrix(predicted_CS)) {
-  predicted_CS <- as.matrix(predicted_CS)
-}
-if (!is.matrix(predicted_UCS)) {
-  predicted_UCS <- as.matrix(predicted_UCS)
-}
-
-# Reshape the predicted data into a matrix format
-predicted_CS_matrix <- t(predicted_CS)
-predicted_UCS_matrix <- t(predicted_UCS)
-
-# Perform posterior predictive checks for CS
-pp_check(y = observed_CS, yrep = predicted_CS_matrix, type = "dens_overlay")
-
-
-
-
-
-
-
-
-
-
-
-
-# Assuming your data frame is named 'data' and has the columns:
-# participant, day, CS, UCS, neg_affect, decentering, context_eval
-
-d1 <- d
-d1$nsc <- as.vector(scale(d1$nsc))
-d1$psc <- as.vector(scale(d1$psc))
-d1$neg_aff <- as.vector(scale(d1$neg_aff))
-d1$context <- as.vector(scale(d1$context))
-d1$dec <- as.vector(scale(d1$dec))
-
-
-# Define priors
-priors <- c(
-  prior(normal(0, 5), nlpar = "a"),
-  prior(normal(1, 0.5), nlpar = "b", lb = 0),
-  prior(normal(0, 1), class = "b"),
-  prior(normal(0, 1), class = "sd")
-)
-
-# Fit the model
-fit <- brm(
-  nlform, 
-  data = d1, 
-  backend = "cmdstanr",
-  family = gaussian(), 
-  prior = priors
-)
-
-# Check summary of the model
-summary(fit)
 
