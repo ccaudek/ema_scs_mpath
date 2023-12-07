@@ -85,6 +85,5 @@ fit_mod_9_rnd_slopes_bip_cont_hyp <- function(input_path, output_path) {
   )
   
   fit$save_object(file = output_path)
-  # saveRDS(fit, output_path)
 }
 

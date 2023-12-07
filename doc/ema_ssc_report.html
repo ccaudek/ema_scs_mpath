@@ -8,9 +8,9 @@
 
 <meta name="author" content="Corrado Caudek (corrado.caudek@unifi.it)">
 <meta name="dcterms.date" content="2023-12-06">
-<meta name="description" content="Test of the bipolar continuum hypothesis">
+<meta name="description" content="Relationship between the Bipolar Continuum Hypothesis and the co-variation of State Self-Compassion components">
 
-<title>EMA State Self Compassion Project</title>
+<title>State Self-Compassion Dynamics: Evidence for the Bipolar Continuum Hypothesis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -101,10 +101,10 @@ div.csl-indent {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">EMA State Self Compassion Project</h1>
+      <h1 class="title">State Self-Compassion Dynamics: Evidence for the Bipolar Continuum Hypothesis</h1>
                   <div>
         <div class="description">
-          Test of the bipolar continuum hypothesis
+          Relationship between the Bipolar Continuum Hypothesis and the co-variation of State Self-Compassion components
         </div>
       </div>
                 </div>
@@ -188,7 +188,7 @@ div.csl-indent {
   </ul></li>
   <li><a href="#bipolar-continuum-hypothesis" id="toc-bipolar-continuum-hypothesis" class="nav-link" data-scroll-target="#bipolar-continuum-hypothesis">Bipolar Continuum Hypothesis</a>
   <ul class="collapse">
-  <li><a href="#stan-model-for-testing-the-bipolar-continuum-hypothesis" id="toc-stan-model-for-testing-the-bipolar-continuum-hypothesis" class="nav-link" data-scroll-target="#stan-model-for-testing-the-bipolar-continuum-hypothesis">Stan Model for Testing the Bipolar Continuum Hypothesis</a></li>
+  <li><a href="#detailed-description-of-the-stan-model-for-testing-the-bipolar-continuum-hypothesis" id="toc-detailed-description-of-the-stan-model-for-testing-the-bipolar-continuum-hypothesis" class="nav-link" data-scroll-target="#detailed-description-of-the-stan-model-for-testing-the-bipolar-continuum-hypothesis">Detailed Description of the Stan Model for Testing the Bipolar Continuum Hypothesis</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -395,44 +395,8 @@ $compliance_notification_frequeny_per_day
 </section>
 <section id="test-of-the-bipolar-continuum-hypothesis" class="level2">
 <h2 class="anchored" data-anchor-id="test-of-the-bipolar-continuum-hypothesis">Test of the Bipolar Continuum Hypothesis</h2>
-<p>We used a hierarchical model designed to analyze data collected from multiple participants over several days, with each participant providing multiple measurements per day. The primary focus is on the relationship between Compassionate Self (CS) and Uncompassionate Self (UCS) scores, while accounting for participant-specific and day-specific variations, as well as variations in other covariates like negative affect, decentering, and context evaluation.</p>
-<p><span class="math display">\[
-\begin{align*}
-    \text{UCS}_{ijkm} &amp;\sim t\left(\nu, \mu_{ijkm}, \sigma_{\text{UCS}}\right) \\
-    \mu_{ijkm} &amp;= \alpha_{\text{UCS}} + \left(\beta_{\text{CS}} + b_{i}^{\text{participant}}\right) \times \text{CS}_{ijkm} + \boldsymbol{\beta}_{\text{cov}}^\top \mathbf{X}_{ijkm} \\
-    &amp;\quad + u_{i}^{\text{participant}} + v_{j[i]}^{\text{day}} + w_{k[ij]}^{\text{measurement}} \\
-    \text{where} &amp; \\
-    u_{i}^{\text{participant}} &amp;\sim \mathcal{N}(0, \sigma_{\text{participant}}) \\
-    b_{i}^{\text{participant}} &amp;\sim \mathcal{N}(0, \sigma_{\text{participant\_slope\_cs}}) \\
-    v_{j[i]}^{\text{day}} &amp;\sim \mathcal{N}(0, \sigma_{\text{day}}) \\
-    w_{k[ij]}^{\text{measurement}} &amp;\sim \mathcal{N}(0, \sigma_{\text{measurement}}) \\
-    \boldsymbol{\beta}_{\text{cov}} &amp;\sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
-    \alpha_{\text{UCS}}, \beta_{\text{CS}} &amp;\sim \mathcal{N}(0, 1) \\
-    \sigma_{\text{UCS}}, \sigma_{\text{participant}}, \sigma_{\text{day}}, \sigma_{\text{measurement}}, \sigma_{\text{participant\_slope\_cs}} &amp;\sim \text{Exponential}(1) \\
-    \nu &amp;\sim \text{Gamma}(2, 0.1)
-\end{align*}
-\]</span></p>
-<ol type="1">
-<li><p><strong>Primary Equation (UCS Likelihood):</strong> The UCS (Uncompassionate Self) score for each observation is modeled using a t-distribution. This choice accommodates potential heavy tails in the UCS score distribution. Each observation is indexed by participant <span class="math inline">\(i\)</span>, day <span class="math inline">\(j\)</span>, and measurement <span class="math inline">\(k\)</span>, and the distribution is characterized by degrees of freedom <span class="math inline">\(\nu\)</span>, a mean <span class="math inline">\(\mu_{ijkm}\)</span>, and standard deviation <span class="math inline">\(\sigma_{\text{UCS}}\)</span>.</p></li>
-<li><p><strong>Mean Equation (<span class="math inline">\(\mu_{ijkm}\)</span>):</strong> The mean UCS score, <span class="math inline">\(\mu_{ijkm}\)</span>, is calculated as a linear combination of several components:</p>
-<ul>
-<li>A global intercept <span class="math inline">\(\alpha_{\text{UCS}}\)</span>.</li>
-<li>The product of a coefficient <span class="math inline">\(\beta_{\text{CS}}\)</span> (representing the overall effect of the CS (Compassionate Self) score) and the specific CS score for that observation.</li>
-<li>The weighted sum of other covariates (negative affect, decentering, context evaluation), each multiplied by their respective coefficients <span class="math inline">\(\boldsymbol{\beta}_{\text{cov}}\)</span>.</li>
-<li>Random intercepts for each participant <span class="math inline">\(u_{i}^{\text{participant}}\)</span>, day <span class="math inline">\(v_{j[i]}^{\text{day}}\)</span>, and measurement <span class="math inline">\(w_{k[ij]}^{\text{measurement}}\)</span>, accounting for the hierarchical data structure.</li>
-<li>A random slope <span class="math inline">\(b_{i}^{\text{participant}}\)</span> for CS at the participant level, allowing the relationship between CS and UCS to vary across individuals.</li>
-</ul></li>
-<li><p><strong>Random Effects:</strong></p>
-<ul>
-<li>Random intercepts for participants, days, and measurements (denoted as <span class="math inline">\(u_{i}^{\text{participant}}\)</span>, <span class="math inline">\(v_{j[i]}^{\text{day}}\)</span>, and <span class="math inline">\(w_{k[ij]}^{\text{measurement}}\)</span>, respectively) are assumed to follow normal distributions with a mean of zero and specific standard deviations. These intercepts capture variability across the different levels of the hierarchical structure.</li>
-<li>Additionally, the model includes a random slope for the effect of CS (<span class="math inline">\(b_{i}^{\text{participant}}\)</span>) at the participant level. This element allows the model to capture individual differences in how CS influences UCS.</li>
-</ul></li>
-<li><p><strong>Priors:</strong></p>
-<ul>
-<li>The model assumes normal distributions with mean zero for coefficients and intercepts, reflecting a lack of prior bias towards specific values. The standard deviations of the random effects and the error term (<span class="math inline">\(\sigma_{\text{UCS}}\)</span>, <span class="math inline">\(\sigma_{\text{participant}}\)</span>, etc.) are modeled using exponential distributions. The degrees of freedom parameter <span class="math inline">\(\nu\)</span> for the t-distribution is drawn from a gamma distribution, suggesting flexibility in the tail behavior of the UCS scores.</li>
-</ul></li>
-</ol>
-<p>This statistical model is particularly suited for exploring the Bipolar Continuum Hypothesis proposed by Neff, which posits an inverse relationship between UCS and CS across individuals. By including random slopes for CS at the participant level, the model can assess how this relationship varies among individuals, providing insights into the nuanced nature of self-compassion and self-criticism.</p>
+<p>To test the Bipolar Continuum Hypothesis of Neff, which posits a reciprocal relationship between the compassionate (CS) and uncompassionate (UCS) components of state self-compassion, a hierarchical Bayesian model was implemented using Stan. Our data comprised measurements from 169 participants, each assessed up to five times a day across up to sixteen days, yielding a total of N observations. Additionally, each measurement occasion included assessments of momentary negative affect, decentering, and valence evaluation of the context.</p>
+<p>The model accounts for the hierarchical nature of the data, with observations nested within multiple levels: measurements, days, and participants. This structure allows for the analysis of within-person variability over time and across different conditions. The model estimates fixed effects for the intercept of UCS (alpha_ucs), the overall effect of CS on UCS (beta_cs), and coefficients for the three covariates: negative affect, decentering, and context evaluation (beta_covariates). To capture individual differences and temporal fluctuations, the model includes random intercepts for participants (z_participant), days (z_day), and measurements (z_measurement). Additionally, it estimates random slopes for the effect of CS at the participant level (z_participant_slope_cs).</p>
 </section>
 <section id="general-discussion" class="level2">
 <h2 class="anchored" data-anchor-id="general-discussion">General Discussion</h2>
@@ -1031,82 +995,83 @@ b_{\text{bysubj\_day}}[k] &amp;\sim \mathcal{N}(0, \sigma^2_{\text{bysubj\_day}}
 </section>
 <section id="bipolar-continuum-hypothesis" class="level2">
 <h2 class="anchored" data-anchor-id="bipolar-continuum-hypothesis">Bipolar Continuum Hypothesis</h2>
-<section id="stan-model-for-testing-the-bipolar-continuum-hypothesis" class="level3">
-<h3 class="anchored" data-anchor-id="stan-model-for-testing-the-bipolar-continuum-hypothesis">Stan Model for Testing the Bipolar Continuum Hypothesis</h3>
+<section id="detailed-description-of-the-stan-model-for-testing-the-bipolar-continuum-hypothesis" class="level3">
+<h3 class="anchored" data-anchor-id="detailed-description-of-the-stan-model-for-testing-the-bipolar-continuum-hypothesis">Detailed Description of the Stan Model for Testing the Bipolar Continuum Hypothesis</h3>
+<p>This Bayesian hierarchical model allows for a nuanced analysis of the interplay between self-compassion components and their relationship with affective states and contextual evaluations. By considering the random effects at multiple levels and adopting a robust likelihood function, the model aims to provide a comprehensive understanding of the dynamics underlying the Bipolar Continuum Hypothesis.</p>
+<section id="mathematical-formulation-of-the-model" class="level4">
+<h4 class="anchored" data-anchor-id="mathematical-formulation-of-the-model">Mathematical Formulation of the Model</h4>
+<p>The hierarchical Bayesian model implemented in Stan can be mathematically expressed as follows:</p>
+<ol type="1">
+<li><strong>Data and Indices:</strong>
+<ul>
+<li>Let $ N $ be the total number of observations.</li>
+<li>Let $ P $ denote the number of participants.</li>
+<li>Let $ D $ represent the number of days.</li>
+<li>Let $ M $ denote the number of measurements per day per participant.</li>
+<li>Indices: $ i $ for observations ($ i = 1, , N $), $ p $ for participants ($ p = 1, , P $), $ d $ for days ($ d = 1, , D $), and $ m $ for measurements ($ m = 1, , M $).</li>
+</ul></li>
+<li><strong>Observed Variables:</strong>
+<ul>
+<li>$ CS_i $: Compassionate Self measure for observation $ i $.</li>
+<li>$ UCS_i $: Uncompassionate Self measure for observation $ i $.</li>
+<li>$ neg_affect_i $: Negative Affect measure for observation $ i $.</li>
+<li>$ decentering_i $: Decentering measure for observation $ i $.</li>
+<li>$ context_eval_i $: Context evaluation measure for observation $ i $.</li>
+</ul></li>
+<li><strong>Parameters:</strong>
+<ul>
+<li>Fixed Effects:
+<ul>
+<li>$ _{ucs} $: Intercept for UCS.</li>
+<li>$ _{cs} $: Overall effect of CS on UCS.</li>
+<li>$ _{covariates} $: Coefficients for the covariates (negative affect, decentering, and context evaluation).</li>
+</ul></li>
+<li>Random Effects:
+<ul>
+<li>$ z_{participant_p} $: Random intercept for participant $ p $.</li>
+<li>$ z_{day_d} $: Random intercept for day $ d $.</li>
+<li>$ z_{measurement_m} $: Random intercept for measurement $ m $.</li>
+<li>$ z_{participant_slope_cs_p} $: Random slope for CS effect at the participant level $ p $.</li>
+</ul></li>
+</ul></li>
+<li><strong>Hyperparameters:</strong>
+<ul>
+<li>$ <em>{participant} $, $ </em>{day} $, $ _{measurement} $: Standard deviations of random intercepts for participants, days, and measurements respectively.</li>
+<li>$ _{participant_slope_cs} $: Standard deviation of random slopes for CS at the participant level.</li>
+<li>$ _{ucs} $: Standard deviation of the UCS model error term.</li>
+<li>$ $: Degrees of freedom for the t-distribution.</li>
+</ul></li>
+<li><strong>Model Specification:</strong>
+<ul>
+<li><p>Priors:</p>
 <p><span class="math display">\[
 \begin{align*}
-\text{data} \{ \\
-&amp; \text{int} &lt;\text{lower}=0&gt; N; \quad \text{// Total number of observations} \\
-&amp; \text{int} &lt;\text{lower}=0&gt; P; \quad \text{// Number of participants} \\
-&amp; \text{int} &lt;\text{lower}=0&gt; D; \quad \text{// Number of days} \\
-&amp; \text{int} &lt;\text{lower}=0&gt; M; \quad \text{// Number of measurements per day per participant} \\
-&amp; \text{array}[N] \text{int} &lt;\text{lower}=1, \text{upper}=P&gt; \text{participant}; \quad \text{// Participant index for each observation} \\
-&amp; \text{array}[N] \text{int} &lt;\text{lower}=1, \text{upper}=D&gt; \text{day}; \quad \text{// Day index for each observation} \\
-&amp; \text{array}[N] \text{int} &lt;\text{lower}=1, \text{upper}=M&gt; \text{measurement}; \quad \text{// Measurement index for each observation} \\
-&amp; \text{array}[N] \text{real} \text{CS}; \quad \text{// Compassionate Self measures} \\
-&amp; \text{array}[N] \text{real} \text{UCS}; \quad \text{// Uncompassionate Self measures} \\
-&amp; \text{array}[N] \text{real} \text{neg\_affect}; \quad \text{// Negative Affect measures} \\
-&amp; \text{array}[N] \text{real} \text{decentering}; \quad \text{// Decentering measures} \\
-&amp; \text{array}[N] \text{real} \text{context\_eval}; \quad \text{// Context evaluation measures} \\
-\} \\
-\\
-\text{parameters} \{ \\
-&amp; \text{real} \text{alpha\_ucs}; \quad \text{// Intercept for UCS} \\
-&amp; \text{real} \text{beta\_cs}; \quad \text{// Overall effect of CS on UCS} \\
-&amp; \text{array}[3] \text{real} \text{beta\_covariates}; \quad \text{// Coefficients for other covariates} \\
-\\
-&amp; \text{// Random intercepts} \\
-&amp; \text{vector}[P] \text{z\_participant}; \\
-&amp; \text{vector}[D] \text{z\_day}; \\
-&amp; \text{vector}[M] \text{z\_measurement}; \\
-\\
-&amp; \text{// Random slopes for CS at the participant level} \\
-&amp; \text{vector}[P] \text{z\_participant\_slope\_cs}; \\
-\\
-&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_participant}; \quad \text{// SD of participant intercepts} \\
-&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_day}; \quad \text{// SD of day intercepts} \\
-&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_measurement}; \quad \text{// SD of measurement intercepts} \\
-&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_participant\_slope\_cs}; \quad \text{// SD of participant slopes for CS} \\
-&amp; \text{real} &lt;\text{lower}=0&gt; \text{sigma\_ucs}; \quad \text{// Error term for UCS model} \\
-&amp; \text{real} &lt;\text{lower}=0&gt; \text{nu}; \quad \text{// Degrees of freedom for t-distribution} \\
-\} \\
-\\
-\text{model} \{ \\
-&amp; \text{// Priors} \\
-&amp; \text{alpha\_ucs} \sim \text{normal}(0, 1); \\
-&amp; \text{beta\_cs} \sim \text{normal}(0, 1); \\
-&amp; \text{beta\_covariates} \sim \text{normal}(0, 1); \\
-\\
-&amp; \text{z\_participant} \sim \text{normal}(0, 1); \\
-&amp; \text{z\_day} \sim \text{normal}(0, 1); \\
-&amp; \text{z\_measurement} \sim \text{normal}(0, 1); \\
-&amp; \text{z\_participant\_slope\_cs} \sim \text{normal}(0, 1); \\
-\\
-&amp; \text{sigma\_participant} \sim \text{exponential}(1); \\
-&amp; \text{sigma\_day} \sim \text{exponential}(1); \\
-&amp; \text{sigma\_measurement} \sim \text{exponential}(1); \\
-&amp; \text{sigma\_participant\_slope\_cs} \sim \text{exponential}(1); \\
-&amp; \text{sigma\_ucs} \sim \text{exponential}(1); \\
-&amp; \text{nu} \sim \text{gamma}(2, 0.1); \\
-\\
-&amp; \text{// Likelihood for UCS using t-distribution} \\
-&amp; \text{for} (n \text{ in } 1:N) \{ \\
-&amp; \quad \text{UCS}[n] \sim \text{student\_t}( \\
-&amp; \quad \quad \text{nu}, \\
-&amp; \quad \quad \text{alpha\_ucs} + \\
-&amp; \quad \quad (\text{beta\_cs} + \text{sigma\_participant\_slope\_cs} \times \text{z\_participant\_slope\_cs}[\text{participant}[n]]) \times \text{CS}[n] + \\
-&amp; \quad \quad \text{beta\_covariates}[1] \times \text{neg\_affect}[n] + \\
-&amp; \quad \quad \text{beta\_covariates}[2] \times \text{decentering}[n] + \\
-&amp; \quad \quad \text{beta\_covariates}[3] \times \text{context\_eval}[n] + \\
-&amp; \quad \quad \text{sigma\_participant} \times \text{z\_participant}[\text{participant}[n]] + \\
-&amp; \quad \quad \text{sigma\_day} \times \text{z\_day}[\text{day}[n]] + \\
-&amp; \quad \quad \text{sigma\_measurement} \times \text{z\_measurement}[\text{measurement}[n]], \\
-&amp; \quad \quad \text{sigma\_ucs} \\
-&amp; \quad ); \\
-&amp; \} \\
-\}
+\alpha_{ucs} &amp;\sim \text{Normal}(0, 1) \\
+\beta_{cs}, \beta_{covariates} &amp;\sim \text{Normal}(0, 1) \\
+z_{participant}, z_{day}, z_{measurement}, z_{participant\_slope\_cs} &amp;\sim \text{Normal}(0, 1) \\
+\sigma_{participant}, \sigma_{day}, \sigma_{measurement}, \sigma_{participant\_slope\_cs}, \sigma_{ucs} &amp;\sim \text{Exponential}(1) \\
+\nu &amp;\sim \text{Gamma}(2, 0.1)
 \end{align*}
-\]</span></p>
+\]</span></p></li>
+<li><p>Likelihood: The uncompassionate component (UCS) is modeled using a t-distribution, accommodating potential outliers and providing robustness to the model. This distribution is parameterized with a nu parameter (degrees of freedom), an error term (sigma_ucs), and is influenced by both fixed and random effects.</p>
+<p><span class="math display">\[
+UCS_i \sim \text{Student\_t}\left( \nu, \alpha_{ucs} + (\beta_{cs} + \sigma_{participant\_slope\_cs} \cdot z_{participant\_slope\_cs_{participant[i]}}) \cdot CS_i + \sum_{j=1}^{3} \beta_{covariates_j} \cdot x_{ij} + \sigma_{participant} \cdot z_{participant_{participant[i]}} + \sigma_{day} \cdot z_{day_{day[i]}} + \sigma_{measurement} \cdot z_{measurement_{measurement[i]}}, \sigma_{ucs} \right)
+\]</span></p></li>
+</ul></li>
+</ol>
+<p>where $ x_{ij} $ represents the covariates (negative affect, decentering, and context evaluation) for observation $ i $.</p>
+<ol start="6" type="1">
+<li><p><strong>Generated Quantities:</strong> For model validation and predictive checks, the model generates posterior predictions of UCS (pred_UCS) and calculates the log-likelihood (log_lik) for each observation.</p>
+<ul>
+<li>Predicted UCS ($ pred_UCS_i <span class="math inline">\() and log-likelihood (\)</span> log_lik_i $) for each observation $ i $.</li>
+</ul></li>
+<li><p><strong>Priors:</strong> Priors for all parameters are specified to be normally distributed, centering around zero with a standard deviation of 1. This reflects a neutral initial assumption about the direction and magnitude of these effects.</p></li>
+</ol>
+</section>
+<section id="explanation-of-the-model" class="level4">
+<h4 class="anchored" data-anchor-id="explanation-of-the-model">Explanation of the Model</h4>
+<p>This hierarchical Bayesian model is designed to investigate the relationship between the components of self-compassion (CS and UCS) and their interaction with other psychological variables (negative affect, decentering, and context evaluation). The model allows for both fixed and random effects, capturing the variability at the level of individual participants, days, and measurements. The use of a t-distribution for UCS accommodates the potential presence of outliers and ensures robustness. The inclusion of random slopes for the effect of CS allows us to examine how this relationship varies across individuals.</p>
+</section>
 </section>
 </section>
 </section>

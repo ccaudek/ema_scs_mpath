@@ -1,38 +1,11 @@
+To test the Bipolar Continuum Hypothesis of Neff, which posits a reciprocal relationship between the compassionate (CS) and uncompassionate (UCS) components of self-compassion, a hierarchical Bayesian model was implemented using Stan. Our data comprised measurements from 169 participants, each assessed up to five times a day across up to sixteen days, yielding a total of N observations. Additionally, each measurement occasion included assessments of momentary negative affect, decentering, and valence evaluation of the context.
 
-We used a hierarchical model designed to analyze data collected from multiple participants over several days, with each participant providing multiple measurements per day. The primary focus is on the relationship between Compassionate Self (CS) and Uncompassionate Self (UCS) scores, while accounting for participant-specific and day-specific variations, as well as variations in other covariates like negative affect, decentering, and context evaluation.
+The model accounts for the hierarchical nature of the data, with observations nested within multiple levels: measurements, days, and participants. This structure allows for the analysis of within-person variability over time and across different conditions. The model estimates fixed effects for the intercept of UCS (alpha_ucs), the overall effect of CS on UCS (beta_cs), and coefficients for the three covariates: negative affect, decentering, and context evaluation (beta_covariates). To capture individual differences and temporal fluctuations, the model includes random intercepts for participants (z_participant), days (z_day), and measurements (z_measurement). Additionally, it estimates random slopes for the effect of CS at the participant level (z_participant_slope_cs).
 
-$$
-\begin{align*}
-    \text{UCS}_{ijkm} &\sim t\left(\nu, \mu_{ijkm}, \sigma_{\text{UCS}}\right) \\
-    \mu_{ijkm} &= \alpha_{\text{UCS}} + \left(\beta_{\text{CS}} + b_{i}^{\text{participant}}\right) \times \text{CS}_{ijkm} + \boldsymbol{\beta}_{\text{cov}}^\top \mathbf{X}_{ijkm} \\
-    &\quad + u_{i}^{\text{participant}} + v_{j[i]}^{\text{day}} + w_{k[ij]}^{\text{measurement}} \\
-    \text{where} & \\
-    u_{i}^{\text{participant}} &\sim \mathcal{N}(0, \sigma_{\text{participant}}) \\
-    b_{i}^{\text{participant}} &\sim \mathcal{N}(0, \sigma_{\text{participant\_slope\_cs}}) \\
-    v_{j[i]}^{\text{day}} &\sim \mathcal{N}(0, \sigma_{\text{day}}) \\
-    w_{k[ij]}^{\text{measurement}} &\sim \mathcal{N}(0, \sigma_{\text{measurement}}) \\
-    \boldsymbol{\beta}_{\text{cov}} &\sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
-    \alpha_{\text{UCS}}, \beta_{\text{CS}} &\sim \mathcal{N}(0, 1) \\
-    \sigma_{\text{UCS}}, \sigma_{\text{participant}}, \sigma_{\text{day}}, \sigma_{\text{measurement}}, \sigma_{\text{participant\_slope\_cs}} &\sim \text{Exponential}(1) \\
-    \nu &\sim \text{Gamma}(2, 0.1)
-\end{align*}
-$$
 
-1. **Primary Equation (UCS Likelihood):** The UCS (Uncompassionate Self) score for each observation is modeled using a t-distribution. This choice accommodates potential heavy tails in the UCS score distribution. Each observation is indexed by participant $i$, day $j$, and measurement $k$, and the distribution is characterized by degrees of freedom $\nu$, a mean $\mu_{ijkm}$, and standard deviation $\sigma_{\text{UCS}}$.
-
-2. **Mean Equation ($\mu_{ijkm}$):** The mean UCS score, $\mu_{ijkm}$, is calculated as a linear combination of several components:
-   - A global intercept $\alpha_{\text{UCS}}$.
-   - The product of a coefficient $\beta_{\text{CS}}$ (representing the overall effect of the CS (Compassionate Self) score) and the specific CS score for that observation.
-   - The weighted sum of other covariates (negative affect, decentering, context evaluation), each multiplied by their respective coefficients $\boldsymbol{\beta}_{\text{cov}}$.
-   - Random intercepts for each participant $u_{i}^{\text{participant}}$, day $v_{j[i]}^{\text{day}}$, and measurement $w_{k[ij]}^{\text{measurement}}$, accounting for the hierarchical data structure.
-   - A random slope $b_{i}^{\text{participant}}$ for CS at the participant level, allowing the relationship between CS and UCS to vary across individuals.
-
-3. **Random Effects:** 
-   - Random intercepts for participants, days, and measurements (denoted as $u_{i}^{\text{participant}}$, $v_{j[i]}^{\text{day}}$, and $w_{k[ij]}^{\text{measurement}}$, respectively) are assumed to follow normal distributions with a mean of zero and specific standard deviations. These intercepts capture variability across the different levels of the hierarchical structure.
-   - Additionally, the model includes a random slope for the effect of CS ($b_{i}^{\text{participant}}$) at the participant level. This element allows the model to capture individual differences in how CS influences UCS.
-
-4. **Priors:** 
-   - The model assumes normal distributions with mean zero for coefficients and intercepts, reflecting a lack of prior bias towards specific values. The standard deviations of the random effects and the error term ($\sigma_{\text{UCS}}$, $\sigma_{\text{participant}}$, etc.) are modeled using exponential distributions. The degrees of freedom parameter $\nu$ for the t-distribution is drawn from a gamma distribution, suggesting flexibility in the tail behavior of the UCS scores.
-
-This statistical model is particularly suited for exploring the Bipolar Continuum Hypothesis proposed by Neff, which posits an inverse relationship between UCS and CS across individuals. By including random slopes for CS at the participant level, the model can assess how this relationship varies among individuals, providing insights into the nuanced nature of self-compassion and self-criticism. 
+```{r}
+fit <- readRDS(
+  here::here("data/prep/ema/brms_fits/fit_mod_9_rnd_slopes_bip_cont_hyp.RDS")
+)
+```
 

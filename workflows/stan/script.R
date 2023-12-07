@@ -338,7 +338,7 @@ stan_data <- list(
 str(stan_data)
 
 # Compile the Stan model
-stan_file <- 'model_9_rnd_slopes.stan'  
+stan_file <- here::here("workflows", "stan", "model_9_rnd_slopes.stan") 
 mod <- cmdstan_model(stan_file)
 
 # Sample from the posterior 
@@ -358,6 +358,15 @@ fit <- mod$sample(
 
 fit$diagnostic_summary()
 
+names(mod$variables()$parameters)
+# [1] "alpha_ucs"                  "beta_cs"                   
+# [3] "beta_covariates"            "z_participant"             
+# [5] "z_day"                      "z_measurement"             
+# [7] "z_participant_slope_cs"     "sigma_participant"         
+# [9] "sigma_day"                  "sigma_measurement"         
+# [11] "sigma_participant_slope_cs" "sigma_ucs"                 
+# [13] "nu"  
+
 # Check the summary of the model fit
 # fit$summary()
 
@@ -370,17 +379,72 @@ draws |>
   stat_dotsinterval() 
 
 params <- c(
-  # "alpha_ucs", 
   "beta_cs",
   "beta_covariates[1]", "beta_covariates[2]", "beta_covariates[3]",
-  "sigma_ucs"
+  "sigma_ucs",
+  "sigma_participant", "sigma_day", "sigma_measurement", 
+  "sigma_participant_slope_cs"
+  # Including specific indices for random effects is necessary
+  # e.g., "z_participant[1]", "z_day[1]", "z_measurement[1]", "z_participant_slope_cs[1]"
 )
 
 temps <- fit$draws(format = "df") |>
   as_tibble() |>
   select(all_of(params))
 
-mcmc_areas(temps) + xlab('')
+mcmc_intervals(temps, point_size = 1, prob = 0.50, prob_outer = 0.89) + xlab('')
+
+# Your existing code for mcmc_intervals
+p <- mcmc_intervals(temps, point_size = 1, prob = 0.50, prob_outer = 0.89) + xlab('')
+
+# Figure for paper -------------------------------------------------------------
+
+# Define the desired order of parameters
+param_order <- c(
+  "sigma_ucs",
+  "sigma_participant_slope_cs",
+  "sigma_participant", "sigma_day", "sigma_measurement",
+  "beta_covariates[3]", "beta_covariates[2]", "beta_covariates[1]", 
+  "beta_cs"
+)
+
+# Reorder the temps data frame according to the desired order
+temps_ordered <- temps[param_order]
+
+# Generate the mcmc_intervals plot
+p <- mcmc_intervals(temps_ordered, point_size = 1, prob = 0.50, prob_outer = 0.89) + 
+  xlab('')
+
+# Define custom labels
+custom_labels <- c(
+  `beta_cs` = expression(beta[CS]),
+  `beta_covariates[1]` = expression(beta[negative~affect]),
+  `beta_covariates[2]` = expression(beta[decentering]),
+  `beta_covariates[3]` = expression(beta[context~valence]),
+  `sigma_ucs` = expression(sigma[UCS]),
+  `sigma_participant` = expression(sigma[participant]),
+  `sigma_day` = expression(sigma[day]),
+  `sigma_measurement` = expression(sigma[measurement]),
+  `sigma_participant_slope_cs` = expression(sigma[participant~slope~CS])
+)
+
+# Apply custom labels to the plot
+p + scale_y_discrete(labels = custom_labels)
+
+# ------------------------------------------------------------------------------
+
+mcmc_intervals_data(temps, prob = 0.50, prob_outer = 0.89) 
+# parameter               outer_width inner_width point_est       ll        l        m        h       hh
+# <fct>                         <dbl>       <dbl> <chr>        <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
+# 1 beta_cs                        0.89         0.5 median    -0.478   -0.455   -0.438   -4.22e-1 -0.399  
+# 2 beta_covariates[1]             0.89         0.5 median     0.0609   0.0678   0.0727   7.79e-2  0.0847 
+# 3 beta_covariates[2]             0.89         0.5 median    -0.0960  -0.0893  -0.0845  -7.97e-2 -0.0733 
+# 4 beta_covariates[3]             0.89         0.5 median    -0.0143  -0.00837 -0.00378  4.90e-4  0.00621
+# 5 sigma_ucs                      0.89         0.5 median     0.390    0.397    0.401    4.06e-1  0.413  
+# 6 sigma_participant              0.89         0.5 median     0.552    0.583    0.606    6.29e-1  0.664  
+# 7 sigma_day                      0.89         0.5 median     0.00932  0.0177   0.0234   2.94e-2  0.0401 
+# 8 sigma_measurement              0.89         0.5 median     0.00102  0.00468  0.00971  1.69e-2  0.0329 
+# 9 sigma_participant_slop…        0.89         0.5 median     0.254    0.269    0.282    2.96e-1  0.316  
 
 stanfit <- rstan::read_stan_csv(fit$output_files())
 
@@ -430,9 +494,15 @@ mcmc_trace(fit_draws, pars = c("sigma_participant_slope_cs"))
 
 loo(fit$draws("log_lik"))
 
-saveRDS(
-  fit, 
-  here::here(
+# saveRDS(
+#   fit, 
+#   here::here(
+#     "data", "prep", "ema", "brms_fits", "mod_9_rnd_slopes.RDS"
+#   )
+# )
+
+fit$save_object(
+  file = here::here(
     "data", "prep", "ema", "brms_fits", "mod_9_rnd_slopes.RDS"
   )
 )

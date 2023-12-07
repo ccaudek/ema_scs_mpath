@@ -1,7 +1,7 @@
 ---
 title-block-banner: true
-title: "EMA State Self Compassion Project"
-description: "Test of the bipolar continuum hypothesis"
+title: "State Self-Compassion Dynamics: Evidence for the Bipolar Continuum Hypothesis"
+description: "Relationship between the Bipolar Continuum Hypothesis and the co-variation of State Self-Compassion components"
 author: "Corrado Caudek (corrado.caudek@unifi.it)"
 bibliography: bibliography.bib
 csl: apa.csl

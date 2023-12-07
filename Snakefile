@@ -35,9 +35,9 @@ rule all:
         # Compute LOO values: UCS component
         "data/prep/ema/brms_fits/loo_nsc_rand_eff_mod_comp.rds",
         "data/prep/ema/brms_fits/loo_nsc_fixed_eff_mod_comp.rds",
-        # Testing the Bipolar Continuum Hypothesis
-        "data/prep/ema/data_mod_9_rnd_slopes.rds",
-        "data/prep/ema/brms_fits/fit_mod_9_rnd_slopes_bip_cont_hyp.RDS",
+        # Testing the Bipolar Continuum Hypothesis -- I have already saved the RDS file; do not overwrite it.
+        # "data/prep/ema/data_mod_9_rnd_slopes.rds",
+        # "data/prep/ema/brms_fits/fit_mod_9_rnd_slopes_bip_cont_hyp.RDS",
         # Effect of exam day on Negative Affect
         "data/prep/ema/data_first_exam.rds",
         "data/prep/ema/res_neg_aff_on_first_exam.rds",
